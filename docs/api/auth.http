@@ -1,0 +1,25 @@
+POST http://localhost:3000/auth/login
+content-type: application/json
+
+{
+    "username": "admin",
+    "password": "password"
+}
+###
+
+GET http://localhost:3000/auth/profile
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzQ0MzY2NTYsImV4cCI6MTc3NDQzNzU1Nn0.9hUuoPjZyNtalMYNvqG_cTuNHALxIbk9fRchHaRXRxw
+
+###
+
+POST http://localhost:3000/api-keys
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzQ0Mzc4NTgsImV4cCI6MTc3NDQzODc1OH0._LJI2WezMItSUFt9ERrFMeQcdnI4yIeD3QsyWMdIj3M
+
+{
+    "name": "My API Key"
+}
+###
+
+GET http://localhost:3000/proverbs/random
+x-api-key: cc3ee0572cfbfb945be0ecbb27fc37aed385daa814678e07707e85b4aeeed818

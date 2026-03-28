@@ -1,0 +1,19 @@
+{
+  "name": "@abbabal/shared",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./contracts": {
+      "types": "./src/contracts.d.ts",
+      "default": "./src/contracts.js"
+    }
+  },
+  "files": [
+    "src"
+  ]
+}

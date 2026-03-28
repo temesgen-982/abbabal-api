@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&amp;family=Noto+Sans+Ethiopic:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#93000a",
+              "on-secondary-fixed": "#3e0403",
+              "on-surface-variant": "#4a4a4a",
+              "on-tertiary-container": "#a8211a",
+              "surface-container-highest": "#e8e1cd",
+              "on-primary": "#ffffff",
+              "surface-container-high": "#efe8db",
+              "primary": "#a8211a",
+              "surface": "#F5F0E1",
+              "on-secondary-fixed-variant": "#792f27",
+              "tertiary": "#7a1611",
+              "on-background": "#1a1a1a",
+              "surface-tint": "#a8211a",
+              "primary-fixed-dim": "#ffb4aa",
+              "outline-variant": "rgba(168, 33, 26, 0.1)",
+              "tertiary-container": "rgba(168, 33, 26, 0.05)",
+              "surface-variant": "#e8e1cd",
+              "secondary-fixed": "#ffdad5",
+              "secondary": "#D4AF37",
+              "background": "#F5F0E1",
+              "on-primary-fixed-variant": "#900c0b",
+              "surface-container-low": "#fcfbf7",
+              "on-error": "#ffffff",
+              "primary-fixed": "#ffdad5",
+              "surface-dim": "#e8e1cd",
+              "secondary-fixed-dim": "#ffb4aa",
+              "on-surface": "#1a1a1a",
+              "on-secondary": "#1a1a1a",
+              "on-secondary-container": "#1a1a1a",
+              "outline": "#a8211a",
+              "inverse-primary": "#ffb4aa",
+              "primary-container": "#a8211a",
+              "surface-bright": "#fcfbf7",
+              "inverse-surface": "#201212",
+              "tertiary-fixed": "#d2e4ff",
+              "tertiary-fixed-dim": "#9fcaff",
+              "on-primary-fixed": "#410001",
+              "surface-container-lowest": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-primary-container": "#ffffff",
+              "on-tertiary-fixed": "#001d36",
+              "on-tertiary-fixed-variant": "#00497e",
+              "error": "#ba1a1a",
+              "on-tertiary": "#ffffff",
+              "inverse-on-surface": "#F5F0E1",
+              "secondary-container": "#e8e1cd",
+              "surface-container": "#f4efe4"
+            },
+            fontFamily: {
+              "headline": ["Work Sans"],
+              "body": ["Work Sans"],
+              "label": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>body {
+    background-color: #F5F0E1;
+    background-image: radial-gradient(circle at top left, rgba(212, 175, 55, 0.12), transparent 24%), radial-gradient(circle at bottom right, rgba(168, 33, 26, 0.08), transparent 22%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='.08'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-size: 34rem 34rem, 30rem 30rem, 180px 180px;
+    background-attachment: fixed;
+    background-position: top left, bottom right, 0 0;
+    color: #1a1a1a
+    }
+.parchment-surface {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(244, 239, 228, 0.12)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='surface-noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23surface-noise)' opacity='.06'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, repeat;
+    background-size: auto, 180px 180px;
+    background-position: 0 0, 0 0
+    }
+.parchment-layer {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(239, 232, 219, 0.1)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='layer-noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23layer-noise)' opacity='.05'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, repeat;
+    background-size: auto, 180px 180px;
+    background-position: 0 0, 0 0
+    }
+.parchment-stack-1 {
+    transform: rotate(-1.5deg)
+    }
+.parchment-stack-2 {
+    transform: rotate(1deg)
+    }
+.deckled-edge {
+    box-shadow: 2px 3px 15px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(168, 33, 26, 0.05);
+    position: relative
+    }
+.deckled-edge::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: 1px solid rgba(168, 33, 26, 0.1);
+    mask-image: linear-gradient(to bottom, black, transparent 1px, transparent calc(100% - 1px), black)
+    }
+.harag-divider {
+    height: 8px;
+    background-image: radial-gradient(circle, #D4AF37 2px, transparent 2.5px);
+    background-size: 12px 100%;
+    opacity: 0.6
+    }
+.gold-shimmer:hover {
+    background: linear-gradient(45deg, #a8211a 0%, #d42c22 45%, #ffd700 50%, #d42c22 55%, #a8211a 100%);
+    background-size: 200% 200%
+    }</style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col">
+
+<main class="flex-grow flex items-center justify-center p-6 relative overflow-hidden">
+<!-- Decorative Background Glyph -->
+<div class="absolute -top-20 -left-20 text-[400px] font-bold text-primary opacity-[0.05] select-none pointer-events-none font-['Noto_Sans_Ethiopic']">
+            ሀ
+        </div>
+<!-- Login Container -->
+<div class="relative w-full max-w-md">
+<!-- Parchment Stacking Effect -->
+<div class="absolute inset-0 bg-surface-container/90 parchment-layer parchment-stack-1 rounded-sm shadow-sm"></div>
+<div class="absolute inset-0 bg-surface-container-high/95 parchment-layer parchment-stack-2 rounded-sm shadow-md"></div>
+<!-- Main Content Card -->
+<div class="relative bg-surface/98 parchment-surface p-10 deckled-edge rounded-sm border-outline-variant/10 backdrop-blur-[2px]">
+<div class="text-center mb-8">
+<h1 class="text-3xl font-black text-primary tracking-tighter mb-2">LOGIN</h1>
+</div>
+<form class="space-y-6">
+<div>
+<label class="block font-['Work_Sans'] uppercase tracking-[0.2em] text-[10px] font-bold text-on-surface-variant mb-2" for="email">Email Address</label>
+<input class="w-full bg-transparent border-0 border-b-2 border-surface-container-highest focus:ring-0 focus:border-primary px-0 py-2 text-on-surface placeholder:text-stone-400 font-medium transition-all duration-300" id="email" name="email" placeholder="scribe@abbabal.api" type="email"/>
+</div>
+<div>
+<label class="block font-['Work_Sans'] uppercase tracking-[0.2em] text-[10px] font-bold text-on-surface-variant mb-2" for="password">Password</label>
+<input class="w-full bg-transparent border-0 border-b-2 border-surface-container-highest focus:ring-0 focus:border-primary px-0 py-2 text-on-surface placeholder:text-stone-400 font-medium transition-all duration-300" id="password" name="password" placeholder="••••••••" type="password"/>
+</div>
+<div class="flex items-center justify-between">
+<label class="flex items-center cursor-pointer">
+<input class="w-4 h-4 rounded-none border-2 border-primary text-primary focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+<span class="ml-2 font-['Work_Sans'] text-[12px] text-on-surface-variant">Remember device</span>
+</label>
+<a class="font-['Work_Sans'] text-[12px] text-primary hover:underline underline-offset-4 decoration-1" href="#">Forgot Password?</a>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 font-bold tracking-widest gold-shimmer transition-all duration-300 active:scale-[0.98] shadow-[0_4px_0_#7a1611] hover:shadow-[0_2px_0_#7a1611] hover:translate-y-[2px]" type="submit">
+                        LOG IN
+                    </button>
+</form>
+<div class="mt-10 pt-6 border-t border-outline-variant flex flex-col items-center gap-4">
+<p class="font-['Work_Sans'] text-[14px] text-on-surface-variant">New to the library?</p>
+<a class="px-6 py-2 border-2 border-primary text-primary font-bold text-[12px] tracking-widest hover:bg-primary/5 transition-all duration-200" href="#">
+                        SIGN UP FOR AN API KEY
+                    </a>
+</div>
+</div>
+</div>
+<!-- Decorative Background Glyph Right -->
+<div class="absolute -bottom-20 -right-20 text-[400px] font-bold text-primary opacity-[0.05] select-none pointer-events-none font-['Noto_Sans_Ethiopic']">
+            ለ
+        </div>
+</main>
+
+</body></html>

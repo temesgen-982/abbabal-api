@@ -1,0 +1,65 @@
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiSecurity,
+  ApiTags,
+  ApiTooManyRequestsResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { ProverbsService } from './proverbs.service';
+import { ApiKeyGuard } from 'src/api-keys/guards/api-key.guard';
+import { RateLimitGuard } from 'src/api-keys/guards/rate-limit.guard';
+import { PaginatedProverbsDto, ProverbDto } from './dto/proverb-response.dto';
+
+@ApiTags('Proverbs')
+@ApiSecurity('apiKey')
+@ApiUnauthorizedResponse({ description: 'Missing, invalid, or inactive API key.' })
+@ApiTooManyRequestsResponse({ description: 'Rate limit exceeded for this API key.' })
+@UseGuards(ApiKeyGuard, RateLimitGuard)
+@Controller('proverbs')
+export class ProverbsController {
+    constructor(private readonly proverbsService: ProverbsService) {}
+
+    @Get()
+    @ApiOperation({ summary: 'List proverbs with pagination' })
+    @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+    @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
+    @ApiOkResponse({ type: PaginatedProverbsDto })
+    findAll(
+        @Query('page') page: string,
+        @Query('limit') limit: string,
+    ){
+        const pageNumber = parseInt(page) || 1;
+        const limitNumber = parseInt(limit) || 20;
+        return this.proverbsService.findAll(pageNumber, limitNumber);
+    }
+    
+    @Get('search')
+    @ApiOperation({ summary: 'Search proverbs by text or English translation' })
+    @ApiQuery({ name: 'q', required: true, type: String, example: 'wisdom' })
+    @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
+    @ApiOkResponse({ type: ProverbDto, isArray: true })
+    search(@Query('q') query: string, @Query('limit') limit: string) {
+        const limitNumber = parseInt(limit, 10) || 20;
+        return this.proverbsService.search(query, limitNumber);
+    }
+    
+    @Get('random')
+    @ApiOperation({ summary: 'Get a random proverb' })
+    @ApiOkResponse({ type: ProverbDto })
+    random() {
+        return this.proverbsService.random();
+    }
+    
+    @Get(':id')
+    @ApiOperation({ summary: 'Get a proverb by ID' })
+    @ApiParam({ name: 'id', type: Number, description: 'Proverb ID.' })
+    @ApiOkResponse({ type: ProverbDto })
+    findOne(@Param('id') id: string) {
+        const idNumber = parseInt(id);
+        return this.proverbsService.findOne(idNumber);
+    }
+}
