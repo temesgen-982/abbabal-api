@@ -3,6 +3,9 @@
  import * as Sidebar from "$lib/components/ui/sidebar/index.js";
  
  import { useSidebar } from "$lib/components/ui/sidebar/index.js";
+
+ import { page } from "$app/state";
+
  const sidebar = useSidebar();
  
  // Menu items.
@@ -30,20 +33,17 @@
  ];
 </script>
  
-<Sidebar.Root collapsible="icon" class="py-4">
+<Sidebar.Root collapsible="icon">
 {#if sidebar.state === "expanded"}
-<Sidebar.Header>
+<Sidebar.Header class="text-primary text-xl py-4">
     <h2>Abbabal API</h2>
 </Sidebar.Header>
 {/if}
  <Sidebar.Content>
-  <Sidebar.Group>
-   <Sidebar.GroupLabel>Application</Sidebar.GroupLabel>
-   <Sidebar.GroupContent>
     <Sidebar.Menu>
      {#each items as item (item.title)}
       <Sidebar.MenuItem>
-       <Sidebar.MenuButton>
+       <Sidebar.MenuButton isActive={page.url.pathname === item.url}>
         {#snippet child({ props })}
          <a href={item.url} {...props}>
           <item.icon />
@@ -54,8 +54,6 @@
       </Sidebar.MenuItem>
      {/each}
     </Sidebar.Menu>
-   </Sidebar.GroupContent>
-  </Sidebar.Group>
  </Sidebar.Content>
  {#if sidebar.state === "expanded"}
     <Sidebar.Footer>

@@ -35,7 +35,7 @@
 			{indexLabel}
 		</div>
 		<div class="min-w-0 grow">
-			<h2 class="text-2xl">{title}</h2>
+			<h2 class="text-xl">{title}</h2>
 			<p>{subtitle}</p>
 		</div>
 		<div class="w-full text-left sm:ml-auto sm:w-auto sm:flex-shrink-0 sm:text-right">

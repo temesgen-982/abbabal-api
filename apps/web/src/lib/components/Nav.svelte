@@ -3,7 +3,7 @@
  import { Button } from "$lib/components/ui/button/index.js"
 </script>
 
-<header class="flex justify-between px-24 py-8 border-b">
+<header class="flex justify-between px-16 py-4 border-b">
     <div>Abbabal API</div>
     <nav>
         <NavigationMenu.Root>
@@ -23,5 +23,7 @@
             </NavigationMenu.List>
         </NavigationMenu.Root>
     </nav>
-    <Button>Get Api Key</Button>
+    <Button>
+        <a href="/dashboard/overview">Get Api Key</a>
+    </Button>
 </header>

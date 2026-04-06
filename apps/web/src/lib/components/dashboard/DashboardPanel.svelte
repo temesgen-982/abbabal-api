@@ -15,14 +15,14 @@
 	} = $props();
 </script>
 
-<section class={cn("grid content-start gap-8", className)}>
+<section class={cn("grid content-start gap-8 bg-panel-background", className)}>
 	{#if title || meta}
 		<div class="flex items-center justify-between gap-4">
 			{#if title}
 				<header>{title}</header>
 			{/if}
 			{#if meta}
-				<p>{meta}</p>
+				<p class="text-primary">{meta}</p>
 			{/if}
 		</div>
 	{/if}
