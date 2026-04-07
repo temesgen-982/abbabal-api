@@ -1,65 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
-import { text } from 'express';
+import { DrizzleService } from '../drizzle.service';
+import { proverbs } from '../db/schema';
+import { eq, or, like, sql, count } from 'drizzle-orm';
 
 @Injectable()
 export class ProverbsService {
-    constructor(private prisma: PrismaService) {}
+  constructor(private drizzle: DrizzleService) {}
 
-    async findAll(page: number = 1, limit: number = 20){
-        const skip = (page - 1) * limit;
+  async findAll(page = 1, limit = 20) {
+    const skip = (page - 1) * limit;
+    const db = this.drizzle.db;
 
-        const [data, total] = await Promise.all([
-            this.prisma.proverb.findMany({
-                skip,
-                take: limit,
-                orderBy: {
-                    id: 'desc',
-                }
-            }),
-            this.prisma.proverb.count(),
-        ])
-        return { 
-            page, 
-            limit,
-            total,
-            results: data,
-        };
-    }
+    const [data, [{ total }]] = await Promise.all([
+      db.select().from(proverbs).orderBy(sql`${proverbs.id} desc`).limit(limit).offset(skip),
+      db.select({ total: count() }).from(proverbs),
+    ]);
 
-    async findOne(id: number) {
-        return this.prisma.proverb.findUnique({
-            where: { id },
-        });
-    }
+    return { page, limit, total, results: data };
+  }
 
-    async random() {
-        const count = await this.prisma.proverb.count()
+  findOne(id: number) {
+    return this.drizzle.db.query.proverbs.findFirst({ where: eq(proverbs.id, id) });
+  }
 
-        const randomIndex = Math.floor(Math.random() * count)
+  async random() {
+    const [{ total }] = await this.drizzle.db.select({ total: count() }).from(proverbs);
+    const offset = Math.floor(Math.random() * total);
+    const [result] = await this.drizzle.db.select().from(proverbs).limit(1).offset(offset);
+    return result;
+  }
 
-        const result = await this.prisma.proverb.findMany({
-            skip: randomIndex,
-            take: 1,
-        })
-
-        return result[0]
-    }
-
-    async search(query: string, limit = 20) {
-        if (!query?.trim()) return [];
-
-        return this.prisma.proverb.findMany({
-            where: {
-                OR: [
-                    { text: { contains: query } },
-                    { englishTranslation: { contains: query } },
-                ],
-            },
-            take: limit,
-            orderBy: {
-            id: 'desc',
-            },
-        });
-    }
+  search(query: string, limit = 20) {
+    if (!query?.trim()) return [];
+    return this.drizzle.db
+      .select()
+      .from(proverbs)
+      .where(or(like(proverbs.text, `%${query}%`), like(proverbs.englishTranslation, `%${query}%`)))
+      .orderBy(sql`${proverbs.id} desc`)
+      .limit(limit);
+  }
 }

@@ -1,91 +1,79 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { DrizzleService } from '../drizzle.service';
+import { apiKeys, users } from '../db/schema';
+import { eq, and } from 'drizzle-orm';
 import { randomBytes, createHash } from 'crypto';
 
 @Injectable()
 export class ApiKeysService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private drizzle: DrizzleService) {}
 
-  async generateRawKey(): Promise<string> {
+  generateRawKey(): string {
     return randomBytes(32).toString('hex');
   }
 
-  async hashKey(key: string): Promise<string> {
+  hashKey(key: string): string {
     return createHash('sha256').update(key).digest('hex');
   }
 
-  async create(userId: number, name: string): Promise<{ id: number; name: string; key: string; createdAt: Date }> {
-    const rawKey = await this.generateRawKey();
-    const hashedKey = await this.hashKey(rawKey);
+  async create(userId: number, name: string) {
+    const rawKey = this.generateRawKey();
+    const hashedKey = this.hashKey(rawKey);
 
-    const apiKey = await this.prisma.apiKey.create({
-      data: {
-        name,
-        key: hashedKey,
-        userId,
-      },
-    });
+    const [apiKey] = await this.drizzle.db
+      .insert(apiKeys)
+      .values({ name, key: hashedKey, userId })
+      .returning({ id: apiKeys.id, name: apiKeys.name, createdAt: apiKeys.createdAt });
 
-    return {
-      id: apiKey.id,
-      name: apiKey.name,
-      key: rawKey,
-      createdAt: apiKey.createdAt,
-    };
+    return { ...apiKey, key: rawKey };
   }
 
-  async findAllForUser(userId: number) {
-    return this.prisma.apiKey.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        name: true,
-        isActive: true,
-        lastUsedAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+  findAllForUser(userId: number) {
+    return this.drizzle.db
+      .select({
+        id: apiKeys.id,
+        name: apiKeys.name,
+        isActive: apiKeys.isActive,
+        lastUsedAt: apiKeys.lastUsedAt,
+        createdAt: apiKeys.createdAt,
+        updatedAt: apiKeys.updatedAt,
+      })
+      .from(apiKeys)
+      .where(eq(apiKeys.userId, userId))
+      .orderBy(apiKeys.createdAt);
   }
 
   async revoke(userId: number, id: number) {
-    const existing = await this.prisma.apiKey.findUnique({
-      where: { id, userId },
+    const existing = await this.drizzle.db.query.apiKeys.findFirst({
+      where: and(eq(apiKeys.id, id), eq(apiKeys.userId, userId)),
     });
 
-    if (!existing) {
-      throw new NotFoundException('API key not found');
-    }
+    if (!existing) throw new NotFoundException('API key not found');
 
-    return this.prisma.apiKey.update({
-      where: { id },
-      data: { isActive: false },
-      select: {
-        id: true,
-        name: true,
-        isActive: true,
-      },
-    });
+    const [updated] = await this.drizzle.db
+      .update(apiKeys)
+      .set({ isActive: false })
+      .where(eq(apiKeys.id, id))
+      .returning({ id: apiKeys.id, name: apiKeys.name, isActive: apiKeys.isActive });
+
+    return updated;
   }
 
   async validateKey(key: string) {
-    const hashedKey = await this.hashKey(key);
+    const hashedKey = this.hashKey(key);
 
-    const apiKey = await this.prisma.apiKey.findUnique({
-      where: { key: hashedKey },
-      include: { user: true },
+    const result = await this.drizzle.db.query.apiKeys.findFirst({
+      where: eq(apiKeys.key, hashedKey),
+      with: { user: true },
     });
 
-    if (!apiKey || !apiKey.isActive) {
-      return null;
-    }
+    if (!result || !result.isActive) return null;
 
-    await this.prisma.apiKey.update({
-      where: { id: apiKey.id },
-      data: { lastUsedAt: new Date() },
-    });
+    await this.drizzle.db
+      .update(apiKeys)
+      .set({ lastUsedAt: new Date() })
+      .where(eq(apiKeys.id, result.id));
 
-    return apiKey;
+    return result;
   }
 }

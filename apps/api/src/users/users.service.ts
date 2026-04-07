@@ -1,25 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { DrizzleService } from '../drizzle.service';
+import { users } from '../db/schema';
+import { eq } from 'drizzle-orm';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private drizzle: DrizzleService) {}
 
-  async findByUsername(username: string) {
-    return this.prisma.user.findUnique({
-      where: { username },
-    });
+  findByUsername(username: string) {
+    return this.drizzle.db.query.users.findFirst({ where: eq(users.username, username) });
   }
 
   async create(username: string, password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    return this.prisma.user.create({
-      data: {
-        username,
-        password: hashedPassword,
-      },
-    });
+    const [user] = await this.drizzle.db.insert(users).values({ username, password: hashedPassword }).returning();
+    return user;
   }
 }

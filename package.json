@@ -13,7 +13,8 @@
     "check": "pnpm -r --if-present check",
     "test": "pnpm --filter @abbabal/api test",
     "test:e2e": "pnpm --filter @abbabal/api test:e2e",
-    "prisma:generate": "pnpm --filter @abbabal/api prisma:generate",
-    "prisma:seed": "pnpm --filter @abbabal/api prisma:seed"
+    "drizzle:generate": "pnpm --filter @abbabal/api drizzle:generate",
+    "drizzle:migrate": "pnpm --filter @abbabal/api drizzle:migrate",
+    "drizzle:seed": "pnpm --filter @abbabal/api drizzle:seed"
   }
 }

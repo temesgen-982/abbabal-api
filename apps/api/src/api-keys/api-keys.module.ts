@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ApiKeysService } from './api-keys.service';
 import { ApiKeysController } from './api-keys.controller';
-import { PrismaService } from 'src/prisma.service';
+import { DrizzleService } from 'src/drizzle.service';
 import { ApiKeyGuard } from './guards/api-key.guard';
 import { RateLimitGuard } from './guards/rate-limit.guard';
 
 @Module({
-  providers: [ApiKeysService, PrismaService, ApiKeyGuard, RateLimitGuard],
+  providers: [ApiKeysService, DrizzleService, ApiKeyGuard, RateLimitGuard],
   controllers: [ApiKeysController],
   exports: [ApiKeysService, ApiKeyGuard, RateLimitGuard],
 })
