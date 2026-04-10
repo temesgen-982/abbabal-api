@@ -3,12 +3,12 @@ content-type: application/json
 
 {
     "username": "admin",
-    "password": "password"
+    "password": "change-me-now"
 }
 ###
 
 GET http://localhost:3000/auth/profile
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzQ0MzY2NTYsImV4cCI6MTc3NDQzNzU1Nn0.9hUuoPjZyNtalMYNvqG_cTuNHALxIbk9fRchHaRXRxw
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzU4Mjg0MzQsImV4cCI6MTc3NTgyOTMzNH0.hnSGOPyjqGrDnlIrZoFZtiSuN_zAtHEQ7ui2EtUKYcc
 
 ###
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -10,6 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import { AuthResponseDto, ProfileResponseDto } from './dto/auth-response.dto';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 import { PassportLocalGuard } from './guards/passport-local.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -26,6 +27,14 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Invalid username or password.' })
   login(@Request() request) {
     return this.authService.signIn(request.user);
+  }
+
+  @Post('register')
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiBody({ type: LoginDto })
+  @ApiOkResponse({ type: AuthResponseDto })
+  async register(@Body() registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
   }
 
   @Get('profile')

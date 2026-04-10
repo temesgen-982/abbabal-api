@@ -1,4 +1,5 @@
 import { sqliteTable, integer, text, real, index } from 'drizzle-orm/sqlite-core';
+import { Role } from '../common/enums/role.enum';
 import { sql } from 'drizzle-orm';
 
 export const proverbs = sqliteTable('Proverb', {
@@ -22,7 +23,7 @@ export const users = sqliteTable('User', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   username: text('username').notNull().unique(),
   password: text('password').notNull(),
-  role: text('role', { enum: ['ADMIN', 'USER'] }).notNull().default('USER'),
+  role: text('role', { length: 50 }).notNull().default(Role.USER),
   createdAt: integer('createdAt', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
   updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
 });
@@ -43,6 +44,7 @@ export type User = typeof users.$inferSelect;
 export type ApiKey = typeof apiKeys.$inferSelect;
 
 import { relations } from 'drizzle-orm';
+import { varchar } from 'drizzle-orm/mysql-core';
 
 export const usersRelations = relations(users, ({ many }) => ({
   apiKeys: many(apiKeys),
