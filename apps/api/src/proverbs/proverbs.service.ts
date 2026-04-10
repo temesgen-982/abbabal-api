@@ -39,4 +39,34 @@ export class ProverbsService {
       .orderBy(sql`${proverbs.id} desc`)
       .limit(limit);
   }
+
+  async create(data: any) {
+    const [result] = await this.drizzle.db
+      .insert(proverbs)
+      .values({
+        ...data,
+        date: new Date(), // Set current date
+        views: 0,
+        forwards: 0,
+      })
+      .returning();
+    return result;
+  }
+
+  async update(id: number, data: any) {
+    const [result] = await this.drizzle.db
+      .update(proverbs)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(proverbs.id, id))
+      .returning();
+    return result;
+  }
+
+  async remove(id: number) {
+    const [result] = await this.drizzle.db
+      .delete(proverbs)
+      .where(eq(proverbs.id, id))
+      .returning();
+    return result;
+  }
 }

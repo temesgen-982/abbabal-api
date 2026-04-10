@@ -1,5 +1,4 @@
-// src/proverbs/proverbs.controller.ts
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Body, Query, Post, Patch, Delete } from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiOperation,
@@ -12,6 +11,7 @@ import { ProverbsService } from './proverbs.service';
 import { RateLimitGuard } from 'src/api-keys/guards/rate-limit.guard';
 import { PaginatedProverbsDto, ProverbDto } from './dto/proverb-response.dto';
 import { ApiAuth } from '../common/decorators/api-auth.decorator';
+import { Auth } from '../common/decorators/auth.decorator';
 import { Role } from '../common/enums/role.enum';
 
 @ApiTags('Proverbs')
@@ -60,4 +60,26 @@ export class ProverbsController {
         const idNumber = parseInt(id);
         return this.proverbsService.findOne(idNumber);
     }
+
+    @Post()
+    @Auth(Role.ADMIN) // Restricted to Admin via JWT
+    @ApiOperation({ summary: 'Create a new proverb' })
+    create(@Body() data: any) {
+        return this.proverbsService.create(data);
+    }
+
+    @Patch(':id')
+    @Auth(Role.ADMIN)
+    @ApiOperation({ summary: 'Update an existing proverb' })
+    update(@Param('id') id: string, @Body() data: any) {
+        return this.proverbsService.update(parseInt(id), data);
+    }
+
+    @Delete(':id')
+    @Auth(Role.ADMIN)
+    @ApiOperation({ summary: 'Delete a proverb' })
+    remove(@Param('id') id: string) {
+        return this.proverbsService.remove(parseInt(id));
+    }
+
 }
