@@ -13,12 +13,14 @@ export type AuthResponse = {
 	user: {
 		id: number;
 		name: string;
+		role: string;
 	};
 };
 
 export type ProfileResponse = {
 	id: number;
 	username: string;
+	role: string;
 };
 
 type AuthLookupResult = {
