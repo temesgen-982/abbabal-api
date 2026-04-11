@@ -1,7 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/common/enums/role.enum';
 
 type AuthInput = {
     username: string;
@@ -10,14 +11,29 @@ type AuthInput = {
 type signInData = {
     userId: number;
     username: string;
-    // token: string; // This will be added once JWT or any other token generation logic is implemented
+    role: Role;
 }
 type AuthResult = {
     accessToken: string;
     user: {
         id: number;
         name: string;
+        role: Role;
     }
+}
+
+function normalizeRole(role: unknown): Role | undefined {
+    if (typeof role !== 'string') {
+        return undefined;
+    }
+
+    const normalizedRole = role.toLowerCase();
+
+    if ((Object.values(Role) as string[]).includes(normalizedRole)) {
+        return normalizedRole as Role;
+    }
+
+    return undefined;
 }
 
 @Injectable()
@@ -42,21 +58,54 @@ export class AuthService {
         if (!user || !(await bcrypt.compare(input.password, user.password))) {
             throw new UnauthorizedException('Invalid username or password');
         }
+
+        const role = normalizeRole(user.role);
+
+        if (!role) {
+            throw new UnauthorizedException('Invalid username or password');
+        }
+
         return {
             userId: user.id,
             username: user.username,
+            role,
         };
     }
 
     async signIn(user: signInData): Promise<AuthResult> {
-        const payload = { sub: user.userId, username: user.username};
+        const payload = { 
+            sub: user.userId, 
+            username: user.username,
+            role: user.role,
+        };
         const accessToken = await this.jwtService.signAsync(payload);
         return {
             accessToken,
             user: {
                 id: user.userId,
                 name: user.username,
+                role: user.role,
             }
         };
+    }
+
+    async register(input: AuthInput): Promise<AuthResult> {
+        const existingUser = await this.usersService.findByUsername(input.username);
+        
+        if (existingUser) {
+            throw new ConflictException('Username already taken');
+        }
+
+        const user = await this.usersService.create(
+            input.username, 
+            input.password,
+            Role.USER
+        );
+
+        return this.signIn({
+            userId: user.id,
+            username: user.username,
+            role: Role.USER,
+        });
     }
 }

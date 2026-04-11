@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "$lib/server/auth.js";
 import { fail, redirect } from "@sveltejs/kit";
-import type { Actions, PageServerLoad } from "./$types";
+import type { Actions, PageServerLoad } from "./$types.js";
 import type { RequestEvent } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
 import type { SuperValidated } from "sveltekit-superforms";

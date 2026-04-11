@@ -1,36 +1,38 @@
 <script lang="ts">
- import { SquareTerminal, ChartColumn, Key, FileUser } from "@lucide/svelte";
+ import { SquareTerminal, ChartColumn, Key, FileUser, Users, BookOpen } from "@lucide/svelte";
  import * as Sidebar from "$lib/components/ui/sidebar/index.js";
- 
  import { useSidebar } from "$lib/components/ui/sidebar/index.js";
-
  import { page } from "$app/state";
-
+ import { Role } from "$lib/enums/role.enum";
  const sidebar = useSidebar();
  
- // Menu items.
  const items = [
-  {
-   title: "Overview",
-   url: "/dashboard/overview",
-   icon: FileUser,
+    // common items
+  { title: "Overview", url: "/dashboard/overview", icon: FileUser },
+  { title: "Api Keys", url: "/dashboard/api-keys", icon: Key },
+  { title: "Usage", url: "/dashboard/usage", icon: ChartColumn },
+  { title: "Playground", url: "/dashboard/playground", icon: SquareTerminal },
+    // Admin-only items
+  { 
+    title: "User Management", 
+    url: "/dashboard/admin/users", 
+    icon: Users, 
+    roles: [Role.ADMIN] 
   },
-  {
-   title: "Api Keys",
-   url: "/dashboard/api-keys",
-   icon: Key,
-  },
-  {
-   title: "Usage",
-   url: "/dashboard/usage",
-   icon: ChartColumn,
-  },
-  {
-   title: "Playground",
-   url: "/dashboard/playground",
-   icon: SquareTerminal,
+  { 
+    title: "Manage Proverbs", 
+    url: "/dashboard/admin/proverbs", 
+    icon: BookOpen, 
+    roles: [Role.ADMIN] 
   },
  ];
+
+ // filter the menu based on the user's role
+ const visibleItems = $derived(
+  items.filter(item => 
+    !item.roles || (!!page.data.user?.role && item.roles.includes(page.data.user.role))
+  )
+ );
 </script>
  
 <Sidebar.Root collapsible="icon">
@@ -41,7 +43,7 @@
 {/if}
  <Sidebar.Content>
     <Sidebar.Menu>
-     {#each items as item (item.title)}
+     {#each visibleItems as item (item.title)}
       <Sidebar.MenuItem>
        <Sidebar.MenuButton isActive={page.url.pathname === item.url}>
         {#snippet child({ props })}

@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { config } from 'dotenv';
+import { Role } from '../src/common/enums/role.enum';
 
 for (const p of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '../../.env')]) {
   if (existsSync(p)) { config({ path: p }); break; }
@@ -31,7 +32,7 @@ async function main() {
   }
 
   const hashedPassword = await bcrypt.hash(plainPassword, 10);
-  await db.insert(schema.users).values({ username, password: hashedPassword, role: 'ADMIN' });
+  await db.insert(schema.users).values({ username, password: hashedPassword, role: Role.ADMIN });
   console.log(`Seeded admin user "${username}"`);
 }
 

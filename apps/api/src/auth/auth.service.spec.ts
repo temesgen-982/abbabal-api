@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
+import { Role } from 'src/common/enums/role.enum';
 
 jest.mock('bcrypt', () => ({
   compare: jest.fn(),
@@ -40,6 +41,7 @@ describe('AuthService', () => {
       id: 1,
       username: 'admin',
       password: 'hashed-password',
+      role: Role.ADMIN,
     });
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
     jwtService.signAsync.mockResolvedValue('signed-jwt');
@@ -51,11 +53,13 @@ describe('AuthService', () => {
       user: {
         id: 1,
         name: 'admin',
+        role: Role.ADMIN,
       },
     });
     expect(jwtService.signAsync).toHaveBeenCalledWith({
       sub: 1,
       username: 'admin',
+      role: Role.ADMIN,
     });
   });
 
@@ -64,6 +68,7 @@ describe('AuthService', () => {
       id: 1,
       username: 'admin',
       password: 'hashed-password',
+      role: Role.ADMIN,
     });
     (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
@@ -76,17 +81,19 @@ describe('AuthService', () => {
     jwtService.signAsync.mockResolvedValue('signed-jwt');
 
     await expect(
-      service.signIn({ userId: 7, username: 'besho' }),
+      service.signIn({ userId: 7, username: 'besho', role: Role.USER }),
     ).resolves.toEqual({
       accessToken: 'signed-jwt',
       user: {
         id: 7,
         name: 'besho',
+        role: Role.USER,
       },
     });
     expect(jwtService.signAsync).toHaveBeenCalledWith({
       sub: 7,
       username: 'besho',
+      role: Role.USER,
     });
   });
 });
