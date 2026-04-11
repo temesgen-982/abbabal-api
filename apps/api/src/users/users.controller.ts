@@ -1,10 +1,11 @@
 // src/users/users.controller.ts
-import { Controller, Get, Post, Body, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, ParseIntPipe, Body, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Auth } from '../common/decorators/auth.decorator';
 import { Role } from '../common/enums/role.enum';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -35,4 +36,14 @@ export class UsersController {
   getProfile(@Request() req) {
     return req.user; 
   }
+
+  @Patch(':id')
+@Auth(Role.ADMIN) // Only admins can promote/demote users
+@ApiOperation({ summary: 'Update user details or role (Admin only)' })
+update(
+  @Param('id', ParseIntPipe) id: number, 
+  @Body() updateUserDto: UpdateUserDto
+) {
+  return this.usersService.update(id, updateUserDto);
+}
 }

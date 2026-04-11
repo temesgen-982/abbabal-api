@@ -1,9 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, NotFoundException, Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle.service';
 import { users } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../common/enums/role.enum';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -41,5 +42,24 @@ export class UsersService {
       })
       .returning();
     return user;
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+  const [user] = await this.drizzle.db
+    .update(users)
+    .set({
+      ...updateUserDto,
+      updatedAt: new Date(), // Manual timestamp update for SQLite
+    })
+    .where(eq(users.id, id))
+    .returning();
+
+  if (!user) {
+    throw new NotFoundException(`User with ID ${id} not found`);
+  }
+
+  // Remove password from response for security
+  const { password, ...result } = user;
+  return result;
   }
 }
