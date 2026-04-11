@@ -1,10 +1,6 @@
 import { ApiKeysController } from './api-keys.controller';
 import { ApiKeysService } from './api-keys.service';
 
-jest.mock('../prisma.service', () => ({
-  PrismaService: class PrismaService {},
-}));
-
 describe('ApiKeysController', () => {
   let controller: ApiKeysController;
   let apiKeysService: {

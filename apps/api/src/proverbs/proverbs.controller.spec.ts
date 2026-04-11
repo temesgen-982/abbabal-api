@@ -1,10 +1,6 @@
 import { ProverbsController } from './proverbs.controller';
 import { ProverbsService } from './proverbs.service';
 
-jest.mock('../prisma.service', () => ({
-  PrismaService: class PrismaService {},
-}));
-
 describe('ProverbsController', () => {
   let controller: ProverbsController;
 

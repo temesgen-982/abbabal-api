@@ -11,6 +11,6 @@ for (const envPath of envCandidates) {
 export default defineConfig({
   schema: './src/db/schema.ts',
   out: './drizzle',
-  dialect: 'sqlite',
-  dbCredentials: { url: process.env.DATABASE_URL!.replace('file:', '') },
+  dialect: 'postgresql',
+  dbCredentials: { url: process.env.DATABASE_URL! },
 });

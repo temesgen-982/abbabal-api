@@ -1,10 +1,19 @@
-import { sqliteTable, integer, text, real, index } from 'drizzle-orm/sqlite-core';
+import {
+  pgTable,
+  serial,
+  integer,
+  text,
+  real,
+  boolean,
+  timestamp,
+  varchar,
+  index,
+} from 'drizzle-orm/pg-core';
 import { Role } from '../common/enums/role.enum';
-import { sql } from 'drizzle-orm';
 
-export const proverbs = sqliteTable('Proverb', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  date: integer('date', { mode: 'timestamp' }).notNull(),
+export const proverbs = pgTable('Proverb', {
+  id: serial('id').primaryKey(),
+  date: timestamp('date', { mode: 'date' }).notNull(),
   text: text('text').notNull(),
   views: integer('views').notNull(),
   forwards: integer('forwards').notNull(),
@@ -14,28 +23,28 @@ export const proverbs = sqliteTable('Proverb', {
   translationSource: text('translationSource'),
   meaningSource: text('meaningSource'),
   confidence: real('confidence').notNull().default(0),
-  needsReview: integer('needsReview', { mode: 'boolean' }).notNull().default(false),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }),
+  needsReview: boolean('needsReview').notNull().default(false),
+  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }),
 }, (t) => [index('Proverb_text_idx').on(t.text)]);
 
-export const users = sqliteTable('User', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const users = pgTable('User', {
+  id: serial('id').primaryKey(),
   username: text('username').notNull().unique(),
   password: text('password').notNull(),
-  role: text('role', { length: 50 }).notNull().default(Role.USER),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  role: varchar('role', { length: 50 }).notNull().default(Role.USER),
+  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }).notNull().defaultNow(),
 });
 
-export const apiKeys = sqliteTable('ApiKey', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+export const apiKeys = pgTable('ApiKey', {
+  id: serial('id').primaryKey(),
   name: text('name').notNull(),
   key: text('key').notNull().unique(),
-  isActive: integer('isActive', { mode: 'boolean' }).notNull().default(true),
-  lastUsedAt: integer('lastUsedAt', { mode: 'timestamp' }),
-  createdAt: integer('createdAt', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
-  updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  isActive: boolean('isActive').notNull().default(true),
+  lastUsedAt: timestamp('lastUsedAt', { mode: 'date' }),
+  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }).notNull().defaultNow(),
   userId: integer('userId').notNull().references(() => users.id, { onDelete: 'cascade' }),
 });
 

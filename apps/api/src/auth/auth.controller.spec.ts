@@ -1,10 +1,6 @@
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
-jest.mock('../prisma.service', () => ({
-  PrismaService: class PrismaService {},
-}));
-
 describe('AuthController', () => {
   let controller: AuthController;
   let authService: { signIn: jest.Mock };

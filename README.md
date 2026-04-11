@@ -28,8 +28,9 @@ pnpm lint
 pnpm check
 pnpm test
 pnpm test:e2e
-pnpm prisma:generate
-pnpm prisma:seed
+pnpm drizzle:generate
+pnpm drizzle:migrate
+pnpm drizzle:seed
 ```
 
 ## Environment
