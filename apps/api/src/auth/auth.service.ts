@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -11,14 +11,29 @@ type AuthInput = {
 type signInData = {
     userId: number;
     username: string;
-    role: string;
+    role: Role;
 }
 type AuthResult = {
     accessToken: string;
     user: {
         id: number;
         name: string;
+        role: Role;
     }
+}
+
+function normalizeRole(role: unknown): Role | undefined {
+    if (typeof role !== 'string') {
+        return undefined;
+    }
+
+    const normalizedRole = role.toLowerCase();
+
+    if ((Object.values(Role) as string[]).includes(normalizedRole)) {
+        return normalizedRole as Role;
+    }
+
+    return undefined;
 }
 
 @Injectable()
@@ -43,10 +58,17 @@ export class AuthService {
         if (!user || !(await bcrypt.compare(input.password, user.password))) {
             throw new UnauthorizedException('Invalid username or password');
         }
+
+        const role = normalizeRole(user.role);
+
+        if (!role) {
+            throw new UnauthorizedException('Invalid username or password');
+        }
+
         return {
             userId: user.id,
             username: user.username,
-            role: user.role,
+            role,
         };
     }
 
@@ -62,6 +84,7 @@ export class AuthService {
             user: {
                 id: user.userId,
                 name: user.username,
+                role: user.role,
             }
         };
     }
@@ -70,7 +93,7 @@ export class AuthService {
         const existingUser = await this.usersService.findByUsername(input.username);
         
         if (existingUser) {
-            throw new UnauthorizedException('Username already exists');
+            throw new ConflictException('Username already taken');
         }
 
         const user = await this.usersService.create(
@@ -82,7 +105,7 @@ export class AuthService {
         return this.signIn({
             userId: user.id,
             username: user.username,
-            role: user.role as string,
+            role: Role.USER,
         });
     }
 }

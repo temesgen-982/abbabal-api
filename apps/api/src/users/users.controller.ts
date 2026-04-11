@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { Auth } from '../common/decorators/auth.decorator';
 import { Role } from '../common/enums/role.enum';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('Users')

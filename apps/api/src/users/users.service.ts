@@ -40,7 +40,11 @@ export class UsersService {
         password: hashedPassword,
         role: role
       })
-      .returning();
+      .returning({
+         id: users.id,
+         username: users.username,
+         role: users.role,
+       });
     return user;
   }
 

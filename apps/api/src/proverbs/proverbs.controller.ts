@@ -8,7 +8,6 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { ProverbsService } from './proverbs.service';
-import { RateLimitGuard } from 'src/api-keys/guards/rate-limit.guard';
 import { PaginatedProverbsDto, ProverbDto } from './dto/proverb-response.dto';
 import { ApiAuth } from '../common/decorators/api-auth.decorator';
 import { Auth } from '../common/decorators/auth.decorator';
