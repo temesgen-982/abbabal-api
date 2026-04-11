@@ -30,7 +30,7 @@
  // filter the menu based on the user's role
  const visibleItems = $derived(
   items.filter(item => 
-    !item.roles || item.roles.includes(page.data.user?.role)
+    !item.roles || (!!page.data.user?.role && item.roles.includes(page.data.user.role))
   )
  );
 </script>

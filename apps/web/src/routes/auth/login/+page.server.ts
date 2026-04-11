@@ -1,4 +1,9 @@
-import { API_BASE_URL, setAuthCookie, type AuthResponse } from "$lib/server/auth.js";
+import {
+	API_BASE_URL,
+	normalizeAuthResponse,
+	setAuthCookie,
+	type AuthResponse,
+} from "$lib/server/auth.js";
 import type { Actions, PageServerLoad } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
@@ -46,7 +51,17 @@ export const actions: Actions = {
 				});
 			}
 
-			authResponse = (await loginResponse.json()) as AuthResponse;
+			const payload = await loginResponse.json();
+			const normalizedAuthResponse = normalizeAuthResponse(payload);
+
+			if (!normalizedAuthResponse) {
+				return fail(502, {
+					form,
+					authError: "Login succeeded, but the auth response was incomplete.",
+				});
+			}
+
+			authResponse = normalizedAuthResponse;
 		} catch {
 			return fail(503, {
 				form,

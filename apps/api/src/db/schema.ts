@@ -44,7 +44,6 @@ export type User = typeof users.$inferSelect;
 export type ApiKey = typeof apiKeys.$inferSelect;
 
 import { relations } from 'drizzle-orm';
-import { varchar } from 'drizzle-orm/mysql-core';
 
 export const usersRelations = relations(users, ({ many }) => ({
   apiKeys: many(apiKeys),

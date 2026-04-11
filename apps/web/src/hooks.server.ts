@@ -4,6 +4,7 @@ import {
 	clearAuthCookie,
 	getAuthenticatedUser,
 } from "$lib/server/auth.js";
+import { Role } from "$lib/enums/role.enum";
 
 function isAdminPath(pathname: string){
 	return pathname.startsWith("/dashboard/admin");
@@ -45,7 +46,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		throw redirect(303, "/auth/login");
 	}
 
-	if (isAdminPath(path) && user?.role !== 'admin') {
+	if (isAdminPath(path) && user?.role !== Role.ADMIN) {
 		// if they are logged in but they are not admin
 		throw redirect(303, "/dashboard/overview");
 	}
