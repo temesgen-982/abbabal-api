@@ -33,7 +33,7 @@ export class ProverbsController {
     
     @Get('search')
     @ApiAuth(Role.USER, Role.ADMIN)
-    @ApiOperation({ summary: 'Search proverbs by text or English translation' })
+    @ApiOperation({ summary: 'Search proverbs by text or translation interpretations' })
     @ApiQuery({ name: 'q', required: true, type: String, example: 'wisdom' })
     @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
     @ApiOkResponse({ type: ProverbDto, isArray: true })

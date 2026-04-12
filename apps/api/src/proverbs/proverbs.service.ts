@@ -1,43 +1,106 @@
 import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle.service';
-import { proverbs } from '../db/schema';
-import { eq, or, like, sql, count } from 'drizzle-orm';
+import { interpretations, proverbStats, proverbs } from '../db/schema';
+import { count, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
 
 @Injectable()
 export class ProverbsService {
   constructor(private drizzle: DrizzleService) {}
 
+  private async hydrateProverbs(baseProverbs: Array<typeof proverbs.$inferSelect>) {
+    if (baseProverbs.length === 0) return [];
+
+    const proverbIds = baseProverbs.map((proverb) => proverb.id);
+
+    const [allInterpretations, latestStatsRows] = await Promise.all([
+      this.drizzle.db
+        .select()
+        .from(interpretations)
+        .where(inArray(interpretations.proverbId, proverbIds))
+        .orderBy(desc(interpretations.createdAt)),
+      this.drizzle.db
+        .select()
+        .from(proverbStats)
+        .where(inArray(proverbStats.proverbId, proverbIds))
+        .orderBy(desc(proverbStats.capturedAt)),
+    ]);
+
+    const interpretationsByProverb = new Map<number, Array<typeof interpretations.$inferSelect>>();
+    for (const interpretation of allInterpretations) {
+      const existing = interpretationsByProverb.get(interpretation.proverbId) ?? [];
+      existing.push(interpretation);
+      interpretationsByProverb.set(interpretation.proverbId, existing);
+    }
+
+    const latestStatsByProverb = new Map<number, typeof proverbStats.$inferSelect>();
+    for (const statsRow of latestStatsRows) {
+      if (!latestStatsByProverb.has(statsRow.proverbId)) {
+        latestStatsByProverb.set(statsRow.proverbId, statsRow);
+      }
+    }
+
+    return baseProverbs.map((proverb) => ({
+      ...proverb,
+      interpretations: interpretationsByProverb.get(proverb.id) ?? [],
+      latestStats: latestStatsByProverb.get(proverb.id) ?? null,
+    }));
+  }
+
   async findAll(page = 1, limit = 20) {
     const skip = (page - 1) * limit;
     const db = this.drizzle.db;
 
-    const [data, [{ total }]] = await Promise.all([
+    const [baseData, [{ total }]] = await Promise.all([
       db.select().from(proverbs).orderBy(sql`${proverbs.id} desc`).limit(limit).offset(skip),
       db.select({ total: count() }).from(proverbs),
     ]);
 
+    const data = await this.hydrateProverbs(baseData);
+
     return { page, limit, total, results: data };
   }
 
-  findOne(id: number) {
-    return this.drizzle.db.query.proverbs.findFirst({ where: eq(proverbs.id, id) });
+  async findOne(id: number) {
+    const proverb = await this.drizzle.db.query.proverbs.findFirst({ where: eq(proverbs.id, id) });
+    if (!proverb) return null;
+    const [hydrated] = await this.hydrateProverbs([proverb]);
+    return hydrated ?? null;
   }
 
   async random() {
     const [{ total }] = await this.drizzle.db.select({ total: count() }).from(proverbs);
+    if (total === 0) return null;
     const offset = Math.floor(Math.random() * total);
     const [result] = await this.drizzle.db.select().from(proverbs).limit(1).offset(offset);
-    return result;
+    if (!result) return null;
+    const [hydrated] = await this.hydrateProverbs([result]);
+    return hydrated ?? null;
   }
 
-  search(query: string, limit = 20) {
+  async search(query: string, limit = 20) {
     if (!query?.trim()) return [];
-    return this.drizzle.db
+
+    const q = `%${query}%`;
+
+    const baseProverbs = await this.drizzle.db
       .select()
       .from(proverbs)
-      .where(or(like(proverbs.text, `%${query}%`), like(proverbs.englishTranslation, `%${query}%`)))
+      .where(
+        or(
+          like(proverbs.text, q),
+          sql`exists (
+            select 1
+            from "Interpretation" i
+            where i."proverbId" = ${proverbs.id}
+              and i."type" = 'translation'
+              and i."content" ilike ${q}
+          )`,
+        ),
+      )
       .orderBy(sql`${proverbs.id} desc`)
       .limit(limit);
+
+    return this.hydrateProverbs(baseProverbs);
   }
 
   async create(data: any) {
@@ -45,21 +108,25 @@ export class ProverbsService {
       .insert(proverbs)
       .values({
         ...data,
-        date: new Date(), // Set current date
-        views: 0,
-        forwards: 0,
+        date: data.date ? new Date(data.date) : new Date(),
+        scrapedAt: data.scrapedAt ? new Date(data.scrapedAt) : new Date(),
       })
       .returning();
-    return result;
+
+    const [hydrated] = await this.hydrateProverbs([result]);
+    return hydrated;
   }
 
   async update(id: number, data: any) {
     const [result] = await this.drizzle.db
       .update(proverbs)
-      .set({ ...data, updatedAt: new Date() })
+      .set({ ...data })
       .where(eq(proverbs.id, id))
       .returning();
-    return result;
+
+    if (!result) return null;
+    const [hydrated] = await this.hydrateProverbs([result]);
+    return hydrated;
   }
 
   async remove(id: number) {

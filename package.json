@@ -16,6 +16,7 @@
     "test:e2e": "pnpm --filter @abbabal/api test:e2e",
     "drizzle:generate": "pnpm --filter @abbabal/api drizzle:generate",
     "drizzle:migrate": "pnpm --filter @abbabal/api drizzle:migrate",
-    "drizzle:seed": "pnpm --filter @abbabal/api drizzle:seed"
+    "drizzle:seed": "pnpm --filter @abbabal/api drizzle:seed",
+    "drizzle:studio": "pnpm --filter @abbabal/api drizzle:studio"
   }
 }
