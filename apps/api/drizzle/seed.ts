@@ -7,14 +7,14 @@ for (const p of [resolve(process.cwd(), '.env'), resolve(process.cwd(), '../../.
   if (existsSync(p)) { config({ path: p }); break; }
 }
 
-import Database from 'better-sqlite3';
-import { drizzle } from 'drizzle-orm/better-sqlite3';
 import * as schema from '../src/db/schema';
 import { eq } from 'drizzle-orm';
 import * as bcrypt from 'bcrypt';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
 
-const sqlite = new Database(process.env.DATABASE_URL!.replace('file:', ''));
-const db = drizzle(sqlite, { schema });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const db = drizzle(pool, { schema });
 
 async function main() {
   const username = process.env.ADMIN_USERNAME;
@@ -36,4 +36,11 @@ async function main() {
   console.log(`Seeded admin user "${username}"`);
 }
 
-main().catch((e) => { console.error('Seed failed:', e); process.exit(1); });
+main()
+  .catch((e) => {
+    console.error('Seed failed:', e);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await pool.end();
+  });

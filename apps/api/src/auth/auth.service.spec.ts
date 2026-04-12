@@ -10,10 +10,6 @@ jest.mock('bcrypt', () => ({
   hash: jest.fn(),
 }));
 
-jest.mock('../prisma.service', () => ({
-  PrismaService: class PrismaService {},
-}));
-
 describe('AuthService', () => {
   let service: AuthService;
   let usersService: { findByUsername: jest.Mock };

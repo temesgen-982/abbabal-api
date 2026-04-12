@@ -1,28 +1,26 @@
 import { INestApplication } from '@nestjs/common';
-import { copyFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
 import request from 'supertest';
 import { App } from 'supertest/types';
 
 describe('Auth and API keys flow (e2e)', () => {
   let app: INestApplication<App>;
-  let testDbPath: string;
   let username: string;
   let password: string;
 
   beforeAll(async () => {
-    const dbFilename = `proverbs.e2e.${Date.now()}.db`;
-    const sourceDbPath = join(process.cwd(), 'data', 'proverbs.db');
+    const testDatabaseUrl = process.env.TEST_DATABASE_URL ?? process.env.DATABASE_URL;
 
-    testDbPath = join(process.cwd(), 'data', dbFilename);
-    copyFileSync(sourceDbPath, testDbPath);
-    process.env.DATABASE_URL = `file:./data/${dbFilename}`;
+    if (!testDatabaseUrl) {
+      throw new Error('TEST_DATABASE_URL or DATABASE_URL must be set for e2e tests');
+    }
+
+    process.env.DATABASE_URL = testDatabaseUrl;
 
     const { Test } = require('@nestjs/testing');
     const { AppModule } = require('../src/app.module');
     const { configureApp } = require('../src/setup-app');
     const { UsersService } = require('../src/users/users.service');
-    const { PrismaService } = require('../src/prisma.service');
+    const { ProverbsService } = require('../src/proverbs/proverbs.service');
 
     const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
@@ -38,17 +36,12 @@ describe('Auth and API keys flow (e2e)', () => {
     const usersService = app.get(UsersService);
     await usersService.create(username, password);
 
-    const prisma = app.get(PrismaService);
-    const proverbCount = await prisma.proverb.count();
+    const proverbsService = app.get(ProverbsService);
+    const existingProverb = await proverbsService.random();
 
-    if (proverbCount === 0) {
-      await prisma.proverb.create({
-        data: {
-          date: new Date(),
-          text: 'E2E proverb',
-          views: 0,
-          forwards: 0,
-        },
+    if (!existingProverb) {
+      await proverbsService.create({
+        text: 'E2E proverb',
       });
     }
   });
@@ -57,7 +50,6 @@ describe('Auth and API keys flow (e2e)', () => {
     if (app) {
       await app.close();
     }
-    rmSync(testDbPath, { force: true });
   });
 
   async function createAuthenticatedApiKey() {
