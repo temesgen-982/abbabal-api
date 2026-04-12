@@ -3,7 +3,6 @@
   "private": true,
   "packageManager": "pnpm@10.15.0",
   "scripts": {
-    "preinstall": "npx pnpm add -g pnpm",
     "dev": "pnpm -r --parallel --filter @abbabal/api --filter @abbabal/web dev",
     "dev:api": "pnpm --filter @abbabal/api start:dev",
     "dev:web": "pnpm --filter @abbabal/web dev",
