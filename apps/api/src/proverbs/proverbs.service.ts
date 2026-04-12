@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { DrizzleService } from '../drizzle.service';
 import { interpretations, proverbStats, proverbs } from '../db/schema';
 import { count, desc, eq, inArray, like, or, sql } from 'drizzle-orm';
+import { CreateProverbDto, ProverbSource } from './dto/create-proverb.dto';
+import { UpdateProverbDto } from './dto/update-proverb.dto';
+import { ReviewProverbStatus } from './dto/review-proverb.dto';
 
 @Injectable()
 export class ProverbsService {
@@ -103,11 +106,14 @@ export class ProverbsService {
     return this.hydrateProverbs(baseProverbs);
   }
 
-  async create(data: any) {
+  async create(data: CreateProverbDto & { createdBy?: number | null }) {
+    const isTelegramSource = data.source === ProverbSource.TELEGRAM;
+
     const [result] = await this.drizzle.db
       .insert(proverbs)
       .values({
         ...data,
+        telegramMessageId: isTelegramSource ? data.telegramMessageId ?? null : null,
         date: data.date ? new Date(data.date) : new Date(),
         scrapedAt: data.scrapedAt ? new Date(data.scrapedAt) : new Date(),
       })
@@ -117,10 +123,33 @@ export class ProverbsService {
     return hydrated;
   }
 
-  async update(id: number, data: any) {
+  async update(id: number, data: UpdateProverbDto) {
+    const isTelegramSource = data.source === ProverbSource.TELEGRAM;
+
     const [result] = await this.drizzle.db
       .update(proverbs)
-      .set({ ...data })
+      .set({
+        ...data,
+        telegramMessageId: data.source
+          ? isTelegramSource
+            ? data.telegramMessageId
+            : null
+          : data.telegramMessageId,
+        date: data.date ? new Date(data.date) : undefined,
+        scrapedAt: data.scrapedAt ? new Date(data.scrapedAt) : undefined,
+      })
+      .where(eq(proverbs.id, id))
+      .returning();
+
+    if (!result) return null;
+    const [hydrated] = await this.hydrateProverbs([result]);
+    return hydrated;
+  }
+
+  async review(id: number, status: ReviewProverbStatus) {
+    const [result] = await this.drizzle.db
+      .update(proverbs)
+      .set({ status })
       .where(eq(proverbs.id, id))
       .returning();
 

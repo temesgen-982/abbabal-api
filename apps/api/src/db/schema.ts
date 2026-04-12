@@ -28,15 +28,39 @@ export const interpretationSourceEnum = pgEnum('interpretation_source', [
 
 export const interpretationLanguageEnum = pgEnum('interpretation_language', ['en', 'am']);
 
+export const proverbSourceEnum = pgEnum('proverb_source', [
+  'telegram',
+  'user',
+  'admin_import',
+]);
+
+export const proverbStatusEnum = pgEnum('proverb_status', ['pending', 'approved', 'rejected']);
+
 export const proverbs = pgTable('Proverb', {
   id: serial('id').primaryKey(),
   text: text('text').notNull(),
-  telegramMessageId: text('telegramMessageId').notNull().unique(),
-  telegramChannelId: text('telegramChannelId').notNull(),
+  source: proverbSourceEnum('source').notNull().default('telegram'),
+  status: proverbStatusEnum('status').notNull().default('approved'),
+  telegramMessageId: text('telegramMessageId'),
+  createdBy: integer('createdBy').references(() => users.id, { onDelete: 'set null' }),
   date: timestamp('date', { mode: 'date' }).notNull(),
   scrapedAt: timestamp('scrapedAt', { mode: 'date' }).notNull().defaultNow(),
   createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-}, (t) => [index('proverb_text_idx').on(t.text)]);
+}, (t) => [
+  index('proverb_text_idx').on(t.text),
+  index('proverb_source_status_idx').on(t.source, t.status),
+  uniqueIndex('proverb_telegram_unique_idx')
+    .on(t.telegramMessageId)
+    .where(sql`${t.source} = 'telegram'`),
+  check(
+    'proverb_source_telegram_check',
+    sql`(
+      (${t.source} = 'telegram' and ${t.telegramMessageId} is not null)
+      or
+      (${t.source} <> 'telegram' and ${t.telegramMessageId} is null)
+    )`,
+  ),
+]);
 
 export const interpretations = pgTable('Interpretation', {
   id: serial('id').primaryKey(),
@@ -111,6 +135,7 @@ export type Vote = typeof votes.$inferSelect;
 export const usersRelations = relations(users, ({ many }) => ({
   apiKeys: many(apiKeys),
   interpretations: many(interpretations),
+  proverbs: many(proverbs),
   votes: many(votes),
 }));
 
@@ -118,9 +143,13 @@ export const apiKeysRelations = relations(apiKeys, ({ one }) => ({
   user: one(users, { fields: [apiKeys.userId], references: [users.id] }),
 }));
 
-export const proverbsRelations = relations(proverbs, ({ many }) => ({
+export const proverbsRelations = relations(proverbs, ({ one, many }) => ({
   interpretations: many(interpretations),
   stats: many(proverbStats),
+  creator: one(users, {
+    fields: [proverbs.createdBy],
+    references: [users.id],
+  }),
 }));
 
 export const interpretationsRelations = relations(interpretations, ({ one, many }) => ({

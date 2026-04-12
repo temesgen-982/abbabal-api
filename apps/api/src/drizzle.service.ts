@@ -18,6 +18,7 @@ export class DrizzleService
     if (this.isPoolClosed) return;
     this.isPoolClosed = true;
     await pool.end();
+    this.isPoolClosed = true;
   }
 
   async onModuleDestroy() {

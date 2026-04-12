@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Body, Query, Post, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Body, Query, Post, Patch, Delete, Request } from '@nestjs/common';
 import {
+    ApiBody,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -12,6 +13,10 @@ import { PaginatedProverbsDto, ProverbDto } from './dto/proverb-response.dto';
 import { ApiAuth } from '../common/decorators/api-auth.decorator';
 import { Auth } from '../common/decorators/auth.decorator';
 import { Role } from '../common/enums/role.enum';
+import { CreateProverbDto, ProverbSource, ProverbStatus } from './dto/create-proverb.dto';
+import { UpdateProverbDto } from './dto/update-proverb.dto';
+import { SubmitProverbDto } from './dto/submit-proverb.dto';
+import { ReviewProverbDto } from './dto/review-proverb.dto';
 
 @ApiTags('Proverbs')
 @ApiTooManyRequestsResponse({ description: 'Rate limit exceeded for this API key.' })
@@ -63,14 +68,41 @@ export class ProverbsController {
     @Post()
     @Auth(Role.ADMIN) // Restricted to Admin via JWT
     @ApiOperation({ summary: 'Create a new proverb' })
-    create(@Body() data: any) {
-        return this.proverbsService.create(data);
+    @ApiBody({ type: CreateProverbDto })
+    create(@Request() req, @Body() data: CreateProverbDto) {
+        return this.proverbsService.create({
+            ...data,
+            createdBy: req.user?.id ?? null,
+        });
+    }
+
+    @Post('submit')
+    @Auth(Role.USER, Role.ADMIN)
+    @ApiOperation({ summary: 'Submit a proverb (User/Admin)' })
+    @ApiBody({ type: SubmitProverbDto })
+    submit(@Request() req, @Body() data: SubmitProverbDto) {
+        return this.proverbsService.create({
+            text: data.text,
+            date: data.date,
+            source: ProverbSource.USER,
+            status: ProverbStatus.PENDING,
+            createdBy: req.user?.id ?? null,
+        });
+    }
+
+    @Patch(':id/review')
+    @Auth(Role.ADMIN)
+    @ApiOperation({ summary: 'Approve or reject a submitted proverb (Admin only)' })
+    @ApiBody({ type: ReviewProverbDto })
+    review(@Param('id') id: string, @Body() data: ReviewProverbDto) {
+        return this.proverbsService.review(parseInt(id), data.status);
     }
 
     @Patch(':id')
     @Auth(Role.ADMIN)
     @ApiOperation({ summary: 'Update an existing proverb' })
-    update(@Param('id') id: string, @Body() data: any) {
+    @ApiBody({ type: UpdateProverbDto })
+    update(@Param('id') id: string, @Body() data: UpdateProverbDto) {
         return this.proverbsService.update(parseInt(id), data);
     }
 

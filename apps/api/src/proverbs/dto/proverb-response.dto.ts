@@ -69,11 +69,17 @@ export class ProverbDto {
   @ApiProperty({ example: 'Wisdom begins with listening.' })
   text: string;
 
-  @ApiProperty({ example: '12345' })
-  telegramMessageId: string;
+  @ApiProperty({ example: 'telegram', enum: ['telegram', 'user', 'admin_import'] })
+  source: 'telegram' | 'user' | 'admin_import';
 
-  @ApiProperty({ example: '-1001234567890' })
-  telegramChannelId: string;
+  @ApiProperty({ example: 'approved', enum: ['pending', 'approved', 'rejected'] })
+  status: 'pending' | 'approved' | 'rejected';
+
+  @ApiPropertyOptional({ example: '12345', nullable: true })
+  telegramMessageId?: string | null;
+
+  @ApiPropertyOptional({ example: 1, nullable: true })
+  createdBy?: number | null;
 
   @ApiProperty({ example: '2026-03-25T00:00:00.000Z', format: 'date-time' })
   date: string;
