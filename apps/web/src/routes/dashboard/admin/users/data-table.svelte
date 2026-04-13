@@ -13,6 +13,8 @@
   getSortedRowModel,
  } from "@tanstack/table-core";
  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
+ import { Sparkles } from "@lucide/svelte";
+
  import * as Table from "$lib/components/ui/table/index.js";
  import { Button } from "$lib/components/ui/button/index.js";
  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
@@ -101,7 +103,7 @@
  });
 </script>
  
-<div class="flex items-center py-4">
+<div class="flex items-center gap-4 p-4 border border-primary">
  <Input
   placeholder="Filter users..."
   value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -111,10 +113,13 @@
    table.getColumn("name")?.setFilterValue(event.currentTarget.value)}
   class="max-w-sm"
  />
+ <Button class="ms-auto">
+  <Sparkles />
+ </Button>
  <DropdownMenu.Root>
   <DropdownMenu.Trigger>
    {#snippet child({ props })}
-    <Button {...props} variant="outline" class="ms-auto">
+    <Button {...props} variant="outline">
      Columns <ChevronDownIcon class="ms-2 size-4" />
     </Button>
    {/snippet}

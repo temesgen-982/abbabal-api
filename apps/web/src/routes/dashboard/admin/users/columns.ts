@@ -4,15 +4,16 @@ import { renderSnippet } from "$lib/components/ui/data-table/index.js";
 import DataTableActions from "./data-table-actions.svelte";
 import DataTableCheckbox from "./data-table-checkbox.svelte";
 import { renderComponent } from "$lib/components/ui/data-table/index.js";
+import UserAvatarCell from "$lib/components/table/user-avatar-cell.svelte";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
 export type UserRow = {
  id: string;
+ avatar: string;
  name: string;
  email: string;
- tier: "free" | "scholar" | "library";
  status: "active" | "suspended";
 };
  
@@ -37,41 +38,36 @@ export const columns: ColumnDef<UserRow>[] = [
   enableHiding: false,
  },
  {
-  accessorKey: "name",
-  header: "Scribe Details",
-  cell: ({ row }) => {
-   const detailsSnippet = createRawSnippet<[{ name: string; email: string }]>(
-    (getDetails) => {
-     const { name, email } = getDetails();
-     return {
-      render: () =>
-       `<div class="flex flex-col gap-1"><div class="font-medium">${name}</div><div class="text-muted-foreground text-sm lowercase">${email}</div></div>`,
-     };
-    }
-   );
-
-   return renderSnippet(detailsSnippet, {
-    name: row.original.name,
-    email: row.original.email,
-   });
+  accessorKey: "avatar",
+  header: "Avatar",
+  cell: ({row}) => {
+    renderComponent(UserAvatarCell, {
+     src: row.original.avatar,
+     name: row.original.name,
+    });
   },
+  enableSorting: false,
+  enableHiding: false,
  },
  {
-  accessorKey: "tier",
-  header: "API Tier",
-  cell: ({ row }) => {
-   const tierSnippet = createRawSnippet<[{ tier: string }]>((getTier) => {
-    const { tier } = getTier();
-    return {
-     render: () =>
-      `<span class="inline-flex rounded-md border px-2 py-1 text-xs font-medium capitalize">${tier}</span>`,
-    };
-   });
-
-   return renderSnippet(tierSnippet, {
-    tier: row.original.tier,
-   });
+  accessorKey: "name",
+  header: "Name",
+  cell: ({row}) => {
+    const name = row.original.name;
+    return name;
   },
+  enableSorting: true,
+  enableHiding: true,
+ },
+ {
+  accessorKey: "email",
+  header: "Email",
+  cell: ({row}) => {
+    const email = row.original.email;
+    return email;
+  },
+  enableSorting: true,
+  enableHiding: true,
  },
  {
   accessorKey: "status",
