@@ -3,7 +3,7 @@
  import HistoryIcon from "@lucide/svelte/icons/history";
  import PencilIcon from "@lucide/svelte/icons/pencil";
  import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
- import DeleteIcon from "@lucide/svelte/icons/delete";
+ import TrashIcon from "@lucide/svelte/icons/trash";
  import { Button } from "$lib/components/ui/button/index.js";
  
  let {
@@ -57,6 +57,6 @@
   aria-label="Delete user"
   title="Delete User"
  >
-   <DeleteIcon class="size-4" />
+   <TrashIcon class="size-4" />
  </Button>
 </div>
