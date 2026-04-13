@@ -1,8 +1,11 @@
 import { redirect, type Handle } from "@sveltejs/kit";
 import {
 	AUTH_COOKIE_NAME,
-	clearAuthCookie,
+	REFRESH_COOKIE_NAME,
+	clearAllAuthCookies,
+	setAuthCookies,
 	getAuthenticatedUser,
+	refreshAccessToken,
 } from "$lib/server/auth.js";
 import { Role } from "$lib/enums/role.enum";
 
@@ -18,9 +21,9 @@ function isAuthPath(pathname: string) {
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const accessToken = event.cookies.get(AUTH_COOKIE_NAME) ?? null;
+	const accessToken = event.cookies.get(AUTH_COOKIE_NAME);
+	const refreshToken = event.cookies.get(REFRESH_COOKIE_NAME);
 
-	event.locals.authToken = null;
 	event.locals.user = null;
 
 	if (accessToken) {
@@ -29,29 +32,51 @@ export const handle: Handle = async ({ event, resolve }) => {
 			accessToken,
 		);
 
-		if (shouldClearCookie) {
-			clearAuthCookie(event.cookies);
-		}
-
 		if (user) {
-			event.locals.authToken = accessToken;
 			event.locals.user = user;
+		} else if (shouldClearCookie && refreshToken) {
+			// Access token failed, let's try refreshing
+			const newAuth = await refreshAccessToken(event.fetch, refreshToken);
+
+			if (newAuth) {
+				// Success! Set new cookies and update locals
+				setAuthCookies(event.cookies, newAuth);
+				event.locals.user = {
+					id: newAuth.user.id,
+					username: newAuth.user.name,
+					role: newAuth.user.role
+				};
+			} else {
+				clearAllAuthCookies(event.cookies);
+			}
 		}
+	}else if (refreshToken) {
+        // Case where access cookie expired but refresh is still there
+        const newAuth = await refreshAccessToken(event.fetch, refreshToken);
+        if (newAuth) {
+            setAuthCookies(event.cookies, newAuth);
+            event.locals.user = { id: newAuth.user.id, username: newAuth.user.name, role: newAuth.user.role };
+        }
 	}
 
 	const user = event.locals.user;
 	const path = event.url.pathname;
 
-	if (isProtectedPath(path) && !user) {
-		throw redirect(303, "/auth/login");
+	if (!user) {
+    	// If a guest tries to access ANY dashboard path (admin or otherwise)
+		if (isProtectedPath(path)) {
+			throw redirect(303, "/auth/login");
+		}
+    	// Guests can stay on public paths or /auth/login
+    	return resolve(event);
+	}
+
+	if (isAuthPath(event.url.pathname) && event.locals.user) {
+		throw redirect(303, "/dashboard/overview");
 	}
 
 	if (isAdminPath(path) && user?.role !== Role.ADMIN) {
 		// if they are logged in but they are not admin
-		throw redirect(303, "/dashboard/overview");
-	}
-
-	if (isAuthPath(event.url.pathname) && event.locals.user) {
 		throw redirect(303, "/dashboard/overview");
 	}
 

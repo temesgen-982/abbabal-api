@@ -1,6 +1,6 @@
 import '../load-env';
 
-type JwtExpiresIn =
+type ExpiresIn =
   | number
   | `${number}${'ms' | 's' | 'm' | 'h' | 'd' | 'w' | 'y'}`;
 
@@ -16,5 +16,7 @@ function getRequiredEnv(name: string): string {
 
 export const jwtConfig = {
   secret: getRequiredEnv('JWT_SECRET'),
-  expiresIn: (process.env.JWT_EXPIRES_IN ?? '15m') as JwtExpiresIn,
+  expiresIn: (process.env.JWT_EXPIRES_IN ?? '15m') as ExpiresIn,
+  refreshSecret: getRequiredEnv('JWT_REFRESH_SECRET'),
+  refreshExpiresIn: (process.env.REFRESH_EXPIRES_IN ?? '1w') as ExpiresIn,
 };

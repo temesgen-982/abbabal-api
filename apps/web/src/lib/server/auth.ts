@@ -4,6 +4,7 @@ import type { Cookies, RequestEvent } from "@sveltejs/kit";
 import { Role } from "$lib/enums/role.enum";
 
 export const AUTH_COOKIE_NAME = "abbabal_access_token";
+export const REFRESH_COOKIE_NAME = "abbabal_refresh_token";
 export const API_BASE_URL = (env.PUBLIC_API_BASE_URL || "http://localhost:3000").replace(
 	/\/$/,
 	"",
@@ -11,6 +12,7 @@ export const API_BASE_URL = (env.PUBLIC_API_BASE_URL || "http://localhost:3000")
 
 export type AuthResponse = {
 	accessToken: string;
+	refreshToken: string;
 	user: {
 		id: number;
 		name: string;
@@ -73,18 +75,12 @@ export function normalizeAuthResponse(payload: unknown): AuthResponse | undefine
 		return undefined;
 	}
 
-	const candidate = payload as {
-		accessToken?: unknown;
-		user?: {
-			id?: unknown;
-			name?: unknown;
-			role?: unknown;
-		};
-	};
+	const candidate = payload as any;
 	const role = normalizeRole(candidate.user?.role);
 
 	if (
 		typeof candidate.accessToken !== "string" ||
+		typeof candidate.refreshToken !== "string" ||
 		typeof candidate.user?.id !== "number" ||
 		typeof candidate.user?.name !== "string" ||
 		!role
@@ -94,6 +90,7 @@ export function normalizeAuthResponse(payload: unknown): AuthResponse | undefine
 
 	return {
 		accessToken: candidate.accessToken,
+		refreshToken: candidate.refreshToken,
 		user: {
 			id: candidate.user.id,
 			name: candidate.user.name,
@@ -129,22 +126,51 @@ export function getTokenExpiry(accessToken: string): Date | undefined {
 	return undefined;
 }
 
-export function setAuthCookie(cookies: Cookies, accessToken: string) {
-	const tokenExpiry = getTokenExpiry(accessToken);
+export function setAuthCookies(cookies: Cookies, auth: AuthResponse) {
+	const accessTokenExpiry = getTokenExpiry(auth.accessToken);
 
-	cookies.set(AUTH_COOKIE_NAME, accessToken, {
+	cookies.set(AUTH_COOKIE_NAME, auth.accessToken, {
 		path: "/",
 		httpOnly: true,
 		sameSite: "lax",
 		secure: !dev,
-		...(tokenExpiry ? { expires: tokenExpiry } : {}),
+		...(accessTokenExpiry ? { expires: accessTokenExpiry } : {}),
+	});
+
+	const refreshTokenExpiry = getTokenExpiry(auth.refreshToken);
+	cookies.set(REFRESH_COOKIE_NAME, auth.refreshToken, {
+		path: "/",
+		httpOnly: true,
+		sameSite: "lax",
+		secure: !dev,
+		...(refreshTokenExpiry ? { expires: refreshTokenExpiry } : {}),
 	});
 }
 
-export function clearAuthCookie(cookies: Cookies) {
-	cookies.delete(AUTH_COOKIE_NAME, {
-		path: "/",
-	});
+export function clearAllAuthCookies(cookies: Cookies) {
+	cookies.delete(AUTH_COOKIE_NAME, { path: "/" });
+	cookies.delete(REFRESH_COOKIE_NAME, { path: "/" });
+}
+
+export async function refreshAccessToken(
+	fetch: RequestEvent["fetch"],
+	refreshToken: string
+): Promise<AuthResponse | null> {
+	try {
+		const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+			method: 'POST',
+			headers: {
+				authorization: `Bearer ${refreshToken}`,
+			},
+		});
+
+		if (!response.ok) return null;
+
+		const payload = await response.json();
+		return normalizeAuthResponse(payload) || null;
+	} catch {
+		return null;
+	}
 }
 
 export async function getAuthenticatedUser(
