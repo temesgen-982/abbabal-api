@@ -22,6 +22,7 @@ export class AuthController {
 
   @Post('refresh')
   @RefreshAuth()
+  @ApiOkResponse({ type: AuthResponseDto })
   async refresh(@Request() req) {
     const { userId, username, role } = req.user;
     return this.authService.refreshTokens(userId, username, role);

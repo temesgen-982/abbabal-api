@@ -18,5 +18,5 @@ export const jwtConfig = {
   secret: getRequiredEnv('JWT_SECRET'),
   expiresIn: (process.env.JWT_EXPIRES_IN ?? '15m') as ExpiresIn,
   refreshSecret: getRequiredEnv('JWT_REFRESH_SECRET'),
-  refreshExpiresIn: (process.env.REFRESH_EXPIRES_IN ?? '1w') as ExpiresIn,
+  refreshExpiresIn: (process.env.JWT_REFRESH_EXPIRES_IN ?? '1w') as ExpiresIn,
 };

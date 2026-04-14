@@ -4,18 +4,17 @@ import {
 	REFRESH_COOKIE_NAME,
 	clearAllAuthCookies,
 	setAuthCookies,
-	getAuthenticatedUser,
+	decodeToken,
 	refreshAccessToken,
 } from "$lib/server/auth.js";
 import { Role } from "$lib/enums/role.enum";
 
-function isAdminPath(pathname: string){
+function isAdminPath(pathname: string) {
 	return pathname.startsWith("/dashboard/admin");
 }
 function isProtectedPath(pathname: string) {
 	return pathname.startsWith("/dashboard");
 }
-
 function isAuthPath(pathname: string) {
 	return pathname === "/auth/login";
 }
@@ -26,57 +25,46 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	event.locals.user = null;
 
+	// Attempt to get user from Access Token
 	if (accessToken) {
-		const { user, shouldClearCookie } = await getAuthenticatedUser(
-			event.fetch,
-			accessToken,
-		);
+		const decoded = decodeToken(accessToken);
+		const isExpired = decoded?.exp ? Date.now() >= decoded.exp.getTime() : true;
 
-		if (user) {
-			event.locals.user = user;
-		} else if (shouldClearCookie && refreshToken) {
-			// Access token failed, let's try refreshing
-			const newAuth = await refreshAccessToken(event.fetch, refreshToken);
-
-			if (newAuth) {
-				// Success! Set new cookies and update locals
-				setAuthCookies(event.cookies, newAuth);
-				event.locals.user = {
-					id: newAuth.user.id,
-					username: newAuth.user.name,
-					role: newAuth.user.role
-				};
-			} else {
-				clearAllAuthCookies(event.cookies);
-			}
+		if (decoded && !isExpired) {
+			event.locals.user = decoded.user;
 		}
-	}else if (refreshToken) {
-        // Case where access cookie expired but refresh is still there
-        const newAuth = await refreshAccessToken(event.fetch, refreshToken);
-        if (newAuth) {
-            setAuthCookies(event.cookies, newAuth);
-            event.locals.user = { id: newAuth.user.id, username: newAuth.user.name, role: newAuth.user.role };
-        }
+	}
+
+	// If no user found (missing or expired token), try Refresh Token
+	if (!event.locals.user && refreshToken) {
+		const newAuth = await refreshAccessToken(event.fetch, refreshToken);
+		if (newAuth) {
+			setAuthCookies(event.cookies, newAuth);
+			event.locals.user = newAuth.user;
+		} else {
+			// Refresh failed (invalid/expired refresh token), wipe cookies
+			clearAllAuthCookies(event.cookies);
+		}
 	}
 
 	const user = event.locals.user;
 	const path = event.url.pathname;
 
+	// Guarding: Redirect Guests
 	if (!user) {
-    	// If a guest tries to access ANY dashboard path (admin or otherwise)
 		if (isProtectedPath(path)) {
 			throw redirect(303, "/auth/login");
 		}
-    	// Guests can stay on public paths or /auth/login
-    	return resolve(event);
+		return resolve(event);
 	}
 
-	if (isAuthPath(event.url.pathname) && event.locals.user) {
+	// Guarding: Redirect Auth'd users away from Login
+	if (isAuthPath(path)) {
 		throw redirect(303, "/dashboard/overview");
 	}
 
-	if (isAdminPath(path) && user?.role !== Role.ADMIN) {
-		// if they are logged in but they are not admin
+	// Guarding: Admin Authorization
+	if (isAdminPath(path) && user.role !== Role.ADMIN) {
 		throw redirect(303, "/dashboard/overview");
 	}
 
