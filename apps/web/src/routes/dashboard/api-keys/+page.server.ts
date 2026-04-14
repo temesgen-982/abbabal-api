@@ -34,13 +34,23 @@ async function apiRequest(event: RequestEvent | { fetch: typeof fetch, cookies: 
 /**
  * Loads the current list of API keys. Reused by Load and Actions.
  */
+function isRedirectLikeError(error: unknown): error is { status: number; location: string } {
+    return typeof error === "object"
+        && error !== null
+        && "status" in error
+        && "location" in error
+        && typeof (error as { status: unknown }).status === "number"
+        && typeof (error as { location: unknown }).location === "string";
+}
+
 async function loadApiKeys(event: RequestEvent | { fetch: typeof fetch, cookies: any }) {
     try {
         const res = await apiRequest(event, "/api-keys");
         if (!res.ok) return { apiKeys: [], apiKeysError: "Failed to load keys" };
         const apiKeys = (await res.json()) as ApiKeyListItem[];
         return { apiKeys, apiKeysError: null };
-    } catch {
+    } catch (error) {
+        if (isRedirectLikeError(error)) throw error;
         return { apiKeys: [], apiKeysError: "API service unreachable" };
     }
 }
