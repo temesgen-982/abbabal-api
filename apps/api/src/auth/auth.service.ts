@@ -3,6 +3,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/common/enums/role.enum';
+import { jwtConfig } from 'src/configs/jwt-config';
 
 type AuthInput = {
     username: string;
@@ -15,6 +16,7 @@ type signInData = {
 }
 type AuthResult = {
     accessToken: string;
+    refreshToken: string;
     user: {
         id: number;
         name: string;
@@ -78,15 +80,28 @@ export class AuthService {
             username: user.username,
             role: user.role,
         };
-        const accessToken = await this.jwtService.signAsync(payload);
+
+        const [accessToken, refreshToken] = await Promise.all([
+            this.jwtService.signAsync(payload),
+            this.jwtService.signAsync(payload, {
+                secret: jwtConfig.refreshSecret,
+                expiresIn: jwtConfig.refreshExpiresIn,
+            }),
+        ])
+
         return {
             accessToken,
+            refreshToken,
             user: {
                 id: user.userId,
                 name: user.username,
                 role: user.role,
             }
         };
+    }
+
+    async refreshTokens(userId: number, username: string, role: Role): Promise<AuthResult>{
+        return this.signIn({userId, username, role});
     }
 
     async register(input: AuthInput): Promise<AuthResult> {

@@ -13,11 +13,20 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { PassportLocalGuard } from './guards/passport-local.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RefreshAuth } from './decorators/refresh-auth.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @Post('refresh')
+  @RefreshAuth()
+  @ApiOkResponse({ type: AuthResponseDto })
+  async refresh(@Request() req) {
+    const { userId, username, role } = req.user;
+    return this.authService.refreshTokens(userId, username, role);
+  }
 
   @Post('login')
   @UseGuards(PassportLocalGuard)

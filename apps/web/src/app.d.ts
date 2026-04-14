@@ -4,8 +4,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			authToken: string | null;
-			user: import("$lib/server/auth.js").ProfileResponse | null;
+			user: import("$lib/server/auth.js").User | null;
 		}
 		// interface PageData {}
 		// interface PageState {}

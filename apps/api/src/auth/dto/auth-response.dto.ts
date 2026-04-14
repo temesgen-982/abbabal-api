@@ -19,6 +19,12 @@ export class AuthResponseDto {
   })
   accessToken: string;
 
+  @ApiProperty({
+    example: 'eflskdjhfdGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    description: 'JWT refresh token.',
+  })
+  refreshToken: string;
+
   @ApiProperty({ type: AuthUserDto })
   user: AuthUserDto;
 }

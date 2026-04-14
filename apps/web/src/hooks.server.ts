@@ -1,57 +1,70 @@
 import { redirect, type Handle } from "@sveltejs/kit";
 import {
 	AUTH_COOKIE_NAME,
-	clearAuthCookie,
-	getAuthenticatedUser,
+	REFRESH_COOKIE_NAME,
+	clearAllAuthCookies,
+	setAuthCookies,
+	decodeToken,
+	refreshAccessToken,
 } from "$lib/server/auth.js";
 import { Role } from "$lib/enums/role.enum";
 
-function isAdminPath(pathname: string){
+function isAdminPath(pathname: string) {
 	return pathname.startsWith("/dashboard/admin");
 }
 function isProtectedPath(pathname: string) {
 	return pathname.startsWith("/dashboard");
 }
-
 function isAuthPath(pathname: string) {
 	return pathname === "/auth/login";
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const accessToken = event.cookies.get(AUTH_COOKIE_NAME) ?? null;
+	const accessToken = event.cookies.get(AUTH_COOKIE_NAME);
+	const refreshToken = event.cookies.get(REFRESH_COOKIE_NAME);
 
-	event.locals.authToken = null;
 	event.locals.user = null;
 
+	// Attempt to get user from Access Token
 	if (accessToken) {
-		const { user, shouldClearCookie } = await getAuthenticatedUser(
-			event.fetch,
-			accessToken,
-		);
+		const decoded = decodeToken(accessToken);
+		const isExpired = decoded?.exp ? Date.now() >= decoded.exp.getTime() : true;
 
-		if (shouldClearCookie) {
-			clearAuthCookie(event.cookies);
+		if (decoded && !isExpired) {
+			event.locals.user = decoded.user;
 		}
+	}
 
-		if (user) {
-			event.locals.authToken = accessToken;
-			event.locals.user = user;
+	// If no user found (missing or expired token), try Refresh Token
+	if (!event.locals.user && refreshToken) {
+		const newAuth = await refreshAccessToken(event.fetch, refreshToken);
+		if (newAuth) {
+			setAuthCookies(event.cookies, newAuth);
+			event.locals.user = newAuth.user;
+		} else {
+			// Refresh failed (invalid/expired refresh token), wipe cookies
+			clearAllAuthCookies(event.cookies);
 		}
 	}
 
 	const user = event.locals.user;
 	const path = event.url.pathname;
 
-	if (isProtectedPath(path) && !user) {
-		throw redirect(303, "/auth/login");
+	// Guarding: Redirect Guests
+	if (!user) {
+		if (isProtectedPath(path)) {
+			throw redirect(303, "/auth/login");
+		}
+		return resolve(event);
 	}
 
-	if (isAdminPath(path) && user?.role !== Role.ADMIN) {
-		// if they are logged in but they are not admin
+	// Guarding: Redirect Auth'd users away from Login
+	if (isAuthPath(path)) {
 		throw redirect(303, "/dashboard/overview");
 	}
 
-	if (isAuthPath(event.url.pathname) && event.locals.user) {
+	// Guarding: Admin Authorization
+	if (isAdminPath(path) && user.role !== Role.ADMIN) {
 		throw redirect(303, "/dashboard/overview");
 	}
 
