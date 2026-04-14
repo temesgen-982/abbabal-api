@@ -99,8 +99,15 @@ export const actions: Actions = {
 
     revoke: async (event) => {
         const formData = await event.request.formData();
-        const id = formData.get("id");
+        const rawId = formData.get("id");
+        const id = typeof rawId === "string" ? Number(rawId) : NaN;
 
+        if (!Number.isInteger(id) || id <= 0) {
+            return fail(400, {
+                ...(await loadApiKeys(event)),
+                feedback: { tone: "error", message: "Invalid API key id." }
+            });
+        }
         const res = await apiRequest(event, `/api-keys/${id}`, { method: "DELETE" });
 
         if (!res.ok) {
