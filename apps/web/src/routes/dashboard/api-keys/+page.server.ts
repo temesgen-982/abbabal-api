@@ -1,6 +1,7 @@
 import { API_BASE_URL, AUTH_COOKIE_NAME } from "$lib/server/auth.js";
 import { fail, redirect } from "@sveltejs/kit";
-import type { Actions, PageServerLoad, RequestEvent } from "./$types.js";
+import type { RequestEvent } from "@sveltejs/kit";
+import type { Actions, PageServerLoad } from "./$types.js";
 import { superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { formSchema } from "./schema.js";
