@@ -7,7 +7,7 @@ import {
 import type { Actions, PageServerLoad } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
-import { zod4 } from "sveltekit-superforms/adapters"; // Updated from zod4 to zod
+import { zod4 } from "sveltekit-superforms/adapters";
 import { formSchema } from "./schema.js";
 
 export const load: PageServerLoad = async () => {
