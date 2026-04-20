@@ -48,22 +48,28 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-  const [user] = await this.drizzle.db
-    .update(users)
-    .set({
+  async update(id: number, updateUserDto: any) {
+    const dataToUpdate: any = { 
       ...updateUserDto,
-      updatedAt: new Date(), // Manual timestamp update for SQLite
-    })
-    .where(eq(users.id, id))
-    .returning();
+      updatedAt: new Date()
+    };
 
-  if (!user) {
-    throw new NotFoundException(`User with ID ${id} not found`);
-  }
+    // Logic check: If a password is being updated, hash it first
+    if (updateUserDto.password) {
+      dataToUpdate.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
 
-  // Remove password from response for security
-  const { password, ...result } = user;
-  return result;
+    const [user] = await this.drizzle.db
+      .update(users)
+      .set(dataToUpdate)
+      .where(eq(users.id, id))
+      .returning();
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    const { password, ...result } = user;
+    return result;
   }
 }
