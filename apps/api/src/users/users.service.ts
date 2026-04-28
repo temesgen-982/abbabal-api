@@ -50,8 +50,8 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: any) {
-    const dataToUpdate: any = { 
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const dataToUpdate: Partial<UpdateUserDto> & { updatedAt: Date } = { 
       ...updateUserDto,
       updatedAt: new Date()
     };
