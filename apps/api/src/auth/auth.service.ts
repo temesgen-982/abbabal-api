@@ -106,7 +106,7 @@ export class AuthService {
         };
     }
 
-    async refreshTokens(userId: number, email: string, name: string | undefined, role: Role): Promise<AuthResult>{
+    async refreshTokens(userId: number, email: string, name: string | null | undefined, role: Role): Promise<AuthResult>{
         return this.signIn({ userId, email, name, role });
     }
 
