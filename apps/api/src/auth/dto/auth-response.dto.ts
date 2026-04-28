@@ -33,8 +33,11 @@ export class ProfileResponseDto {
   @ApiProperty({ example: 1 })
   id: number;
 
-  @ApiProperty({ example: 'admin' })
-  username: string;
+  @ApiProperty({ example: 'admin@example.com' })
+  email: string;
+
+  @ApiProperty({ example: 'Admin Name' })
+  name: string;
 
   @ApiProperty({ enum: Role, example: Role.ADMIN })
   role: Role;

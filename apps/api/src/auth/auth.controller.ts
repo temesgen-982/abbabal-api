@@ -24,16 +24,16 @@ export class AuthController {
   @RefreshAuth()
   @ApiOkResponse({ type: AuthResponseDto })
   async refresh(@Request() req) {
-    const { userId, username, role } = req.user;
-    return this.authService.refreshTokens(userId, username, role);
+    const { userId, email, name, role } = req.user;
+    return this.authService.refreshTokens(userId, email, name, role);
   }
 
   @Post('login')
   @UseGuards(PassportLocalGuard)
-  @ApiOperation({ summary: 'Log in with username and password' })
+  @ApiOperation({ summary: 'Log in with email and password' })
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({ type: AuthResponseDto })
-  @ApiUnauthorizedResponse({ description: 'Invalid username or password.' })
+  @ApiUnauthorizedResponse({ description: 'Invalid email or password.' })
   login(@Request() request) {
     return this.authService.signIn(request.user);
   }

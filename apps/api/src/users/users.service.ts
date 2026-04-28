@@ -10,9 +10,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(private drizzle: DrizzleService) {}
 
-  findByUsername(username: string) {
+  findByEmail(email: string) {
     return this.drizzle.db.query.users.findFirst({
-      where: eq(users.username, username) 
+      where: eq(users.email, email) 
     });
   }
 
@@ -24,26 +24,28 @@ export class UsersService {
     });
   }
 
-  async create(username: string, password: string, role: Role = Role.USER) {
+  async create(email: string, password: string, role: Role = Role.USER, name?: string) {
     
-    const existing = await this.findByUsername(username);
+    const existing = await this.findByEmail(email);
     
     if (existing) {
-        throw new ConflictException('Username already taken'); 
+        throw new ConflictException('Email already taken'); 
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const [user] = await this.drizzle.db
       .insert(users)
       .values({ 
-        username, 
+        email, 
         password: hashedPassword,
-        role: role
+        role,
+        name,
       })
       .returning({
          id: users.id,
-         username: users.username,
+         email: users.email,
          role: users.role,
+         name: users.name,
        });
     return user;
   }
@@ -71,5 +73,12 @@ export class UsersService {
 
     const { password, ...result } = user;
     return result;
+  }
+
+  async updateLastLogin(id: number) {
+    return this.drizzle.db
+      .update(users)
+      .set({ lastLoginAt: new Date() })
+      .where(eq(users.id, id));
   }
 }
