@@ -32,6 +32,8 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+.agents
+skills-lock.json
 
 # IDE - VSCode
 .vscode/*

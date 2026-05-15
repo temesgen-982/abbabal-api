@@ -28,7 +28,7 @@
  const { form: formData, enhance } = form;
 </script>
 
-<AuthPaperStack subtitle="Login Authentication" title="Abbabal API">
+<AuthPaperStack subtitle="Register for Abbabal API" title="Abbabal API">
  <form method="POST" use:enhance class="grid gap-6">
   <Form.Field {form} name="username">
    <Form.Control>
@@ -61,12 +61,12 @@
    <p class="text-destructive text-sm">{data.authError}</p>
   {/if}
   <Form.Button class="w-full py-4 font-bold uppercase tracking-[0.2em]">
-   Log In
+   Sign Up
   </Form.Button>
   <p class="text-center text-sm text-muted-foreground">
-   Don’t have an account?
-   <a href="/auth/signup" class="font-semibold text-primary hover:underline">
-    Sign up
+   Already have an account?
+   <a href="/auth/login" class="font-semibold text-primary hover:underline">
+    Log in
    </a>
   </p>
  </form>

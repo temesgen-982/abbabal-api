@@ -24,6 +24,6 @@
         </NavigationMenu.Root>
     </nav>
     <Button>
-        <a href="/dashboard/overview">Get Api Key</a>
+        <a href="/auth/signup">Get Started</a>
     </Button>
 </header>

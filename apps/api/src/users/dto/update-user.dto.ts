@@ -12,4 +12,10 @@ export class UpdateUserDto {
   @IsEnum(Role)
   @IsOptional()
   role?: Role;
+
+  @ApiProperty({ example: 'thisisastrongpassword', required: false })
+  @IsString()
+  @MinLength(6)
+  @IsOptional()
+  password?: string;
 }

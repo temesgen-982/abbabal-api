@@ -92,12 +92,16 @@ export const proverbStats = pgTable('ProverbStats', {
 
 export const users = pgTable('User', {
   id: serial('id').primaryKey(),
-  username: text('username').notNull().unique(),
+  email: text('email').notNull().unique(),
+  name: text('name'), 
   password: text('password').notNull(),
   role: varchar('role', { length: 50 }).notNull().default(Role.USER),
+  avatarUrl: text('avatarUrl'),
+  lastLoginAt: timestamp('lastLoginAt', { mode: 'date' }),
   createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
   updatedAt: timestamp('updatedAt', { mode: 'date' }).notNull().defaultNow(),
 });
+
 
 export const apiKeys = pgTable('ApiKey', {
   id: serial('id').primaryKey(),

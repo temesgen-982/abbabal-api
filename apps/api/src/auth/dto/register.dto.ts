@@ -1,20 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+import { LoginDto } from './login.dto';
 
-export class RegisterDto {
-  @ApiProperty({
-    example: 'admin',
-    description: 'Username for an existing account.',
-  })
+export class RegisterDto extends LoginDto {
+  @ApiProperty({ example: 'Abebe Bekalu', required: false })
   @IsString()
-  @MinLength(1)
-  username: string;
-
-  @ApiProperty({
-    example: 'password',
-    description: 'Password for the account.',
-  })
-  @IsString()
-  @MinLength(1)
-  password: string;
+  @IsOptional()
+  name?: string;
 }
