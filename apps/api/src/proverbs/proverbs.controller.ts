@@ -10,13 +10,13 @@ import {
 } from '@nestjs/swagger';
 import { ProverbsService } from './proverbs.service';
 import { PaginatedProverbsDto, ProverbDto } from './dto/proverb-response.dto';
-import { ApiAuth } from '../common/decorators/api-auth.decorator';
 import { Auth } from '../common/decorators/auth.decorator';
 import { Role } from '../common/enums/role.enum';
 import { CreateProverbDto, ProverbSource, ProverbStatus } from './dto/create-proverb.dto';
 import { UpdateProverbDto } from './dto/update-proverb.dto';
 import { SubmitProverbDto } from './dto/submit-proverb.dto';
 import { ReviewProverbDto } from './dto/review-proverb.dto';
+import { OptionalApiAuth } from 'src/common/decorators/optional-api-auth.decorator';
 
 @ApiTags('Proverbs')
 @ApiTooManyRequestsResponse({ description: 'Rate limit exceeded for this API key.' })
@@ -25,7 +25,7 @@ export class ProverbsController {
     constructor(private readonly proverbsService: ProverbsService) {}
 
     @Get()
-    @ApiAuth(Role.USER, Role.ADMIN) // Both roles
+    @OptionalApiAuth()
     @ApiOperation({ summary: 'List proverbs with pagination' })
     @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
     @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
@@ -37,7 +37,7 @@ export class ProverbsController {
     }
     
     @Get('search')
-    @ApiAuth(Role.USER, Role.ADMIN)
+    @OptionalApiAuth()
     @ApiOperation({ summary: 'Search proverbs by text or translation interpretations' })
     @ApiQuery({ name: 'q', required: true, type: String, example: 'wisdom' })
     @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
@@ -48,7 +48,7 @@ export class ProverbsController {
     }
     
     @Get('random')
-    @ApiAuth(Role.USER, Role.ADMIN)
+    @OptionalApiAuth()
     @ApiOperation({ summary: 'Get a random proverb' })
     @ApiOkResponse({ type: ProverbDto })
     random() {
@@ -56,7 +56,7 @@ export class ProverbsController {
     }
     
     @Get(':id')
-    @ApiAuth(Role.USER, Role.ADMIN)
+    @OptionalApiAuth()
     @ApiOperation({ summary: 'Get a proverb by ID' })
     @ApiParam({ name: 'id', type: Number, description: 'Proverb ID.' })
     @ApiOkResponse({ type: ProverbDto })
