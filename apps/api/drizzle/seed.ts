@@ -17,23 +17,23 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const db = drizzle(pool, { schema });
 
 async function main() {
-  const username = process.env.ADMIN_USERNAME;
+  const email = process.env.ADMIN_EMAIL;
   const plainPassword = process.env.ADMIN_PASSWORD;
 
-  if (!username || !plainPassword) {
+  if (!email || !plainPassword) {
     throw new Error('ADMIN_USERNAME and ADMIN_PASSWORD must be set in .env');
   }
 
-  const existing = await db.query.users.findFirst({ where: eq(schema.users.username, username) });
+  const existing = await db.query.users.findFirst({ where: eq(schema.users.email, email) });
 
   if (existing) {
-    console.log(`User "${username}" already exists.`);
+    console.log(`User "${email}" already exists.`);
     return;
   }
 
   const hashedPassword = await bcrypt.hash(plainPassword, 10);
-  await db.insert(schema.users).values({ username, password: hashedPassword, role: Role.ADMIN });
-  console.log(`Seeded admin user "${username}"`);
+  await db.insert(schema.users).values({ email, password: hashedPassword, role: Role.ADMIN });
+  console.log(`Seeded admin user with email "${email}"`);
 }
 
 main()
