@@ -30,7 +30,7 @@ export class OptionalApiKeyGuard implements CanActivate {
     const apiKey = await this.apiKeysService.validateKey(rawKey);
 
     if (!apiKey) {
-      delete request.headers['x-api-key'];
+      request.headers['x-api-key'] = undefined;
       return true;
     }
 
@@ -45,6 +45,6 @@ export class OptionalApiKeyGuard implements CanActivate {
       role: apiKey.user.role,
     };
 
-    return true; // always allow api key is optional
+    return true; // always allow because API key is optional
   }
 }
