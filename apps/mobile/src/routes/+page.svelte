@@ -12,6 +12,8 @@
 
   const hasMore = $derived(proverbs.length < total);
 
+  let sentinel = $state<HTMLDivElement>(null!);
+
   async function loadMore() {
     if (loading) return;
     loading = true;
@@ -41,8 +43,37 @@
     )?.content ?? null;
   }
 
-  onMount(() => {
+  $effect(() => {
+    if (!sentinel) return;
+
     loadMore();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          loadMore();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(sentinel);
+
+    return () => observer.disconnect();
+  });
+
+  let showBackToTop = $state(false);
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  $effect(() => {
+    function onScroll() {
+      showBackToTop = window.scrollY > 400;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   });
 </script>
 
@@ -78,15 +109,25 @@
       {/each}
     </ul>
 
-    {#if hasMore}
-      <button class="load-more" onclick={loadMore} disabled={loading}>
-        {loading ? 'Loading...' : 'Load more'}
-      </button>
-    {/if}
-
     {#if error}
-      <p class="error-inline">{error}</p>
+      <p class="error-inline">{error} <button onclick={loadMore}>Retry</button></p>
     {/if}
+  {/if}
+</div>
+
+<!-- sentinel element — when this is visible, load more -->
+<div bind:this={sentinel} class="sentinel">
+  {#if loading && !initialLoading}
+    <div class="spinner"></div>
+  {/if}
+  {#if !hasMore && proverbs.length > 0}
+    <p class="end-message">You've seen all {total} proverbs 🎉</p>
+  {/if}
+  <!-- back to top button -->
+  {#if showBackToTop}
+    <button class="back-to-top" onclick={scrollToTop} aria-label="Back to top">
+      ↑
+    </button>
   {/if}
 </div>
 
@@ -159,22 +200,11 @@
     padding-top: 0.5rem;
   }
 
-  .load-more {
-    display: block;
-    width: 100%;
-    margin: 1.5rem 0;
-    padding: 0.85rem;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: #fff;
-    font-size: 0.95rem;
-    cursor: pointer;
-    color: #333;
-  }
-
-  .load-more:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  .sentinel {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+    min-height: 60px;
   }
 
   .loading-initial {
@@ -184,8 +214,8 @@
   }
 
   .spinner {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border: 3px solid #eee;
     border-top-color: #333;
     border-radius: 50%;
@@ -215,5 +245,45 @@
     text-align: center;
     color: #e00;
     font-size: 0.85rem;
+  }
+
+  .error-inline button {
+    margin-left: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #e00;
+    border-radius: 6px;
+    background: #fff;
+    color: #e00;
+    cursor: pointer;
+  }
+
+  .end-message {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.85rem;
+  }
+
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 1.5rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 100;
+  }
+
+  .back-to-top:active {
+    transform: scale(0.92);
   }
 </style>
