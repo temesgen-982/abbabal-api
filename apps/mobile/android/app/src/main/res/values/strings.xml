@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Abbabal</string>
+    <string name="title_activity_main">Abbabal</string>
+    <string name="package_name">abbabal.com.et</string>
+    <string name="custom_url_scheme">abbabal.com.et</string>
+</resources>

@@ -8,8 +8,7 @@ node_modules
 /.svelte-kit
 /build
 
-# Capacitor native projects (generated, not source of truth)
-android/
+# Capacitor ios generated file
 ios/
 
 # Capacitor local config
