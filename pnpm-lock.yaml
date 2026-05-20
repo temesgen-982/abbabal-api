@@ -158,6 +158,12 @@ importers:
       '@capacitor/core':
         specifier: ^8.3.4
         version: 8.3.4
+      '@fontsource-variable/inter':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@lucide/svelte':
+        specifier: ^1.8.0
+        version: 1.8.0(svelte@5.55.7)
     devDependencies:
       '@capacitor/cli':
         specifier: ^8.3.4
@@ -6941,6 +6947,10 @@ snapshots:
   '@lucide/svelte@1.8.0(svelte@5.55.0)':
     dependencies:
       svelte: 5.55.0
+
+  '@lucide/svelte@1.8.0(svelte@5.55.7)':
+    dependencies:
+      svelte: 5.55.7
 
   '@lukeed/csprng@1.1.0': {}
 
