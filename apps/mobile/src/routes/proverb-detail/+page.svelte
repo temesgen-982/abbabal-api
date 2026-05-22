@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
-  import { ArrowLeft, Share2 } from '@lucide/svelte';
   import { Share } from '@capacitor/share';
   import { api, type Proverb } from '$lib/api';
 
@@ -35,25 +34,6 @@
       .finally(() => { loading = false; });
   });
 </script>
-
-<!-- Header -->
-<div class="sticky top-0 z-10 bg-background border-b border-border px-4 py-3 flex items-center gap-3">
-  <button
-    onclick={() => window.history.back()}
-    class="w-9 h-9 rounded-full bg-card flex items-center justify-center shadow-sm"
-  >
-    <ArrowLeft size={18} />
-  </button>
-  <h1 class="text-base font-semibold flex-1">Proverb</h1>
-  {#if proverb}
-    <button
-      onclick={shareProverb}
-      class="w-9 h-9 rounded-full bg-card flex items-center justify-center shadow-sm"
-    >
-      <Share2 size={18} />
-    </button>
-  {/if}
-</div>
 
 <div class="max-w-lg mx-auto w-full px-4 py-6 flex flex-col gap-4 overflow-y-auto pb-24">
 

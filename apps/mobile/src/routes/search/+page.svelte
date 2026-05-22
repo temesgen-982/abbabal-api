@@ -47,9 +47,8 @@
   }
 </script>
 
-<!-- Header -->
-<div class="sticky top-0 z-10 bg-background border-b border-border px-4 py-3">
-  <h1 class="text-lg font-bold mb-3">Search</h1>
+<!-- Search Header -->
+<div class="sticky top-0 z-10 bg-background px-4 py-3">
   <div class="flex items-center gap-2 bg-card border border-border rounded-2xl px-4 py-2.5">
     <Search size={18} class="text-muted-foreground shrink-0" />
     <input

@@ -70,19 +70,6 @@
   });
 </script>
 
-<!-- Header -->
-<div class="sticky top-0 z-10 bg-background border-b border-border px-4 py-3 flex items-center justify-between">
-  <button class="w-9 h-9 rounded-full bg-card flex items-center justify-center shadow-sm">
-    <Menu size={20} />
-  </button>
-  <div class="text-center">
-    <h1 class="text-2xl font-bold tracking-tight">አባባል</h1>
-    <p class="text-xs text-primary font-medium">Amharic Proverbs</p>
-  </div>
-  <button class="w-9 h-9 rounded-full bg-card flex items-center justify-center shadow-sm">
-    <Bookmark size={20} />
-  </button>
-</div>
 
 <!-- Feed -->
 <div class="max-w-lg mx-auto px-4 py-4 pb-24">

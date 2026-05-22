@@ -47,13 +47,6 @@
   });
 </script>
 
-<!-- Header -->
-<div class="sticky top-0 z-10 bg-background border-b border-border px-4 py-3 flex items-center justify-between">
-  <div class="text-center flex-1">
-    <h1 class="text-lg font-bold">Random Proverb</h1>
-  </div>
-</div>
-
 <div class="max-w-lg mx-auto px-4 py-6 flex flex-col gap-6 min-h-[70vh] justify-center">
 
   {#if loading}
