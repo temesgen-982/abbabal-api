@@ -1,6 +1,8 @@
 <script lang="ts">
   import { api, type Proverb } from '$lib/api';
   import { Menu, Bookmark } from '@lucide/svelte';
+  import ProverbDetail from '$lib/components/ProverbDetail.svelte';
+  import { goto } from '$app/navigation';
 
   let proverbs = $state<Proverb[]>([]);
   let page = $state(1);
@@ -100,13 +102,16 @@
     </div>
 
   {:else}
-    <ul class="flex flex-col gap-3">
+    <div class="flex flex-col gap-3">
       {#each proverbs as proverb, i (proverb.id)}
         {@const translation = getTranslation(proverb)}
         {@const meaning = getMeaning(proverb)}
         {@const colors = ['bg-primary', 'bg-amber-700', 'bg-emerald-700', 'bg-stone-500']}
         {@const color = colors[i % colors.length]}
-        <li class="bg-card rounded-2xl p-4 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform">
+        <button
+          class="bg-card rounded-2xl p-4 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
+          onclick={() => goto(`/proverb-detail?id=${proverb.id}`)}
+        >
           <!-- Bookmark icon -->
           <div class="shrink-0 mt-1">
             <div class="{color} w-6 h-8 rounded-sm flex items-end justify-center pb-1">
@@ -125,9 +130,9 @@
           </div>
           <!-- Chevron -->
           <div class="shrink-0 flex items-center text-muted-foreground">›</div>
-        </li>
+        </button>
       {/each}
-    </ul>
+    </div>
 
     {#if error}
       <p class="text-center text-red-500 text-sm mt-4">
