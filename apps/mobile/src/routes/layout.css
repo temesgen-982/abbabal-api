@@ -1,1 +1,27 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/inter';
+
+@theme inline {
+	--font-sans: 'Inter Variable', sans-serif;
+	--color-background: oklch(95.5% 0.021 91.58);
+	--color-foreground: oklch(0.145 0 0);
+	--color-card: oklch(1 0 0);
+	--color-primary: oklch(47.99% 0.177 28.59);
+	--color-primary-foreground: oklch(0.985 0 0);
+	--color-muted: oklch(0.97 0 0);
+	--color-muted-foreground: oklch(0.556 0 0);
+	--color-border: oklch(0.922 0 0);
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background font-sans text-foreground;
+	}
+}
+
+.safe-area-bottom {
+	padding-bottom: env(safe-area-inset-bottom);
+}
