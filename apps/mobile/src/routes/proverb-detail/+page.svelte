@@ -39,7 +39,7 @@
 <!-- Header -->
 <div class="sticky top-0 z-10 bg-background border-b border-border px-4 py-3 flex items-center gap-3">
   <button
-    onclick={() => goto('/')}
+    onclick={() => window.history.back()}
     class="w-9 h-9 rounded-full bg-card flex items-center justify-center shadow-sm"
   >
     <ArrowLeft size={18} />

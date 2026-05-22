@@ -1,7 +1,6 @@
 <script lang="ts">
   import { api, type Proverb } from '$lib/api';
   import { Menu, Bookmark } from '@lucide/svelte';
-  import ProverbDetail from '$lib/components/ProverbDetail.svelte';
   import { goto } from '$app/navigation';
 
   let proverbs = $state<Proverb[]>([]);

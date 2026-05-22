@@ -4,9 +4,19 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import type { Route } from './$types';
+	import { App } from '@capacitor/app';
+	import { goto } from '$app/navigation';
 	import { House, Search, Shuffle, Bookmark, User } from '@lucide/svelte';
 
 	let { children } = $props();
+
+	App.addListener('backButton', ({ canGoBack }) => {
+		if (canGoBack) {
+			window.history.back();
+		} else {
+			App.exitApp();
+		}
+	});
 
 	const tabs = [
 		{ href: '/', label: 'Home', icon: House },
