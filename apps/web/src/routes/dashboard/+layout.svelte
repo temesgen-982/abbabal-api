@@ -1,6 +1,5 @@
 <script lang="ts">
- import DashboardFooter from "$lib/components/dashboard/DashboardFooter.svelte";
- import * as Sidebar from "$lib/components/ui/sidebar/index.js";
+  import * as Sidebar from "$lib/components/ui/sidebar/index.js";
  import DashboardSidebar from "$lib/components/dashboard/DashboardSidebar.svelte";
  import * as Avatar from "$lib/components/ui/avatar/index.js";
 
@@ -22,6 +21,5 @@
   {@render children?.()}
   </div>
   </div>
-  <DashboardFooter />
  </main>
 </Sidebar.Provider>
