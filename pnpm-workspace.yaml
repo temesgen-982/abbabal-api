@@ -1,7 +1,10 @@
 packages:
   - apps/*
   - packages/*
+  - scripts
 
 onlyBuiltDependencies:
   - esbuild
   - '@tailwindcss/oxide'
+  - '@nestjs/core'
+  - better-sqlite3

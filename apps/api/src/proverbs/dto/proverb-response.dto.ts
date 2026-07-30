@@ -7,50 +7,40 @@ export class InterpretationDto {
   @ApiProperty({ example: 1 })
   proverbId: number;
 
-  @ApiProperty({ example: 'translation', enum: ['translation', 'meaning'] })
-  type: 'translation' | 'meaning';
+  @ApiProperty({ example: 'translation' })
+  type: string;
 
-  @ApiProperty({ example: 'en', enum: ['en', 'am'] })
-  language: 'en' | 'am';
+  @ApiProperty({ example: 'en' })
+  language: string;
 
   @ApiProperty({ example: 'Wisdom begins with listening.' })
   content: string;
 
-  @ApiProperty({ example: 'ai', enum: ['telegram', 'ai', 'user'] })
-  source: 'telegram' | 'ai' | 'user';
-
-  @ApiPropertyOptional({ example: 'gpt-5' })
+  @ApiPropertyOptional({ example: 'Gemini 2.5 Flash' })
   model?: string | null;
 
-  @ApiPropertyOptional({ example: 0.94, nullable: true })
+  @ApiPropertyOptional({ example: 0.94 })
   confidence?: number | null;
 
   @ApiProperty({ example: false })
-  isApproved: boolean;
+  needsReview: number;
 
-  @ApiProperty({ example: true })
-  needsReview: boolean;
-
-  @ApiPropertyOptional({ example: 1, nullable: true })
-  createdBy?: number | null;
-
-  @ApiProperty({ example: '2026-03-25T12:00:00.000Z', format: 'date-time' })
+  @ApiProperty({ example: '2026-03-25T12:00:00.000Z' })
   createdAt: string;
 
-  @ApiPropertyOptional({
-    example: '2026-03-25T12:15:00.000Z',
-    format: 'date-time',
-    nullable: true,
-  })
+  @ApiPropertyOptional({ example: '2026-03-25T12:15:00.000Z' })
   updatedAt?: string | null;
 }
 
-export class ProverbStatDto {
+export class ProverbDto {
   @ApiProperty({ example: 1 })
   id: number;
 
-  @ApiProperty({ example: 1 })
-  proverbId: number;
+  @ApiProperty({ example: 'በውኃ ላይ የተጻፈ' })
+  text: string;
+
+  @ApiProperty({ example: '2026-03-25T00:00:00.000Z' })
+  date: string;
 
   @ApiProperty({ example: 42 })
   views: number;
@@ -58,46 +48,20 @@ export class ProverbStatDto {
   @ApiProperty({ example: 10 })
   forwards: number;
 
-  @ApiProperty({ example: '2026-03-25T12:00:00.000Z', format: 'date-time' })
-  capturedAt: string;
-}
+  @ApiProperty({ example: 'telegram' })
+  source: string;
 
-export class ProverbDto {
-  @ApiProperty({ example: 1 })
-  id: number;
-
-  @ApiProperty({ example: 'Wisdom begins with listening.' })
-  text: string;
-
-  @ApiProperty({ example: 'telegram', enum: ['telegram', 'user', 'admin_import'] })
-  source: 'telegram' | 'user' | 'admin_import';
-
-  @ApiProperty({ example: 'approved', enum: ['pending', 'approved', 'rejected'] })
-  status: 'pending' | 'approved' | 'rejected';
-
-  @ApiPropertyOptional({ example: '12345', nullable: true })
-  telegramMessageId?: string | null;
-
-  @ApiPropertyOptional({ example: 1, nullable: true })
-  createdBy?: number | null;
-
-  @ApiProperty({ example: '2026-03-25T00:00:00.000Z', format: 'date-time' })
-  date: string;
-
-  @ApiProperty({ example: '2026-03-25T12:00:00.000Z', format: 'date-time' })
+  @ApiProperty({ example: '2026-03-25T12:00:00.000Z' })
   scrapedAt: string;
 
-  @ApiProperty({ example: '2026-03-25T12:00:00.000Z', format: 'date-time' })
+  @ApiProperty({ example: '2026-03-25T12:00:00.000Z' })
   createdAt: string;
 
-  @ApiProperty({ type: InterpretationDto, isArray: true })
-  interpretations: InterpretationDto[];
+  @ApiPropertyOptional({ example: '2026-03-25T12:15:00.000Z' })
+  updatedAt?: string | null;
 
-  @ApiPropertyOptional({
-    type: ProverbStatDto,
-    nullable: true,
-  })
-  latestStats?: ProverbStatDto | null;
+  @ApiPropertyOptional({ type: InterpretationDto, isArray: true })
+  interpretations?: InterpretationDto[];
 }
 
 export class PaginatedProverbsDto {
@@ -107,7 +71,7 @@ export class PaginatedProverbsDto {
   @ApiProperty({ example: 20 })
   limit: number;
 
-  @ApiProperty({ example: 250 })
+  @ApiProperty({ example: 7576 })
   total: number;
 
   @ApiProperty({ type: ProverbDto, isArray: true })

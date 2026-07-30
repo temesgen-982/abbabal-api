@@ -1,31 +1,11 @@
-import {
-  BeforeApplicationShutdown,
-  Injectable,
-  OnModuleDestroy,
-} from '@nestjs/common';
-import { db, pool } from './db';
-import type { Db } from './db';
+import { Injectable } from '@nestjs/common';
+import { getDb, closeDb } from './db';
 
 @Injectable()
-export class DrizzleService
-  implements OnModuleDestroy, BeforeApplicationShutdown
-{
-  readonly db: Db = db;
-
-  private isPoolClosed = false;
-
-  private async closePool() {
-    if (this.isPoolClosed) return;
-    this.isPoolClosed = true;
-    await pool.end();
-    this.isPoolClosed = true;
-  }
+export class DrizzleService {
+  readonly db = getDb();
 
   async onModuleDestroy() {
-    await this.closePool();
-  }
-
-  async beforeApplicationShutdown() {
-    await this.closePool();
+    closeDb();
   }
 }

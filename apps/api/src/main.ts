@@ -10,35 +10,14 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Abbabal API')
-    .setDescription(
-      'Authentication, API key management, and proverb access endpoints.',
-    )
+    .setDescription('Amharic proverb archive — open access.')
     .setVersion('1.0.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        description: 'JWT access token returned from POST /auth/login',
-      },
-      'bearer',
-    )
-    .addApiKey(
-      {
-        type: 'apiKey',
-        in: 'header',
-        name: 'x-api-key',
-        description: 'Raw API key returned from POST /api-keys',
-      },
-      'apiKey',
-    )
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
 
   SwaggerModule.setup('docs', app, swaggerDocument, {
     customSiteTitle: 'Abbabal API Docs',
     swaggerOptions: {
-      persistAuthorization: true,
       displayRequestDuration: true,
     },
   });

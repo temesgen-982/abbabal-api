@@ -34,29 +34,29 @@ type LoadReturn =
   | { proverb: null; error: ProverbError; baseUrl: string };
 
 export const load: PageLoad = async ({ fetch, params }): Promise<LoadReturn> => {
-  const baseUrl = (PUBLIC_API_BASE_URL || "http://localhost:3000").replace(/\/+$/, "");
+  const base = (PUBLIC_API_BASE_URL || "http://localhost:3000").replace(/\/+$/, "");
   const id = params.id;
 
   if (!id || isNaN(Number(id))) {
-    return { proverb: null, error: "not_found", baseUrl };
+    return { proverb: null, error: "not_found", baseUrl: base };
   }
 
   try {
-    const response = await fetch(`${baseUrl}/proverbs/${id}`, {
+    const response = await fetch(`${base}/proverbs/${id}`, {
       headers: { accept: "application/json" },
     });
 
     if (response.status === 404) {
-      return { proverb: null, error: "not_found", baseUrl };
+      return { proverb: null, error: "not_found", baseUrl: base };
     }
 
     if (!response.ok) {
-      return { proverb: null, error: "server_error", baseUrl };
+      return { proverb: null, error: "server_error", baseUrl: base };
     }
 
     const proverb = (await response.json()) as Proverb;
-    return { proverb, error: null, baseUrl };
+    return { proverb, error: null, baseUrl: base };
   } catch {
-    return { proverb: null, error: "network_error", baseUrl };
+    return { proverb: null, error: "network_error", baseUrl: base };
   }
 };

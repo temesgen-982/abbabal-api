@@ -1,19 +1,20 @@
-import '../load-env';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Pool } from 'pg';
-import * as schema from './schema';
+import { resolve } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl || databaseUrl.trim() === '') {
-  throw new Error('DATABASE_URL must be set in .env');
+export function getDbPath() {
+  return resolve(__dirname, '../../../../data/proverbs.db');
 }
 
-const isTestEnv = process.env.NODE_ENV === 'test' || !!process.env.JEST_WORKER_ID;
+const dbPath = getDbPath();
 
-export const pool = new Pool({
-  connectionString: databaseUrl,
-  allowExitOnIdle: isTestEnv,
-});
+const sqlite = new DatabaseSync(dbPath);
+sqlite.exec('PRAGMA journal_mode = WAL');
+sqlite.exec('PRAGMA foreign_keys = ON');
 
-export const db = drizzle(pool, { schema });
-export type Db = typeof db;
+export function getDb() {
+  return sqlite;
+}
+
+export function closeDb() {
+  sqlite.close();
+}

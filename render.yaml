@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: abbabal-api
+    runtime: node
+    repo: https://github.com/temesgen-982/abbabal-api-backend
+    region: oregon
+    plan: free
+    envVars:
+      - key: NODE_VERSION
+        value: '22'
+      - key: PNPM_VERSION
+        value: '10.15.0'
+    buildCommand: pnpm install && pnpm build:api
+    startCommand: pnpm --filter @abbabal/api start:prod
+    healthCheckPath: /

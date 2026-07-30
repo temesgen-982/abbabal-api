@@ -1,0 +1,55 @@
+name: Process Proverbs with AI
+
+on:
+  schedule:
+    - cron: "0 0,2,5,7,10,13,16,18,21,23 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: proverbs-db-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: scripts
+
+      - name: Sync with latest remote
+        run: git pull --rebase origin "${GITHUB_REF_NAME}"
+
+      - name: Process proverbs with AI
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: pnpm tsx process-proverbs.ts
+        working-directory: scripts
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/proverbs.db
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "chore: process proverbs with AI [skip ci]"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "${GITHUB_REF_NAME}"
