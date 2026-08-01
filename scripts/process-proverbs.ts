@@ -147,20 +147,24 @@ function updateProverbsAiData(db, results) {
 
   const now = new Date().toISOString();
   db.exec('BEGIN');
-  for (const r of results) {
-    if (r.english_translation) {
-      insert.run(r.id, 'translation', 'en', r.english_translation, MODEL_SOURCE, r.confidence, r.needs_review > 0 ? 1 : 0, now);
+  try {
+    for (const r of results) {
+      if (r.english_translation) {
+        insert.run(r.id, 'translation', 'en', r.english_translation, MODEL_SOURCE, r.confidence, r.needs_review > 0 ? 1 : 0, now);
+      }
+      if (r.amharic_meaning) {
+        insert.run(r.id, 'meaning', 'am', r.amharic_meaning, MODEL_SOURCE, r.confidence, r.needs_review > 0 ? 1 : 0, now);
+      }
+      if (r.english_meaning) {
+        insert.run(r.id, 'meaning', 'en', r.english_meaning, MODEL_SOURCE, r.confidence, r.needs_review > 0 ? 1 : 0, now);
+      }
+      updateProverb.run(now, r.id);
     }
-    if (r.amharic_meaning) {
-      insert.run(r.id, 'meaning', 'am', r.amharic_meaning, MODEL_SOURCE, r.confidence, r.needs_review > 0 ? 1 : 0, now);
-    }
-    if (r.english_meaning) {
-      insert.run(r.id, 'meaning', 'en', r.english_meaning, MODEL_SOURCE, r.confidence, r.needs_review > 0 ? 1 : 0, now);
-    }
-    updateProverb.run(now, r.id);
+    db.exec('COMMIT');
+  } catch (e) {
+    db.exec('ROLLBACK');
+    throw e;
   }
-  db.exec('COMMIT');
-}
 
 async function main() {
   console.log('Starting AI augmentation processor...');
