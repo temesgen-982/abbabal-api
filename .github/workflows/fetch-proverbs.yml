@@ -1,0 +1,46 @@
+name: Fetch Proverbs
+
+on:
+  schedule:
+    - cron: "0 4,12,20 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: proverbs-db-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: scripts
+
+      - name: Fetch new proverbs from Telegram
+        env:
+          TG_API_ID: ${{ secrets.TG_API_ID }}
+          TG_API_HASH: ${{ secrets.TG_API_HASH }}
+          TG_SESSION: ${{ secrets.TG_SESSION }}
+        run: pnpm tsx fetch-proverbs.ts
+        working-directory: scripts
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/proverbs.db
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: fetch latest proverbs [skip ci]"
+          git push

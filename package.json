@@ -3,19 +3,15 @@
   "private": true,
   "packageManager": "pnpm@10.15.0",
   "scripts": {
-    "dev": "pnpm -r --parallel --filter @abbabal/api --filter @abbabal/web dev",
     "dev:api": "pnpm --filter @abbabal/api start:dev",
     "dev:web": "pnpm --filter @abbabal/web dev",
+    "dev": "pnpm -r --parallel --filter @abbabal/api --filter @abbabal/web dev",
     "build": "pnpm -r build",
     "build:api": "pnpm --filter @abbabal/api build",
     "build:web": "pnpm --filter @abbabal/web build",
     "lint": "pnpm -r --if-present lint",
     "check": "pnpm -r --if-present check",
     "test": "pnpm --filter @abbabal/api test",
-    "test:e2e": "pnpm --filter @abbabal/api test:e2e",
-    "drizzle:generate": "pnpm --filter @abbabal/api drizzle:generate",
-    "drizzle:migrate": "pnpm --filter @abbabal/api drizzle:migrate",
-    "drizzle:seed": "pnpm --filter @abbabal/api drizzle:seed",
-    "drizzle:studio": "pnpm --filter @abbabal/api drizzle:studio"
+    "test:e2e": "pnpm --filter @abbabal/api test:e2e"
   }
 }

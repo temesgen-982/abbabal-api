@@ -1,5 +1,5 @@
 {
-	"name": "web",
+	"name": "@abbabal/web",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -48,9 +48,11 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
+		"@wuchale/svelte": "^0.20.5",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
 		"svelte-french-toast": "^1.2.0",
+		"wuchale": "^0.25.6",
 		"zod": "^4.3.6"
 	}
 }

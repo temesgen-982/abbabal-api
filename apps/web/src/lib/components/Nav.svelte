@@ -1,37 +1,68 @@
 <script lang="ts">
- import * as NavigationMenu from "$lib/components/ui/navigation-menu/index.js";
- import { buttonVariants } from "$lib/components/ui/button/index.js";
+  import { page } from '$app/stores';
+  import { Leaf, Sun, Moon, Languages } from '@lucide/svelte';
 
- const navItems = [
-   { label: "Documentation", href: "/docs" },
-   { label: "Proverbs", href: "/proverbs" },
-   { label: "Playground", href: "/playground"},
-   { label: "Download", href: "/download" },
-   { label: "About", href: "/about" }
- ];
+  let dark = $state(false);
+
+  function toggleTheme() {
+    dark = !dark;
+    document.documentElement.classList.toggle('dark', dark);
+  }
+
+  const navItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Proverbs', href: '/proverbs' },
+    { label: 'Download', href: '/download' },
+    { label: 'About', href: '/about' },
+    { label: 'API', href: '/documentation' },
+  ];
+
+  function localeHref(path: string) {
+    const locale = $page.url.searchParams.get('locale');
+    return locale ? `${path}?locale=${locale}` : path;
+  }
 </script>
 
-<header class="flex items-center justify-between px-16 py-4 border-b">
-    <div class="font-bold text-xl">Abbabal API</div>
-    
-    <nav class="relative z-10 flex max-w-max flex-1 items-center justify-center">
-        <NavigationMenu.Root>
-            <NavigationMenu.List class="group flex flex-1 list-none items-center justify-center space-x-1">
-                {#each navItems as item}
-                    <NavigationMenu.Item>
-                        <NavigationMenu.Link 
-                            href={item.href} 
-                            class="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                        >
-                            {item.label}
-                        </NavigationMenu.Link>
-                    </NavigationMenu.Item>
-                {/each}
-            </NavigationMenu.List>
-        </NavigationMenu.Root>
+<header class="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <a href={localeHref('/')} class="flex items-center gap-3">
+      <Leaf class="text-primary" size={26} strokeWidth={2} />
+      <div class="leading-tight">
+        <div class="text-lg font-bold tracking-tight">Abbabal</div>
+        <div class="text-[10px] font-medium text-muted-foreground -mt-0.5">የእውቀት ቃላት</div>
+      </div>
+    </a>
+
+    <nav class="hidden items-center gap-8 md:flex">
+      {#each navItems as item}
+        <a
+          href={localeHref(item.href)}
+          class="text-sm font-medium transition-colors {$page.url.pathname === item.href ? 'text-foreground font-semibold border-b-2 border-foreground pb-0.5' : 'text-muted-foreground hover:text-foreground'}"
+        >
+          {item.label}
+        </a>
+      {/each}
     </nav>
 
-    <a href="/auth/signup" class={buttonVariants({ variant: "default" })}>
-        Get Started
-    </a>
+    <div class="flex items-center gap-3">
+      <a
+        href="{$page.url.pathname}{$page.url.searchParams.get('locale') === 'am' ? '' : '?locale=am'}"
+        class="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        aria-label="Switch language"
+      >
+        <Languages size={16} />
+      </a>
+      <button
+        onclick={toggleTheme}
+        class="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        aria-label="Toggle theme"
+      >
+        {#if dark}
+          <Sun size={16} />
+        {:else}
+          <Moon size={16} />
+        {/if}
+      </button>
+    </div>
+  </div>
 </header>
