@@ -75,7 +75,7 @@
       </div>
 
       <!-- Amharic text -->
-      <p class="text-2xl font-bold leading-relaxed text-foreground">{proverb.text}</p>
+      <p class="font-ethiopic text-2xl font-bold leading-relaxed text-foreground">{proverb.text}</p>
 
       {#if translation}
         <div class="border-t border-border pt-4">

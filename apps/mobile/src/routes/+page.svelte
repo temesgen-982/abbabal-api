@@ -1,7 +1,11 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { api, type Proverb } from '$lib/api';
-  import { Menu, Bookmark } from '@lucide/svelte';
+  import { Bookmark } from '@lucide/svelte';
   import { goto } from '$app/navigation';
+  import { getSavedState } from '$lib/stores/saved.svelte';
+
+  const saved = getSavedState();
 
   let proverbs = $state<Proverb[]>([]);
   let page = $state(1);
@@ -10,10 +14,10 @@
   let initialLoading = $state(true);
   let error = $state('');
   let showBackToTop = $state(false);
-  const LIMIT = 20;
+  let sentinel = $state<HTMLDivElement>(null!);
+  const LIMIT = 40;
 
   const hasMore = $derived(proverbs.length < total);
-  let sentinel = $state<HTMLDivElement>(null!);
 
   async function loadMore() {
     if (loading) return;
@@ -56,17 +60,22 @@
     return () => window.removeEventListener('scroll', onScroll);
   });
 
+  let observer: IntersectionObserver | null = null;
+
   $effect(() => {
     if (!sentinel) return;
-    loadMore();
-    const observer = new IntersectionObserver(
+    observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore) loadMore();
       },
-      { rootMargin: '200px' }
+      { rootMargin: '400px' }
     );
     observer.observe(sentinel);
-    return () => observer.disconnect();
+    return () => observer?.disconnect();
+  });
+
+  onMount(() => {
+    loadMore();
   });
 </script>
 
@@ -94,9 +103,12 @@
         {@const meaning = getMeaning(proverb)}
         {@const colors = ['bg-primary', 'bg-amber-700', 'bg-emerald-700', 'bg-stone-500']}
         {@const color = colors[i % colors.length]}
-        <button
-          class="bg-card rounded-2xl p-4 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
+        <div
+          role="button"
+          tabindex="0"
+          class="relative bg-card rounded-2xl p-4 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
           onclick={() => goto(`/proverb-detail?id=${proverb.id}`)}
+          onkeydown={(e) => e.key === /* @wc-ignore */ 'Enter' && goto(`/proverb-detail?id=${proverb.id}`)}
         >
           <!-- Bookmark icon -->
           <div class="shrink-0 mt-1">
@@ -114,9 +126,17 @@
               <p class="text-xs text-muted-foreground mt-2 pt-2 border-t border-border">{meaning}</p>
             {/if}
           </div>
-          <!-- Chevron -->
-          <div class="shrink-0 flex items-center text-muted-foreground">›</div>
-        </button>
+          <!-- Save toggle -->
+          <div class="shrink-0 flex items-center">
+            <button
+              class="flex items-center justify-center p-2 -m-1 text-muted-foreground active:text-primary transition-colors"
+              onclick={(e) => { e.stopPropagation(); saved.toggle(proverb); }}
+              aria-label={saved.has(proverb.id) ? 'Remove from saved' : 'Save proverb'}
+            >
+              <Bookmark size={18} class={saved.has(proverb.id) ? 'text-primary fill-primary' : ''} />
+            </button>
+          </div>
+        </div>
       {/each}
     </div>
 
@@ -129,9 +149,14 @@
   {/if}
 
   <!-- Sentinel -->
-  <div bind:this={sentinel} class="flex justify-center py-8 min-h-[60px]">
+  <div bind:this={sentinel} class="flex flex-col items-center gap-2 justify-center py-8 min-h-[60px]">
     {#if loading && !initialLoading}
       <div class="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin"></div>
+    {/if}
+    {#if proverbs.length > 0}
+      <p class="text-xs text-muted-foreground">
+        Loaded {proverbs.length} of {total} proverbs
+      </p>
     {/if}
     {#if !hasMore && proverbs.length > 0}
       <p class="text-xs text-muted-foreground">You've seen all {total} proverbs 🎉</p>

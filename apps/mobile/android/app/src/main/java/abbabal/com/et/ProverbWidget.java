@@ -6,29 +6,29 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.widget.RemoteViews;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ProverbWidget extends AppWidgetProvider {
 
-    private static final String API_URL = "https://abbabal-api.onrender.com/proverbs/random";
+    private static final String DB_NAME = "proverbsSQLite.db";
     private static final String PREFS_NAME = "ProverbWidgetPrefs";
     private static final String PREF_TEXT = "proverb_text";
     private static final String PREF_TRANSLATION = "proverb_translation";
+    private static final String PREF_LAST_ID = "proverb_last_id";
     private static final String ACTION_REFRESH = "abbabal.com.et.WIDGET_REFRESH";
+
+    private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            updateWidget(context, appWidgetManager, appWidgetId, false);
+            updateWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
@@ -39,21 +39,39 @@ public class ProverbWidget extends AppWidgetProvider {
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
             if (widgetId != -1) {
-                updateWidget(context, manager, widgetId, true);
+                refreshWidget(context, manager, widgetId);
             }
         }
     }
 
-    private void updateWidget(Context context, AppWidgetManager manager, int widgetId, boolean forceRefresh) {
-        // Show cached while loading
-        RemoteViews views = buildViews(context, widgetId, "Loading...", "");
+    private void updateWidget(Context context, AppWidgetManager manager, int widgetId) {
+        // First render: show a placeholder until the fetch completes.
+        RemoteViews views = buildViews(context, widgetId, "አባባል", "የአማርኛ ምሳሌ", false);
         manager.updateAppWidget(widgetId, views);
 
-        new FetchProverbTask(context, manager, widgetId).execute();
+        fetchAsync(context, manager, widgetId);
     }
 
-    private RemoteViews buildViews(Context context, int widgetId, String text, String translation) {
+    private void refreshWidget(Context context, AppWidgetManager manager, int widgetId) {
+        // Manual refresh: keep the current proverb, just signal "loading" on the button.
+        RemoteViews loading = new RemoteViews(context.getPackageName(), R.layout.proverb_widget);
+        loading.setTextViewText(R.id.widget_refresh, "↻ …");
+        manager.partiallyUpdateAppWidget(widgetId, loading);
+
+        fetchAsync(context, manager, widgetId);
+    }
+
+    private void fetchAsync(Context context, AppWidgetManager manager, int widgetId) {
+        EXECUTOR.execute(() -> {
+            String[] result = fetchProverb(context);
+            final RemoteViews updated = buildViews(context, widgetId, result[0], result[1], false);
+            manager.updateAppWidget(widgetId, updated);
+        });
+    }
+
+    private RemoteViews buildViews(Context context, int widgetId, String text, String translation, boolean loading) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.proverb_widget);
+        views.setTextViewText(R.id.widget_refresh, loading ? "↻ …" : "↻ አዲስ");
         views.setTextViewText(R.id.widget_proverb_text, text);
         views.setTextViewText(R.id.widget_translation, translation);
 
@@ -78,73 +96,79 @@ public class ProverbWidget extends AppWidgetProvider {
         return views;
     }
 
-    private class FetchProverbTask extends AsyncTask<Void, Void, String[]> {
-        private final Context context;
-        private final AppWidgetManager manager;
-        private final int widgetId;
+    private String[] fetchProverb(Context context) {
+        SharedPreferences prefs = context
+            .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        long lastId = prefs.getLong(PREF_LAST_ID, -1);
+        String cachedText = prefs.getString(PREF_TEXT, null);
+        String cachedTranslation = prefs.getString(PREF_TRANSLATION, "");
 
-        FetchProverbTask(Context context, AppWidgetManager manager, int widgetId) {
-            this.context = context;
-            this.manager = manager;
-            this.widgetId = widgetId;
-        }
-
-        @Override
-        protected String[] doInBackground(Void... voids) {
-            try {
-                URL url = new URL(API_URL);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setConnectTimeout(10000);
-                conn.setReadTimeout(10000);
-
-                BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream())
-                );
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) sb.append(line);
-                reader.close();
-
-                JSONObject json = new JSONObject(sb.toString());
-                String text = json.getString("text");
-                String translation = "";
-
-                JSONArray interps = json.getJSONArray("interpretations");
-                for (int i = 0; i < interps.length(); i++) {
-                    JSONObject interp = interps.getJSONObject(i);
-                    if ("translation".equals(interp.getString("type"))
-                            && "en".equals(interp.getString("language"))
-                            && interp.getBoolean("isApproved")) {
-                        translation = interp.getString("content");
-                        break;
-                    }
-                }
-
-                // Cache it
-                SharedPreferences.Editor editor = context
-                    .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
-                editor.putString(PREF_TEXT, text);
-                editor.putString(PREF_TRANSLATION, translation);
-                editor.apply();
-
-                return new String[]{text, translation};
-
-            } catch (Exception e) {
-                // Return cached on failure
-                SharedPreferences prefs = context
-                    .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        try {
+            File dbFile = context.getDatabasePath(DB_NAME);
+            if (!dbFile.exists()) {
+                // Database not extracted yet — fall back to cached value.
                 return new String[]{
-                    prefs.getString(PREF_TEXT, "አባባል"),
-                    prefs.getString(PREF_TRANSLATION, "Amharic Proverbs")
+                    cachedText != null ? cachedText : "አባባል",
+                    cachedTranslation
                 };
             }
+
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(
+                dbFile.getAbsolutePath(), null,
+                SQLiteDatabase.OPEN_READONLY
+            );
+
+            String[] proverb = pickRandomProverb(db, lastId);
+            db.close();
+
+            // Update cache + remember what we just showed, so refresh avoids repeats.
+            prefs.edit()
+                .putLong(PREF_LAST_ID, Long.parseLong(proverb[0]))
+                .putString(PREF_TEXT, proverb[1])
+                .putString(PREF_TRANSLATION, proverb[2])
+                .apply();
+
+            return new String[]{proverb[1], proverb[2]};
+
+        } catch (Exception e) {
+            return new String[]{
+                cachedText != null ? cachedText : "አባባል",
+                cachedTranslation
+            };
+        }
+    }
+
+    /**
+     * Pick a random proverb, preferring one different from {@code lastId}.
+     * Returns {id, text, translation}.
+     */
+    private String[] pickRandomProverb(SQLiteDatabase db, long lastId) {
+        String translation = "";
+        String id = "0", text = "አባባል";
+
+        Cursor c = db.rawQuery(
+            "SELECT id, text FROM proverbs WHERE " +
+            (lastId >= 0 ? "id <> ? " : "1 = 1 ") +
+            "ORDER BY RANDOM() LIMIT 1",
+            lastId >= 0 ? new String[]{String.valueOf(lastId)} : null
+        );
+        if (c.moveToFirst()) {
+            id = String.valueOf(c.getLong(0));
+            text = c.getString(1);
+        }
+        c.close();
+
+        if (id != null) {
+            Cursor tc = db.rawQuery(
+                "SELECT content FROM interpretations " +
+                "WHERE proverb_id = ? AND type = 'translation' " +
+                "AND language = 'en' AND needs_review = 0 LIMIT 1",
+                new String[]{id}
+            );
+            if (tc.moveToFirst()) translation = tc.getString(0);
+            tc.close();
         }
 
-        @Override
-        protected void onPostExecute(String[] result) {
-            RemoteViews views = buildViews(context, widgetId, result[0], result[1]);
-            manager.updateAppWidget(widgetId, views);
-        }
+        return new String[]{id, text, translation};
     }
 }

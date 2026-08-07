@@ -63,3 +63,15 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /apps/api/generated/prisma
+
+# Telegram sessions & old scraper artifacts
+*.session
+**/*.session
+/scraper-dump
+
+# static design prototypes
+/design
+
+# SQLite WAL artifacts
+*.db-wal
+*.db-shm

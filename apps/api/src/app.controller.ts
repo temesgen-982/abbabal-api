@@ -20,6 +20,15 @@ export class AppController {
 
   @Get('download')
   download(@Res() res: Response) {
+    this.streamDb(res);
+  }
+
+  @Get('proverbs.db')
+  downloadDb(@Res() res: Response) {
+    this.streamDb(res);
+  }
+
+  private streamDb(@Res() res: Response) {
     const dbPath = getDbPath();
     const stats = statSync(dbPath);
     res.setHeader('Content-Type', 'application/vnd.sqlite3');

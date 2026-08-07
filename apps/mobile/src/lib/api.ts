@@ -1,4 +1,6 @@
-const BASE_URL =
+import { localDb } from './db';
+
+export const BASE_URL =
   (process.env.EXPO_PUBLIC_API_BASE_URL ??
     process.env.PUBLIC_API_BASE_URL ??
     'https://abbabal-api.onrender.com').replace(/\/+$/, '');
@@ -42,13 +44,21 @@ async function get<T>(path: string, params?: Record<string, string | number>): P
 
 export const api = {
   proverbs: {
-    list: (page = 1, limit = 20) =>
-      get<PaginatedProverbs>('/proverbs', { page, limit }),
-    search: (q: string, limit = 20) =>
-      get<Proverb[]>('/proverbs/search', { q, limit }),
-    random: () =>
-      get<Proverb>('/proverbs/random'),
-    findOne: (id: number) =>
-      get<Proverb>(`/proverbs/${id}`),
+    async list(page = 1, limit = 20) {
+      if (await localDb.isReady()) return localDb.list(page, limit);
+      return get<PaginatedProverbs>('/proverbs', { page, limit });
+    },
+    async search(q: string, limit = 20) {
+      if (await localDb.isReady()) return localDb.search(q, limit);
+      return get<Proverb[]>('/proverbs/search', { q, limit });
+    },
+    async random() {
+      if (await localDb.isReady()) return localDb.random();
+      return get<Proverb>('/proverbs/random');
+    },
+    async findOne(id: number) {
+      if (await localDb.isReady()) return localDb.findOne(id);
+      return get<Proverb>(`/proverbs/${id}`);
+    },
   },
 };

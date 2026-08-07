@@ -18,14 +18,18 @@ function cleanMessage(text) {
   return text.replace(/#\w+/g, '').replace(/\n{3,}/g, '\n\n').trim();
 }
 
-function getLastMessageId(db) {
-  const row = db.prepare('SELECT MAX(id) as maxId FROM proverbs').get();
-  return row?.maxId ?? 0;
+function getLastFetchedId(db) {
+  const row = db.prepare("SELECT value FROM meta WHERE key = 'last_message_id'").get();
+  return Number(row?.value) || 0;
 }
 
 async function fetchUpdates() {
   const db = new DatabaseSync(DB_PATH);
   db.exec('PRAGMA journal_mode = WAL');
+
+  // Track the highest message id already seen separately from the proverbs PK,
+  // since a reposted proverb updates its row (id unchanged) rather than inserting.
+  db.exec('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT)');
 
   const session = new StringSession(SESSION_STRING);
   const client = new TelegramClient(session, API_ID, API_HASH, {
@@ -40,18 +44,25 @@ async function fetchUpdates() {
   });
 
   const channel = await client.getEntity(CHANNEL_USERNAME);
-  const lastId = getLastMessageId(db);
+  const lastId = getLastFetchedId(db);
   console.log(`Fetching updates since message ID: ${lastId}`);
 
-  const insert = db.prepare(`
-    INSERT OR IGNORE INTO proverbs (id, text, date, views, forwards, source, scraped_at, created_at)
+  const upsert = db.prepare(`
+    INSERT INTO proverbs (id, text, date, views, forwards, source, scraped_at, created_at)
     VALUES (?, ?, ?, ?, ?, 'telegram', ?, ?)
+    ON CONFLICT(text) DO UPDATE SET
+      views = excluded.views,
+      forwards = excluded.forwards,
+      date = excluded.date,
+      updated_at = excluded.created_at
   `);
 
   let count = 0;
+  let maxMessageId = lastId;
   const batch = [];
   for await (const message of client.iterMessages(channel, { minId: lastId, reverse: true })) {
     if (!message.message) continue;
+    if (message.id > maxMessageId) maxMessageId = message.id;
 
     batch.push({
       id: message.id,
@@ -66,7 +77,7 @@ async function fetchUpdates() {
       const now = new Date().toISOString();
       db.exec('BEGIN');
       for (const e of items) {
-        insert.run(e.id, e.text, e.date, e.views, e.forwards, e.date, now);
+        upsert.run(e.id, e.text, e.date, e.views, e.forwards, e.date, now);
         count++;
       }
       db.exec('COMMIT');
@@ -77,12 +88,14 @@ async function fetchUpdates() {
   if (batch.length > 0) {
     const now = new Date().toISOString();
     for (const e of batch) {
-      insert.run(e.id, e.text, e.date, e.views, e.forwards, e.date, now);
+      upsert.run(e.id, e.text, e.date, e.views, e.forwards, e.date, now);
       count++;
     }
   }
 
-  console.log(`Done. ${count} new proverbs saved.`);
+  db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)').run('last_message_id', String(maxMessageId));
+
+  console.log(`Done. ${count} messages processed.`);
   db.close();
   await client.disconnect();
 }
