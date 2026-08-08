@@ -68,13 +68,11 @@ msgstr "Wisdom.<0/> In Amharic.<1/> <2>Open to all.</2>"
 msgid "Abbabal is a collection of {0}+ Amharic proverbs — preserving our heritage, sharing our wisdom."
 msgstr "Abbabal is a collection of {0}+ Amharic proverbs — preserving our heritage, sharing our wisdom."
 
-#: src/routes/+page.svelte
-msgid "ቃለ እውቀት"
-msgstr "ቃለ እውቀት"
+#~ msgid "ቃለ እውቀት"
+#~ msgstr "ቃለ እውቀት"
 
-#: src/routes/+page.svelte
-msgid "የሕይወት መሠረት ነው::"
-msgstr "የሕይወት መሠረት ነው::"
+#~ msgid "የሕይወት መሠረት ነው::"
+#~ msgstr "የሕይወት መሠረት ነው::"
 
 #: src/routes/documentation/+page.svelte
 msgid "Random Proverb"
@@ -84,9 +82,11 @@ msgstr "Random Proverb"
 #~ msgstr "Discover timeless wisdom"
 
 #: src/routes/+page.svelte
+#: src/routes/+page.svelte
 msgid "እምቡጥ እስካልቆፈረ አይበቅልም::"
 msgstr "እምቡጥ እስካልቆፈረ አይበቅልም::"
 
+#: src/routes/+page.svelte
 #: src/routes/+page.svelte
 msgid "Until the bud is pierced, it does not grow."
 msgstr "Until the bud is pierced, it does not grow."
@@ -1445,3 +1445,16 @@ msgstr "Abbabal for Android — daily proverbs, favorites, search, and full offl
 #: src/routes/+page.svelte
 msgid "See the app page <0/>"
 msgstr "See the app page <0/>"
+
+#. 0: potd.text
+#: src/routes/+page.svelte
+msgid "Today's proverb: {0}"
+msgstr "Today's proverb: {0}"
+
+#: src/routes/+page.svelte
+msgid "An open book with an Amharic proverb and its translation"
+msgstr "An open book with an Amharic proverb and its translation"
+
+#: src/routes/+page.svelte
+msgid "Today's proverb <0/>"
+msgstr "Today's proverb <0/>"
