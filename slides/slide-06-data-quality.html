@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbabal — Data Quality</title>
+<link rel="stylesheet" href="slides.css">
+</head>
+<body>
+<div class="slide light">
+  <div class="kicker">The polish</div>
+  <h1 class="h-en t-en" style="margin-top:8px;">3,298 proverbs. <span class="olive">Zero duplicates.</span></h1>
+  <p class="h-am t-am-sm muted" style="margin-top:20px;">ትክክለኛ መረጃ</p>
+
+  <p class="t-body" style="margin-top:40px; max-width:880px;">
+    Scraped feeds arrive messy. A careful dedupe pass keeps the
+    <span class="fw-7">canonical row</span> — the one with the most approved
+    interpretations — merges engagement stats, and re-parents every
+    interpretation so <span class="fw-7">nothing is lost</span>.
+  </p>
+
+  <div class="row gap-l" style="margin-top:56px;">
+    <div class="card grow">
+      <div class="t-en-sm fw-7">Canonical row wins</div>
+      <p class="t-sm muted" style="margin-top:12px;">Most approved interpretations, then earliest id.</p>
+    </div>
+    <div class="card grow">
+      <div class="t-en-sm fw-7">Stats merged</div>
+      <p class="t-sm muted" style="margin-top:12px;">Views & forwards take the max across duplicates.</p>
+    </div>
+    <div class="card grow">
+      <div class="t-en-sm fw-7">Re-parented</div>
+      <p class="t-sm muted" style="margin-top:12px;">Interpretations move to the surviving row — zero orphans.</p>
+    </div>
+  </div>
+
+  <div class="mono" style="margin-top:44px;">
+    <span class="cm">CREATE UNIQUE INDEX</span> idx_proverbs_text <span class="cm">ON</span> proverbs(text);<br>
+    <span class="cm">CREATE UNIQUE INDEX</span> idx_interpretations_unique <span class="cm">ON</span> interpretations(proverb_id, type, language);
+  </div>
+
+  <div class="row wrap gap-m" style="margin-top:44px;">
+    <span class="chip">✓ duplicates collapsed</span>
+    <span class="chip">✓ best interpretation kept</span>
+    <span class="chip">✓ uniqueness enforced forever</span>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <div class="brand-badge" style="width:32px;height:32px;font-size:18px;border-radius:9px;">አ</div>
+      <span>አባባል · ABBABAL</span>
+    </div>
+    <span class="page">06 / 14</span>
+  </div>
+</div>
+</body>
+</html>

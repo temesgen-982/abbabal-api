@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbabal — One-Tap Sync</title>
+<link rel="stylesheet" href="slides.css">
+</head>
+<body>
+<div class="slide light">
+  <div class="kicker">The refresh</div>
+  <h1 class="h-en t-en" style="margin-top:8px;">Your app updates <span class="olive">when your data does.</span></h1>
+  <p class="h-am t-am-sm muted" style="margin-top:20px;">አዲስ መረጃ</p>
+
+  <p class="t-body" style="margin-top:42px; max-width:880px;">
+    The corpus changes daily — new proverbs in the morning, fresh
+    interpretations by evening. One tap in the app pulls the
+    <span class="fw-7">latest database straight from the API</span>.
+    No app-store review. No waiting.
+  </p>
+
+  <div class="row center gap-xl" style="margin-top:64px;">
+    <div class="card" style="text-align:center; padding:34px 46px;">
+      <div class="t-en-sm fw-7">Android app</div>
+      <div class="chip olive" style="margin-top:20px; font-size:22px; padding:16px 30px;">⇣ Sync DB</div>
+      <p class="t-xs muted" style="margin-top:16px;">one tap</p>
+    </div>
+    <div class="arrow" style="font-size:56px;">→</div>
+    <div class="mono" style="font-size:30px; padding:26px 34px;">
+      <span class="cm">GET</span> /proverbs.db
+    </div>
+    <div class="arrow" style="font-size:56px;">→</div>
+    <div class="card" style="text-align:center; padding:34px 46px;">
+      <div class="t-en-sm fw-7">Fresh corpus</div>
+      <span class="chip" style="margin-top:20px; font-size:22px; padding:16px 30px;">✓ up to date</span>
+      <p class="t-xs muted" style="margin-top:16px;">3,298 proverbs</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:60px;">
+    <p class="t-lg fw-7">Same file, three jobs</p>
+    <p class="t-sm muted" style="margin-top:10px;">
+      One SQLite file is the server's store, the mobile bundle, <em>and</em> the
+      sync payload. The distribution pipeline is a file copy.
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <div class="brand-badge" style="width:32px;height:32px;font-size:18px;border-radius:9px;">አ</div>
+      <span>አባባል · ABBABAL</span>
+    </div>
+    <span class="page">08 / 14</span>
+  </div>
+</div>
+</body>
+</html>

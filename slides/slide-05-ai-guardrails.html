@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbabal — AI with Guardrails</title>
+<link rel="stylesheet" href="slides.css">
+</head>
+<body>
+<div class="slide light">
+  <div class="kicker">The brain</div>
+  <h1 class="h-en t-en" style="margin-top:8px;">AI that knows when it's <span class="olive">unsure.</span></h1>
+  <p class="h-am t-am-sm muted" style="margin-top:20px;">ሰው ሰራሽ አስተውሎት · Gemini 2.5 Flash</p>
+
+  <p class="t-body" style="margin-top:40px; max-width:880px;">
+    Every proverb gets an English translation, an Amharic meaning and an
+    English meaning — but nothing is trusted blindly. Each interpretation
+    carries the model's own <span class="fw-7">confidence score</span> and a
+    <span class="fw-7">needs_review</span> flag, so doubt becomes a review queue.
+  </p>
+
+  <div class="row gap-l" style="margin-top:56px;">
+    <div class="card grow">
+      <div class="row between center">
+        <span class="t-sm fw-7">confidence</span>
+        <span class="chip olive" style="font-size:19px;">0.95 · trusted</span>
+      </div>
+      <div style="height:16px; background:var(--border); border-radius:999px; margin-top:18px; overflow:hidden;">
+        <div style="width:95%; height:100%; background:var(--olive); border-radius:999px;"></div>
+      </div>
+      <p class="t-xs muted" style="margin-top:16px;">High confidence → published as-is.</p>
+    </div>
+    <div class="card grow">
+      <div class="row between center">
+        <span class="t-sm fw-7">needs_review</span>
+        <span class="chip" style="font-size:19px; color:#b3452f; border-color:#e5c4b8; background:#fdf3ef;">● flagged</span>
+      </div>
+      <div style="height:16px; background:var(--border); border-radius:999px; margin-top:18px; overflow:hidden;">
+        <div style="width:6%; height:100%; background:#b3452f; border-radius:999px;"></div>
+      </div>
+      <p class="t-xs muted" style="margin-top:16px;">Ambiguous → routed to human review.</p>
+    </div>
+  </div>
+
+  <div class="mono" style="margin-top:44px;">
+    <span class="cm">{</span><br>
+    &nbsp;&nbsp;"id": 2147,<br>
+    &nbsp;&nbsp;"confidence": <span class="cm">0.95</span>,<br>
+    &nbsp;&nbsp;"needs_review": <span class="cm">0</span><br>
+    <span class="cm">}</span>
+  </div>
+
+  <div class="row wrap gap-m" style="margin-top:44px;">
+    <span class="chip">✓ Zod-validated responses</span>
+    <span class="chip">✓ unknown IDs rejected</span>
+    <span class="chip">✓ atomic batches — all or nothing</span>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <div class="brand-badge" style="width:32px;height:32px;font-size:18px;border-radius:9px;">አ</div>
+      <span>አባባል · ABBABAL</span>
+    </div>
+    <span class="page">05 / 14</span>
+  </div>
+</div>
+</body>
+</html>

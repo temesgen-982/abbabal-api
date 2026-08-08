@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbabal — The Living Database</title>
+<link rel="stylesheet" href="slides.css">
+</head>
+<body>
+<div class="slide light">
+  <div class="kicker">The foundation</div>
+  <h1 class="h-am t-am" style="margin-top:8px;">መረጃ ቤቱ ሕያው ነው።</h1>
+  <p class="h-en t-en-sm muted" style="margin-top:18px;">Git is the database. <span class="olive fw-8">The repo commits its own data.</span></p>
+
+  <p class="t-body" style="margin-top:42px; max-width:880px;">
+    The entire corpus is <span class="fw-7">one SQLite file</span>, committed to the repository.
+    Two GitHub Actions keep it growing around the clock — fetching and enriching —
+    then commit their own changes back. No hosted database. No server state.
+  </p>
+
+  <div class="col gap-s" style="margin-top:56px;">
+    <div class="gitrow mono" style="font-size:22px;">
+      <span class="dot"></span><span class="sha">9f3e2c1</span> chore: fetch latest proverbs [skip ci]
+    </div>
+    <div class="gitrow mono" style="font-size:22px;">
+      <span class="dot"></span><span class="sha">4b7a18d</span> chore: process proverbs with AI [skip ci]
+    </div>
+    <div class="gitrow mono" style="font-size:22px;">
+      <span class="dot"></span><span class="sha">c2d5f90</span> chore: fetch latest proverbs [skip ci]
+    </div>
+  </div>
+
+  <div class="row wrap gap-m" style="margin-top:58px;">
+    <span class="chip">⏱ fetch — 3× / day</span>
+    <span class="chip">✦ AI process — 9× / day</span>
+    <span class="chip">🔒 one writer at a time</span>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <div class="brand-badge" style="width:32px;height:32px;font-size:18px;border-radius:9px;">አ</div>
+      <span>አባባል · ABBABAL</span>
+    </div>
+    <span class="page">03 / 14</span>
+  </div>
+</div>
+</body>
+</html>
