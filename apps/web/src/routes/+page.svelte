@@ -39,6 +39,10 @@
 
   const potd = $derived(data.potd);
 
+  const potdTranslation = $derived(
+    potd?.interpretations?.find((i) => i.type === 'translation' && i.language === 'en')?.content ?? null
+  );
+
   async function copyPotdLink() {
     if (!potd) return;
     try {
@@ -88,9 +92,15 @@
       </form>
     </div>
 
-    <!-- SVG Illustration -->
-    <div class="flex justify-center">
-      <svg viewBox="0 0 600 400" class="w-full max-w-[500px] drop-shadow-sm" xmlns="http://www.w3.org/2000/svg">
+    <!-- SVG Illustration: open book showing today's proverb (Amharic left, English right) -->
+    <div class="flex flex-col items-center">
+      <svg
+        viewBox="0 0 600 400"
+        class="w-full max-w-[500px] drop-shadow-sm"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label={potd ? `Today's proverb: ${potd.text}` : 'An open book with an Amharic proverb and its translation'}
+      >
         <defs>
           <filter id="s1" x="-10%" y="-10%" width="120%" height="120%">
             <feDropShadow dx="0" dy="8" stdDeviation="6" flood-opacity="0.08"/>
@@ -106,8 +116,24 @@
           <path d="M 270 280 L 110 230 L 130 130 L 300 170 Z" fill="#8c6239" />
           <path d="M 295 270 Q 200 250 120 220 L 140 125 Q 210 155 295 165 Z" fill="#fefae0" stroke="#e9edc9" stroke-width="2"/>
           <path d="M 295 270 Q 380 240 460 230 L 440 135 Q 370 145 295 165 Z" fill="#fffdf5" stroke="#e9edc9" stroke-width="2"/>
-          <text x="375" y="185" font-family="'Noto Sans Ethiopic', sans-serif" font-weight="bold" font-size="15" fill="#3f4e28" text-anchor="middle">ቃለ እውቀት</text>
-          <text x="375" y="210" font-family="'Noto Sans Ethiopic', sans-serif" font-weight="bold" font-size="14" fill="#3f4e28" text-anchor="middle">የሕይወት መሠረት ነው::</text>
+
+          <!-- Amharic proverb — left page (tilted +13° to match the page slope) -->
+          <foreignObject x="139" y="145" width="152" height="104" transform="rotate(13 215 197)">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flex h-full w-full items-center justify-center overflow-hidden px-2 text-center">
+              <p class="font-ethiopic text-[15px] font-bold leading-snug text-[#3f4e28] line-clamp-4">
+                {potd?.text ?? 'እምቡጥ እስካልቆፈረ አይበቅልም::'}
+              </p>
+            </div>
+          </foreignObject>
+
+          <!-- English translation — right page (tilted -11° to match the page slope) -->
+          <foreignObject x="297" y="150" width="140" height="100" transform="rotate(-11 367 200)">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flex h-full w-full items-center justify-center overflow-hidden px-1 text-center">
+              <p class="font-serif text-[12px] italic leading-snug text-[#7a6f60] line-clamp-5">
+                {potdTranslation ?? 'Until the bud is pierced, it does not grow.'}
+              </p>
+            </div>
+          </foreignObject>
         </g>
         <g filter="url(#s1)">
           <path d="M 450 220 Q 480 170 510 220 Q 480 250 450 220 Z" fill="#dda15e" />
@@ -120,6 +146,14 @@
           <ellipse cx="450" cy="243" rx="17" ry="6" fill="#28150c" />
         </g>
       </svg>
+      {#if potd}
+        <a
+          href={`/proverbs/${potd.id}`}
+          class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-colors hover:text-primary/80"
+        >
+          Today's proverb <ArrowRight size={12} />
+        </a>
+      {/if}
     </div>
   </section>
 
