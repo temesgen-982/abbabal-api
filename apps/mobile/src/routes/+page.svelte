@@ -150,11 +150,10 @@
             <p class="meaning-text line-clamp-3">{meaning}</p>
           {/if}
 
-          <!-- Footer -->
+          <!-- Footer: accent-colored arrow -->
           <div class="card-footer">
-            <span class="read-more">
-              Read more
-              <ArrowRight size={15} />
+            <span class="go-icon" aria-hidden="true">
+              <ArrowRight size={16} strokeWidth={2.5} />
             </span>
           </div>
         </div>
@@ -261,12 +260,14 @@
     justify-content: flex-end;
     margin-top: 18px;
   }
-  .read-more {
+  .go-icon {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--acc);
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--muted-foreground);
+    color: var(--muted-foreground);
   }
 </style>
