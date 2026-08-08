@@ -1,8 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { api, type Proverb } from '$lib/api';
-  import { Bookmark } from '@lucide/svelte';
+  import { Bookmark, ArrowRight } from '@lucide/svelte';
   import { goto } from '$app/navigation';
+  import { accentFor } from '$lib/proverb-accent';
   import { getSavedState } from '$lib/stores/saved.svelte';
 
   const saved = getSavedState();
@@ -46,6 +47,10 @@
     return proverb.interpretations.find(
       (i) => i.type === 'meaning' && i.language === 'en' && i.isApproved
     )?.content ?? null;
+  }
+
+  function openProverb(id: number) {
+    goto(`/proverb-detail?id=${id}`);
   }
 
   function scrollToTop() {
@@ -97,44 +102,60 @@
     </div>
 
   {:else}
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-4">
       {#each proverbs as proverb, i (proverb.id)}
         {@const translation = getTranslation(proverb)}
         {@const meaning = getMeaning(proverb)}
-        {@const colors = ['bg-primary', 'bg-amber-700', 'bg-emerald-700', 'bg-stone-500']}
-        {@const color = colors[i % colors.length]}
+        {@const accent = accentFor(i)}
         <div
           role="button"
           tabindex="0"
-          class="relative bg-card rounded-2xl p-4 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
-          onclick={() => goto(`/proverb-detail?id=${proverb.id}`)}
-          onkeydown={(e) => e.key === /* @wc-ignore */ 'Enter' && goto(`/proverb-detail?id=${proverb.id}`)}
+          style="--acc: {accent.strong}; --acc-tint: {accent.tint}; border-left: 4px solid {accent.strong};"
+          class="proverb-card relative bg-card rounded-r-2xl p-7 pl-6 pt-6 pb-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] active:scale-[0.99] transition-transform text-left w-full cursor-pointer"
+          onclick={() => openProverb(proverb.id)}
+          onkeydown={(e) => e.key === /* @wc-ignore */ 'Enter' && openProverb(proverb.id)}
         >
-          <!-- Bookmark icon -->
-          <div class="shrink-0 mt-1">
-            <div class="{color} w-6 h-8 rounded-sm flex items-end justify-center pb-1">
-              <div class="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-white/40"></div>
+          <!-- Header: meta + bookmark -->
+          <div class="flex items-center justify-between mb-5">
+            <div class="meta-info">
+              <span class="meta-number">{String(proverb.id).padStart(4, '0')}</span>
+              <span class="meta-sep">•</span>
+              <span class="meta-label">Proverb</span>
             </div>
-          </div>
-          <!-- Content -->
-          <div class="flex-1 min-w-0">
-            <p class="text-base font-semibold leading-relaxed text-foreground">{proverb.text}</p>
-            {#if translation}
-              <p class="text-sm text-muted-foreground italic mt-1">{translation}</p>
-            {/if}
-            {#if meaning}
-              <p class="text-xs text-muted-foreground mt-2 pt-2 border-t border-border">{meaning}</p>
-            {/if}
-          </div>
-          <!-- Save toggle -->
-          <div class="shrink-0 flex items-center">
             <button
-              class="flex items-center justify-center p-2 -m-1 text-muted-foreground active:text-primary transition-colors"
+              class="flex items-center justify-center p-2 -m-1 text-foreground/60 active:text-primary transition-colors"
               onclick={(e) => { e.stopPropagation(); saved.toggle(proverb); }}
               aria-label={saved.has(proverb.id) ? 'Remove from saved' : 'Save proverb'}
             >
               <Bookmark size={18} class={saved.has(proverb.id) ? 'text-primary fill-primary' : ''} />
             </button>
+          </div>
+
+          <!-- Amharic title -->
+          <p class="font-ethiopic text-[1.8rem] font-bold leading-snug text-foreground">{proverb.text}</p>
+
+          <div class="accent-bar"></div>
+
+          <!-- Translation quote -->
+          {#if translation}
+            <div class="quote-block">
+              <span class="quote-icon">“</span>
+              <p class="quote-text">{translation}</p>
+            </div>
+          {/if}
+
+          <!-- Meaning -->
+          {#if meaning}
+            <p class="section-title">Meaning</p>
+            <p class="meaning-text line-clamp-3">{meaning}</p>
+          {/if}
+
+          <!-- Footer -->
+          <div class="card-footer">
+            <span class="read-more">
+              Read more
+              <ArrowRight size={15} />
+            </span>
           </div>
         </div>
       {/each}
@@ -174,3 +195,78 @@
     ↑
   </button>
 {/if}
+
+<style>
+  /* Editorial proverb card — accent colors come from the shared
+     PROVERB_ACCENTS palette via --acc / --acc-tint on each card */
+  .meta-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .meta-number { color: var(--acc); }
+  .meta-sep { color: #b0b0b0; }
+  .meta-label { color: var(--muted-foreground); }
+
+  .accent-bar {
+    width: 32px;
+    height: 3px;
+    border-radius: 2px;
+    margin: 16px 0 20px;
+    background: var(--acc);
+  }
+
+  .quote-block {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 18px;
+  }
+  .quote-icon {
+    font-family: Georgia, serif;
+    font-size: 2.6rem;
+    line-height: 0.8;
+    color: var(--acc-tint);
+  }
+  .quote-text {
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+
+  .section-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--acc);
+  }
+
+  .meaning-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+  }
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--acc);
+  }
+</style>

@@ -2,6 +2,7 @@
   import { Bookmark } from '@lucide/svelte';
   import { goto } from '$app/navigation';
   import type { Proverb } from '$lib/api';
+  import { accentFor } from '$lib/proverb-accent';
   import { getSavedState } from '$lib/stores/saved.svelte';
 
   const saved = getSavedState();
@@ -33,20 +34,15 @@
     <div class="flex flex-col gap-3">
       {#each saved.items as proverb, i (proverb.id)}
         {@const translation = getTranslation(proverb)}
-        {@const colors = ['bg-primary', 'bg-amber-700', 'bg-emerald-700', 'bg-stone-500']}
-        {@const color = colors[i % colors.length]}
+        {@const accent = accentFor(i)}
         <div
           role="button"
           tabindex="0"
-          class="relative bg-card rounded-2xl p-4 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
+          style="border-left: 4px solid {accent.strong}"
+          class="relative bg-card rounded-r-2xl p-4 pl-5 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
           onclick={() => goto(`/proverb-detail?id=${proverb.id}`)}
           onkeydown={(e) => e.key === /* @wc-ignore */ 'Enter' && goto(`/proverb-detail?id=${proverb.id}`)}
         >
-          <div class="shrink-0 mt-1">
-            <div class="{color} w-6 h-8 rounded-sm flex items-end justify-center pb-1">
-              <div class="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-white/40"></div>
-            </div>
-          </div>
           <div class="flex-1 min-w-0">
             <p class="text-base font-semibold leading-relaxed text-foreground">{proverb.text}</p>
             {#if translation}
