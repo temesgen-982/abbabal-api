@@ -256,3 +256,33 @@ msgstr "Abbabal"
 #: src/routes/+layout.svelte
 msgid "የእውቀት ቃላት"
 msgstr "የእውቀት ቃላት"
+
+#: src/routes/profile/+page.svelte
+#: src/routes/profile/+page.svelte
+msgid "Sync failed. Check your connection."
+msgstr "Sync failed. Check your connection."
+
+#. 0: lastSyncLabel
+#: src/routes/profile/+page.svelte
+msgid "Last updated: {0}"
+msgstr "Last updated: {0}"
+
+#: src/routes/profile/+page.svelte
+msgid "Not synced yet — proverbs from the bundled database."
+msgstr "Not synced yet — proverbs from the bundled database."
+
+#: src/routes/profile/+page.svelte
+msgid "Offline database"
+msgstr "Offline database"
+
+#: src/routes/profile/+page.svelte
+msgid "Syncing…"
+msgstr "Syncing…"
+
+#: src/routes/profile/+page.svelte
+msgid "Sync DB"
+msgstr "Sync DB"
+
+#: src/routes/profile/+page.svelte
+msgid "Database updated successfully."
+msgstr "Database updated successfully."

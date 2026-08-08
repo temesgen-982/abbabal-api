@@ -256,3 +256,33 @@ msgstr "አባባል"
 #: src/routes/+layout.svelte
 msgid "የእውቀት ቃላት"
 msgstr "የእውቀት ቃላት"
+
+#: src/routes/profile/+page.svelte
+#: src/routes/profile/+page.svelte
+msgid "Sync failed. Check your connection."
+msgstr "ማመሳሰል አልተሳካም። ግንኙነትዎን ያረጋግጡ።"
+
+#. 0: lastSyncLabel
+#: src/routes/profile/+page.svelte
+msgid "Last updated: {0}"
+msgstr "ለመጨረሻ ጊዜ የተሻሻለው፡ {0}"
+
+#: src/routes/profile/+page.svelte
+msgid "Not synced yet — proverbs from the bundled database."
+msgstr "ገና አልተመሳሰለም — ምሳሌያዊ አነጋገሮቹ ከተካተተው የውሂብ ጎታ የተወሰዱ ናቸው።"
+
+#: src/routes/profile/+page.svelte
+msgid "Offline database"
+msgstr "ከመስመር ውጭ የውሂብ ጎታ"
+
+#: src/routes/profile/+page.svelte
+msgid "Syncing…"
+msgstr "በማመሳሰል ላይ…"
+
+#: src/routes/profile/+page.svelte
+msgid "Sync DB"
+msgstr "የውሂብ ጎታን አመሳስል"
+
+#: src/routes/profile/+page.svelte
+msgid "Database updated successfully."
+msgstr "የውሂብ ጎታው በስኬት ተሻሽሏል።"

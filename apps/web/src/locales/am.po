@@ -63,7 +63,7 @@ msgstr "ፈልግ"
 msgid "Wisdom.<0/> In Amharic.<1/> <2>Open to all.</2>"
 msgstr "ጥበብ።<0/> በአማርኛ።<1/> <2>ለሁሉም ክፍት።</2>"
 
-#. 0: data.proverbCount ? Number(data.proverbCount).toLocaleString() \\: '7,000+'
+#. 0: data.proverbCount ? Number(data.proverbCount).toLocaleString() \\: '3,000'
 #: src/routes/+page.svelte
 msgid "Abbabal is a collection of {0}+ Amharic proverbs — preserving our heritage, sharing our wisdom."
 msgstr "አበባል የ{0}+ የአማርኛ ምሳሌዎች ስብስብ ነው — ቅርሳችንን በመጠበቅ፣ ጥበባችንን እያጋራን።"
@@ -76,14 +76,12 @@ msgstr "ቃለ እውቀት"
 msgid "የሕይወት መሠረት ነው::"
 msgstr "የሕይወት መሠረት ነው::"
 
-#: src/routes/+page.svelte
 #: src/routes/documentation/+page.svelte
 msgid "Random Proverb"
 msgstr "የዘፈቀደ ምሳሌ"
 
-#: src/routes/+page.svelte
-msgid "Discover timeless wisdom"
-msgstr "ዘላለማዊ ጥበብን አግኝ"
+#~ msgid "Discover timeless wisdom"
+#~ msgstr "ዘላለማዊ ጥበብን አግኝ"
 
 #: src/routes/+page.svelte
 msgid "እምቡጥ እስካልቆፈረ አይበቅልም::"
@@ -703,6 +701,7 @@ msgstr "በቅርቡ"
 msgid "<0/> Daily inspiration"
 msgstr "<0/> ዕለታዊ መነሳሳት"
 
+#: src/routes/+page.svelte
 #: src/routes/download/+page.svelte
 msgid "<0/> Save favorites"
 msgstr "<0/> ተወዳጆችን አስቀምጥ"
@@ -1313,4 +1312,136 @@ msgstr ""
 
 #: src/lib/components/Nav.svelte
 msgid "Switch language"
-msgstr ""
+msgstr "ቋንቋ ቀይር"
+
+#: src/routes/+page.svelte
+msgid "መራጭ ይወድቃል ከምራጭ"
+msgstr "መራጭ ይወድቃል ከምራጭ"
+
+#: src/routes/+page.svelte
+msgid "The chooser falls from the chosen."
+msgstr "መራጭ ይወድቃል ከምራጭ።"
+
+#: src/routes/+page.svelte
+msgid "ይጥሉህ አትጥላቸው ይበድሉህ አትበድላቸው"
+msgstr "ይጥሉህ አትጥላቸው ይበድሉህ አትበድላቸው"
+
+#: src/routes/+page.svelte
+msgid "Let them wrong you — don’t wrong them."
+msgstr "ቢበድሉህ አትበድላቸው።"
+
+#: src/routes/+page.svelte
+msgid "ቀላዋጭ ወጥ ያውቃል"
+msgstr "ቀላዋጭ ወጥ ያውቃል"
+
+#: src/routes/+page.svelte
+msgid "The stirrer knows the stew."
+msgstr "ቀላዋጭ ወጥ ያውቃል"
+
+#: src/routes/+page.svelte
+msgid "Proverb of the Day"
+msgstr "የዕለቱ ምሳሌያዊ አነጋገር"
+
+#: src/routes/+page.svelte
+msgid "Copy link to today's proverb"
+msgstr "የዛሬውን ምሳሌያዊ አነጋገር ሊንክ ቅዳ"
+
+#: src/routes/+page.svelte
+msgid "<0/> Copied!"
+msgstr "<0/> ተቀድቷል!"
+
+#: src/routes/+page.svelte
+msgid "<0/> Copy link"
+msgstr "<0/> ሊንክ ቅዳ"
+
+#: src/routes/+page.svelte
+msgid "Recently Added"
+msgstr "በቅርብ ጊዜ የተጨመሩ"
+
+#: src/routes/+page.svelte
+msgid "Fresh from our collection"
+msgstr "ከስብስባችን አዲስ የወጡ"
+
+#: src/routes/+page.svelte
+msgid "View all <0/>"
+msgstr "ሁሉንም ይመልከቱ <0/>"
+
+#: src/routes/+page.svelte
+msgid "The Tradition"
+msgstr "ባህሉ"
+
+#: src/routes/+page.svelte
+msgid "What is an Amharic proverb?"
+msgstr "የአማርኛ ምሳሌያዊ አነጋገር ምንድን ነው?"
+
+#: src/routes/+page.svelte
+msgid "Amharic proverbs — ምሳሌ (məsale) — are short, poetic sayings handed down through generations of oral tradition. They capture everyday wisdom about patience, community, honesty, and resilience in a few carefully chosen words."
+msgstr "የአማርኛ ምሳሌያዊ አነጋገሮች — ምሳሌ — በትውልዶች መካከል በአፍ ታሪክ ሲተላለፉ የቆዩ አጫጭርና ግጥማዊ አባባሎች ናቸው። ስለ ትዕግስት፣ ማህበረሰብ፣ ታማኝነት እና ጥንካሬ በውስን ጥንቁቅ ቃላት የዕለት ተዕለት ጥበብን ያስተላልፋሉ።"
+
+#: src/routes/+page.svelte
+msgid "Each one is a small mirror of Ethiopian culture: a lesson you can carry through the day, spoken the way a grandmother would say it. Abbabal collects these sayings, translates them, and explains the meaning behind them — so the wisdom stays alive."
+msgstr "እያንዳንዳቸው የኢትዮጵያን ባህል የሚያንጸባርቁ ትናንሽ መስተዋቶች ናቸው፡ በዕለት ተዕለት ሕይወትዎ የሚይዙት፣ አያቶች በሚናገሩት መንገድ የሚነገሩ ትምህርቶች ናቸው። አባባል እነዚህን አባባሎች ይሰበስባል፣ ይተረጉማል፣ እንዲሁም ከበስተጀርባቸው ያለውን ትርጉም ያብራራል — ጥበቡ ሕያው ሆኖ እንዲቀጥል።"
+
+#: src/routes/+page.svelte
+msgid "Explore the collection <0/>"
+msgstr "ስብስቡን ያስሱ <0/>"
+
+#: src/routes/+page.svelte
+msgid "<0/> Open the Playground <1/>"
+msgstr "<0/> መጫወቻ ቦታውን ይክፈቱ <1/>"
+
+#: src/routes/+page.svelte
+msgid "Read the docs"
+msgstr "ሰነዶቹን ያንብቡ"
+
+#: src/routes/+page.svelte
+msgid "For Developers"
+msgstr "ለአልሚዎች"
+
+#: src/routes/+page.svelte
+msgid "One command to start exploring."
+msgstr "ፍለጋ ለመጀመር አንድ ትዕዛዝ ብቻ።"
+
+#: src/routes/+page.svelte
+msgid "The full corpus is one REST call away — no API key, no signup. Browse the live playground or read the documentation to build with it."
+msgstr "ሙሉው መረጃ በአንድ የ REST ጥሪ ብቻ ይገኛል — የኤፒአይ ቁልፍም ሆነ መመዝገብ አያስፈልግም። እሱን ተጠቅመው ለመገንባት የቀጥታ መጫወቻ ቦታውን ያስሱ ወይም ሰነዶቹን ያንብቡ።"
+
+#: src/routes/+page.svelte
+msgid "<0/> curl https://abbabal-api.onrender.com/proverbs/random"
+msgstr "<0/> curl https://abbabal-api.onrender.com/proverbs/random"
+
+#: src/routes/+page.svelte
+msgid "\"text\": <0>\"መራጭ ይወድቃል ከምራጭ\"</0>,"
+msgstr "\"text\": <0>\"መራጭ ይወድቃል ከምራጭ\"</0>,"
+
+#: src/routes/+page.svelte
+msgid "\"date\": <0/>,"
+msgstr "\"date\": <0/>,"
+
+#: src/routes/+page.svelte
+msgid "\"interpretations\": [<0/>]"
+msgstr "\"interpretations\": [<0/>]"
+
+#: src/routes/+page.svelte
+msgid "<0/> Daily wisdom"
+msgstr "<0/> የዕለት ተዕለት ጥበብ"
+
+#: src/routes/+page.svelte
+msgid "<0/> Offline access"
+msgstr "<0/> ያለ ኢንተርኔት መጠቀም"
+
+#: src/routes/+page.svelte
+msgid "Mobile App"
+msgstr "የስልክ መተግበሪያ"
+
+#: src/routes/+page.svelte
+msgid "The wisdom, in your pocket."
+msgstr "ጥበብ በኪስዎ ውስጥ።"
+
+#: src/routes/+page.svelte
+msgid "Abbabal for Android — daily proverbs, favorites, search, and full offline access. Currently in development."
+msgstr "አባባል ለአንድሮይድ — የዕለት ተዕለት ምሳሌያዊ አነጋገሮች፣ ተወዳጆች፣ ፍለጋ እና ሙሉ በሙሉ ያለ ኢንተርኔት የመጠቀም አማራጭ። በአሁኑ ጊዜ በመገንባት ላይ ይገኛል።"
+
+#: src/routes/+page.svelte
+msgid "See the app page <0/>"
+msgstr "የመተግበሪያውን ገጽ ይመልከቱ <0/>"
