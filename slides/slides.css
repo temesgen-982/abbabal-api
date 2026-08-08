@@ -271,6 +271,64 @@ html, body { background: #e9e7df; }
 .phone .ptab span { font-size: 16px; font-weight: 700; color: var(--muted); }
 .phone .ptab span.on { color: var(--olive); }
 
+/* ---------- Browser screenshot ---------- */
+.shot {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(31, 36, 26, 0.12);
+}
+.shot .shotbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--bg-light);
+  border-bottom: 1px solid var(--border);
+}
+.shot .shotbar .dots { display: flex; gap: 6px; }
+.shot .shotbar .dots i { width: 11px; height: 11px; border-radius: 50%; }
+.shot .shotbar .url {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 14px;
+}
+.shot img { display: block; width: 100%; height: auto; }
+.shot-cap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.shot-cap .rule { flex: 1; height: 1px; background: var(--border); }
+
+/* ---------- Phone screenshot ---------- */
+.phone-shot {
+  width: 300px;
+  flex-shrink: 0;
+  background: #1a1d16;
+  border-radius: 44px;
+  padding: 12px;
+  box-shadow: 0 30px 60px rgba(31, 36, 26, 0.25);
+}
+.phone-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 32px;
+}
+
 /* ---------- Widget mockup ---------- */
 .widget {
   width: 640px;
