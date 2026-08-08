@@ -97,7 +97,7 @@
         class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold active:scale-95 transition-transform disabled:opacity-50 disabled:active:scale-100"
       >
         <RefreshCw size={15} class={syncing ? 'animate-spin' : ''} />
-        {syncing ? 'Syncing' : 'Sync'}
+        {syncing ? 'Syncing…' : 'Sync DB'}
       </button>
     </div>
     {#if syncOk}

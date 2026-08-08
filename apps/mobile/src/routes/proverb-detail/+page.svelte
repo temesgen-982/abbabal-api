@@ -2,7 +2,7 @@
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
   import { Share } from '@capacitor/share';
-  import { Bookmark } from '@lucide/svelte';
+  import { Bookmark, Share2 } from '@lucide/svelte';
   import { api, type Proverb } from '$lib/api';
   import { getSavedState } from '$lib/stores/saved.svelte';
 
@@ -61,6 +61,13 @@
           <span class="text-xs font-semibold text-primary uppercase tracking-widest">Amharic</span>
           <button
             class="ml-auto flex items-center justify-center p-2 -m-2 text-muted-foreground active:text-primary transition-colors"
+            onclick={shareProverb}
+            aria-label="Share proverb"
+          >
+            <Share2 size={19} />
+          </button>
+          <button
+            class="flex items-center justify-center p-2 -m-2 text-muted-foreground active:text-primary transition-colors"
             onclick={() => proverb && saved.toggle(proverb)}
             aria-label={saved.has(proverb.id) ? 'Remove from saved' : 'Save proverb'}
           >
