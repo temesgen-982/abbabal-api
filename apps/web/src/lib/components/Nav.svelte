@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { Leaf, Sun, Moon, Languages } from '@lucide/svelte';
+  import { Sun, Moon, Languages } from '@lucide/svelte';
 
   let dark = $state(false);
 
@@ -26,7 +26,7 @@
 <header class="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
   <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
     <a href={localeHref('/')} class="flex items-center gap-3">
-      <Leaf class="text-primary" size={26} strokeWidth={2} />
+      <img src="/logo.png" alt="Abbabal logo" class="h-8 w-8 rounded-lg object-cover" />
       <div class="leading-tight">
         <div class="text-lg font-bold tracking-tight">Abbabal</div>
         <div class="text-[10px] font-medium text-muted-foreground -mt-0.5">የእውቀት ቃላት</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Abbabal widget (dark) - matches apps/mobile/src/routes/layout.css .dark -->
+    <color name="widget_background">#1a1d16</color>
+    <color name="widget_card">#24281f</color>
+    <color name="widget_foreground">#e8e6dc</color>
+    <color name="widget_muted_foreground">#9a9f8e</color>
+    <color name="widget_border">#2f3329</color>
+    <color name="widget_divider">#2f3329</color>
+    <color name="widget_primary">#a3b87a</color>
+    <color name="widget_primary_foreground">#1a1d16</color>
+</resources>

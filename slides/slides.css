@@ -1,0 +1,363 @@
+/* ============================================================
+   ABBABAL — product release slide deck
+   Shared design system. Each slide is a fixed 1080×1350 frame.
+   Brand tokens mirror apps/mobile/src/routes/layout.css
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Ethiopic:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg-light: #f7f6f2;
+  --bg-dark: #1a1d16;
+  --ink: #1f241a;
+  --muted: #62675d;
+  --olive: #596b38;
+  --olive-deep: #3f4e28;
+  --olive-soft: #a3b87a;
+  --card: #ffffff;
+  --border: #e5e3da;
+  --dark-fg: #e8e6dc;
+  --dark-muted: #9a9f8e;
+  --dark-card: #24281f;
+  --dark-border: #2f3329;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-eth: 'Noto Sans Ethiopic', 'Plus Jakarta Sans', sans-serif;
+  --mono: 'SFMono-Regular', 'Cascadia Code', Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { background: #e9e7df; }
+
+/* ---------- Frame ---------- */
+.slide {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 84px 84px 56px;
+}
+.slide.light { background: var(--bg-light); }
+.slide.dark  { background: var(--bg-dark); color: var(--dark-fg); }
+
+/* corner frame marks (product-release frame) */
+.slide::before, .slide::after {
+  content: '';
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  pointer-events: none;
+  z-index: 5;
+}
+.slide::before { top: 26px; left: 26px; border-top: 3px solid var(--olive); border-left: 3px solid var(--olive); border-radius: 4px 0 0 0; }
+.slide::after  { bottom: 26px; right: 26px; border-bottom: 3px solid var(--olive); border-right: 3px solid var(--olive); border-radius: 0 0 4px 0; }
+.slide.dark::before, .slide.dark::after { border-color: var(--olive-soft); }
+
+/* ambient glow (dark slides) */
+.glow {
+  position: absolute;
+  width: 820px;
+  height: 820px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(163, 184, 122, 0.16) 0%, transparent 62%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Type scale ---------- */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--olive);
+}
+.kicker::before { content: ''; width: 36px; height: 3px; border-radius: 2px; background: var(--olive); }
+.slide.dark .kicker { color: var(--olive-soft); }
+.slide.dark .kicker::before { background: var(--olive-soft); }
+
+.h-am { font-family: var(--font-eth); font-weight: 800; line-height: 1.08; letter-spacing: -0.01em; }
+.h-en { font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
+
+.t-hero-am { font-size: 148px; }
+.t-hero-en { font-size: 56px; }
+.t-am      { font-size: 96px; }
+.t-en      { font-size: 58px; }
+.t-am-md   { font-size: 68px; }
+.t-en-md   { font-size: 44px; }
+.t-am-sm   { font-size: 52px; }
+.t-en-sm   { font-size: 34px; }
+.t-lg      { font-size: 38px; }
+.t-body    { font-size: 30px; line-height: 1.5; }
+.t-sm      { font-size: 23px; line-height: 1.45; }
+.t-xs      { font-size: 19px; line-height: 1.4; }
+
+.muted { color: var(--muted); }
+.slide.dark .muted { color: var(--dark-muted); }
+.olive { color: var(--olive); }
+.slide.dark .olive { color: var(--olive-soft); }
+.fw-6 { font-weight: 600; }
+.fw-7 { font-weight: 700; }
+.fw-8 { font-weight: 800; }
+
+/* ---------- Layout helpers ---------- */
+.row    { display: flex; }
+.col    { display: flex; flex-direction: column; }
+.center { align-items: center; }
+.mid    { justify-content: center; }
+.between{ justify-content: space-between; }
+.wrap   { flex-wrap: wrap; }
+.grow   { flex: 1; }
+.gap-s  { gap: 12px; }
+.gap-m  { gap: 22px; }
+.gap-l  { gap: 36px; }
+.gap-xl { gap: 54px; }
+.mt-a   { margin-top: auto; }
+.mt-s   { margin-top: 18px; }
+.mt-m   { margin-top: 34px; }
+.mt-l   { margin-top: 54px; }
+.mb-s   { margin-bottom: 18px; }
+.mb-m   { margin-bottom: 34px; }
+
+/* ---------- Brand ---------- */
+.brand-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--olive);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-eth);
+  font-weight: 800;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.slide.dark .brand-badge { background: var(--olive-soft); color: var(--bg-dark); }
+
+/* ---------- Cards & chips ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 30px 34px;
+}
+.slide.dark .card { background: var(--dark-card); border-color: var(--dark-border); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 21px;
+  font-weight: 700;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--ink);
+}
+.slide.dark .chip { background: var(--dark-card); border-color: var(--dark-border); color: var(--dark-fg); }
+.chip.olive  { background: var(--olive); border-color: var(--olive); color: #fff; }
+.slide.dark .chip.olive { background: var(--olive-soft); border-color: var(--olive-soft); color: var(--bg-dark); }
+.chip.ghost  { background: transparent; }
+
+/* ---------- Footer ---------- */
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 34px;
+  border-top: 1px solid var(--border);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.slide.dark .footer { border-color: var(--dark-border); color: var(--dark-muted); }
+.footer .brand { display: flex; align-items: center; gap: 12px; }
+.footer .page { font-variant-numeric: tabular-nums; letter-spacing: 0.08em; }
+
+/* ---------- Stats ---------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 58px 48px;
+  margin: auto 0; /* centers the block between header and footer */
+  position: relative;
+  z-index: 1;
+  align-items: start;
+}
+.stat-num {
+  font-size: 148px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: var(--olive);
+  font-variant-numeric: tabular-nums;
+}
+.slide.dark .stat-num { color: var(--olive-soft); }
+.stat-label { font-size: 22px; font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
+.slide.dark .stat-label { color: var(--dark-muted); }
+
+/* ---------- Flow diagram ---------- */
+.flow { display: flex; align-items: center; gap: 18px; }
+.node {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 26px 26px;
+  text-align: center;
+  flex: 1;
+}
+.slide.dark .node { background: var(--dark-card); border-color: var(--dark-border); }
+.node .n-am { font-family: var(--font-eth); font-weight: 800; font-size: 30px; color: var(--olive); }
+.slide.dark .node .n-am { color: var(--olive-soft); }
+.node .n-en { font-size: 20px; font-weight: 700; margin-top: 6px; color: var(--ink); }
+.slide.dark .node .n-en { color: var(--dark-fg); }
+.node .n-sub { font-size: 16px; font-weight: 500; color: var(--muted); margin-top: 4px; }
+.slide.dark .node .n-sub { color: var(--dark-muted); }
+.arrow { font-size: 44px; color: var(--olive); font-weight: 300; flex-shrink: 0; }
+.slide.dark .arrow { color: var(--olive-soft); }
+
+/* ---------- Mono / code ---------- */
+.mono {
+  font-family: var(--mono);
+  font-size: 25px;
+  letter-spacing: -0.01em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 24px;
+  color: var(--ink);
+}
+.slide.dark .mono { background: var(--dark-card); border-color: var(--dark-border); color: var(--dark-fg); }
+.mono .cm { color: var(--olive); font-weight: 700; }
+.slide.dark .mono .cm { color: var(--olive-soft); }
+
+/* git-log rows */
+.gitrow { display: flex; align-items: center; gap: 18px; }
+.gitrow .dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--olive); flex-shrink: 0;
+}
+.slide.dark .gitrow .dot { background: var(--olive-soft); }
+.gitrow .sha { font-family: var(--mono); font-size: 21px; color: var(--muted); width: 96px; flex-shrink: 0; }
+.slide.dark .gitrow .sha { color: var(--dark-muted); }
+
+/* ---------- Phone mockup ---------- */
+.phone {
+  width: 310px;
+  background: var(--bg-light);
+  border-radius: 46px;
+  border: 10px solid var(--ink);
+  overflow: hidden;
+  box-shadow: 0 34px 70px rgba(31, 36, 26, 0.35);
+}
+.phone .statusbar { display: flex; justify-content: space-between; padding: 16px 22px 8px; font-size: 15px; font-weight: 700; color: var(--ink); }
+.phone .screen { padding: 8px 18px 20px; }
+.phone .phead { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.phone .ptitle { font-family: var(--font-eth); font-size: 30px; font-weight: 800; color: var(--ink); }
+.phone .pcard { background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 18px; margin-top: 14px; }
+.phone .pcard .ptext { font-family: var(--font-eth); font-size: 24px; font-weight: 700; line-height: 1.5; color: var(--ink); }
+.phone .pcard .ptrans { font-size: 15px; color: var(--muted); margin-top: 10px; font-weight: 600; }
+.phone .ptab { display: flex; justify-content: space-around; padding: 14px 0 6px; border-top: 1px solid var(--border); margin-top: 16px; }
+.phone .ptab span { font-size: 16px; font-weight: 700; color: var(--muted); }
+.phone .ptab span.on { color: var(--olive); }
+
+/* ---------- Browser screenshot ---------- */
+.shot {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(31, 36, 26, 0.12);
+}
+.shot .shotbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: var(--bg-light);
+  border-bottom: 1px solid var(--border);
+}
+.shot .shotbar .dots { display: flex; gap: 6px; }
+.shot .shotbar .dots i { width: 11px; height: 11px; border-radius: 50%; }
+.shot .shotbar .url {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 14px;
+}
+.shot img { display: block; width: 100%; height: auto; }
+.shot-cap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.shot-cap .rule { flex: 1; height: 1px; background: var(--border); }
+
+/* ---------- Phone screenshot ---------- */
+.phone-shot {
+  width: 300px;
+  flex-shrink: 0;
+  background: #1a1d16;
+  border-radius: 44px;
+  padding: 12px;
+  box-shadow: 0 30px 60px rgba(31, 36, 26, 0.25);
+}
+.phone-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 32px;
+}
+
+/* ---------- Widget mockup ---------- */
+.widget {
+  width: 640px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 34px 38px;
+  box-shadow: 0 30px 60px rgba(31, 36, 26, 0.14);
+}
+.widget .wtop { display: flex; justify-content: space-between; align-items: center; }
+.widget .wbrand { font-family: var(--font-eth); font-size: 26px; font-weight: 800; color: var(--olive); }
+.widget .wrefresh { font-size: 24px; color: var(--olive); }
+.widget .wtext { font-family: var(--font-eth); font-size: 38px; font-weight: 700; line-height: 1.45; color: var(--ink); margin-top: 20px; }
+.widget .wdiv { height: 1px; background: var(--border); margin: 24px 0; }
+.widget .wtrans { font-size: 21px; color: var(--muted); font-weight: 600; }
+
+/* ---------- Strike (scale-down slide) ---------- */
+.strike { text-decoration: line-through; text-decoration-thickness: 4px; text-decoration-color: #c0392b; opacity: 0.55; }
+
+/* ---------- CTA ---------- */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 38px;
+  border-radius: 999px;
+  background: var(--olive);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+}
+.slide.dark .cta { background: var(--olive-soft); color: var(--bg-dark); }

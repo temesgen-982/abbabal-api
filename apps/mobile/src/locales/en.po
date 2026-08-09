@@ -1,0 +1,331 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+"Source-Language: en\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/routes/+layout.svelte
+msgid "Home"
+msgstr "Home"
+
+#: src/routes/+layout.svelte
+#: src/routes/+layout.svelte
+msgid "Search"
+msgstr "Search"
+
+#: src/routes/+layout.svelte
+#: src/routes/+layout.svelte
+msgid "Random"
+msgstr "Random"
+
+#: src/routes/+layout.svelte
+#: src/routes/+layout.svelte
+msgid "Saved"
+msgstr "Saved"
+
+#: src/routes/+layout.svelte
+#: src/routes/+layout.svelte
+msgid "Profile"
+msgstr "Profile"
+
+#: src/routes/+layout.svelte
+#: src/routes/+layout.svelte
+#: src/routes/profile/+page.svelte
+#: src/routes/profile/+page.svelte
+msgid "አባባል"
+msgstr "አባባል"
+
+#: src/routes/+layout.svelte
+#: src/routes/profile/+page.svelte
+msgid "Amharic Proverbs"
+msgstr "Amharic Proverbs"
+
+#: src/routes/+layout.svelte
+#: src/routes/+page.svelte
+#: src/routes/random/+page.svelte
+msgid "Proverb"
+msgstr "Proverb"
+
+#: src/routes/+layout.svelte
+#: src/routes/+layout.svelte
+msgid "Close menu"
+msgstr "Close menu"
+
+#: src/routes/+page.svelte
+msgid "Failed to load proverbs. Please try again."
+msgstr "Failed to load proverbs. Please try again."
+
+#: src/routes/+page.svelte
+#: src/routes/+page.svelte
+#: src/routes/random/+page.svelte
+msgid "Retry"
+msgstr "Retry"
+
+#~ msgid "Enter"
+#~ msgstr "Enter"
+
+#: src/routes/+page.svelte
+#: src/routes/proverb-detail/+page.svelte
+#: src/routes/saved/+page.svelte
+#: src/routes/search/+page.svelte
+msgid "Remove from saved"
+msgstr "Remove from saved"
+
+#: src/routes/+page.svelte
+#: src/routes/proverb-detail/+page.svelte
+#: src/routes/search/+page.svelte
+msgid "Save proverb"
+msgstr "Save proverb"
+
+#. 0: total
+#: src/routes/+page.svelte
+msgid "You've seen all {0} proverbs 🎉"
+msgstr "You've seen all {0} proverbs 🎉"
+
+#: src/routes/+page.svelte
+msgid "Back to top"
+msgstr "Back to top"
+
+#: src/routes/profile/+page.svelte
+msgid "Remove all saved proverbs?"
+msgstr "Remove all saved proverbs?"
+
+#: src/routes/profile/+page.svelte
+msgid "አባባል — Amharic Proverbs. Preserve wisdom. Share culture."
+msgstr "አባባል — Amharic Proverbs. Preserve wisdom. Share culture."
+
+#: src/routes/profile/+page.svelte
+msgid "Share Abbabal"
+msgstr "Share Abbabal"
+
+#. 0: appVersion
+#: src/routes/profile/+page.svelte
+msgid "Version {0}"
+msgstr "Version {0}"
+
+#: src/routes/profile/+page.svelte
+msgid "Saved proverbs"
+msgstr "Saved proverbs"
+
+#: src/routes/profile/+page.svelte
+msgid "Share the app"
+msgstr "Share the app"
+
+#: src/routes/profile/+page.svelte
+msgid "Clear saved proverbs"
+msgstr "Clear saved proverbs"
+
+#: src/routes/profile/+page.svelte
+msgid "<0/> Preserve wisdom. Share culture."
+msgstr "<0/> Preserve wisdom. Share culture."
+
+#. 0: proverb.text; 1: translation
+#. 0: p.text; 1: translation
+#: src/routes/proverb-detail/+page.svelte
+#: src/routes/random/+page.svelte
+msgid ""
+"{0}\n"
+"\n"
+"\"{1}\"\n"
+"\n"
+"via አባባል"
+msgstr ""
+"{0}\n"
+"\n"
+"\"{1}\"\n"
+"\n"
+"via አባባል"
+
+#. 0: proverb.text
+#. 0: p.text
+#: src/routes/proverb-detail/+page.svelte
+#: src/routes/random/+page.svelte
+msgid ""
+"{0}\n"
+"\n"
+"via አባባል"
+msgstr ""
+"{0}\n"
+"\n"
+"via አባባል"
+
+#: src/routes/proverb-detail/+page.svelte
+msgid "Failed to load proverb."
+msgstr "Failed to load proverb."
+
+#: src/routes/+layout.svelte
+#: src/routes/proverb-detail/+page.svelte
+msgid "Go back"
+msgstr "Go back"
+
+#: src/routes/proverb-detail/+page.svelte
+msgid "Amharic"
+msgstr "Amharic"
+
+#: src/routes/proverb-detail/+page.svelte
+#: src/routes/random/+page.svelte
+msgid "Translation"
+msgstr "Translation"
+
+#: src/routes/+page.svelte
+#: src/routes/proverb-detail/+page.svelte
+#: src/routes/random/+page.svelte
+msgid "Meaning"
+msgstr "Meaning"
+
+#: src/routes/proverb-detail/+page.svelte
+msgid "ትርጉም"
+msgstr "ትርጉም"
+
+#: src/routes/random/+page.svelte
+msgid "Failed to load proverb. Please try again."
+msgstr "Failed to load proverb. Please try again."
+
+#: src/routes/random/+page.svelte
+msgid "<0/> Share"
+msgstr "<0/> Share"
+
+#: src/routes/random/+page.svelte
+msgid "<0/> New Proverb"
+msgstr "<0/> New Proverb"
+
+#: src/routes/saved/+page.svelte
+msgid "No saved proverbs"
+msgstr "No saved proverbs"
+
+#: src/routes/saved/+page.svelte
+msgid "Tap the bookmark on a proverb to save it here for offline reading."
+msgstr "Tap the bookmark on a proverb to save it here for offline reading."
+
+#: src/routes/saved/+page.svelte
+msgid "Explore proverbs"
+msgstr "Explore proverbs"
+
+#. 0: saved.items.length
+#: src/routes/saved/+page.svelte
+msgid "{0} saved"
+msgstr "{0} saved"
+
+#: src/routes/search/+page.svelte
+msgid "Search failed. Please try again."
+msgstr "Search failed. Please try again."
+
+#: src/routes/search/+page.svelte
+msgid "Search Amharic or English..."
+msgstr "Search Amharic or English..."
+
+#: src/routes/search/+page.svelte
+msgid "No results"
+msgstr "No results"
+
+#: src/routes/search/+page.svelte
+msgid "Try searching in Amharic or English"
+msgstr "Try searching in Amharic or English"
+
+#. 0: store.results.length
+#: src/routes/search/+page.svelte
+msgid "{0} results"
+msgstr "{0} results"
+
+#: src/routes/search/+page.svelte
+msgid "Search proverbs"
+msgstr "Search proverbs"
+
+#: src/routes/search/+page.svelte
+msgid "Search in Amharic or English"
+msgstr "Search in Amharic or English"
+
+#: src/routes/+layout.svelte
+msgid "Open menu"
+msgstr "Open menu"
+
+#: src/routes/+layout.svelte
+msgid "Switch language"
+msgstr "Switch language"
+
+#: src/routes/+layout.svelte
+msgid "Toggle theme"
+msgstr "Toggle theme"
+
+#: src/routes/+layout.svelte
+msgid "Abbabal"
+msgstr "Abbabal"
+
+#: src/routes/+layout.svelte
+msgid "የእውቀት ቃላት"
+msgstr "የእውቀት ቃላት"
+
+#: src/routes/profile/+page.svelte
+#: src/routes/profile/+page.svelte
+msgid "Sync failed. Check your connection."
+msgstr "Sync failed. Check your connection."
+
+#. 0: lastSyncLabel
+#: src/routes/profile/+page.svelte
+msgid "Last updated: {0}"
+msgstr "Last updated: {0}"
+
+#: src/routes/profile/+page.svelte
+msgid "Not synced yet — proverbs from the bundled database."
+msgstr "Not synced yet — proverbs from the bundled database."
+
+#: src/routes/profile/+page.svelte
+msgid "Offline database"
+msgstr "Offline database"
+
+#: src/routes/profile/+page.svelte
+msgid "Syncing…"
+msgstr "Syncing…"
+
+#: src/routes/profile/+page.svelte
+msgid "Sync DB"
+msgstr "Sync DB"
+
+#: src/routes/profile/+page.svelte
+msgid "Database updated successfully."
+msgstr "Database updated successfully."
+
+#: src/routes/+layout.svelte
+#: src/routes/profile/+page.svelte
+msgid "Abbabal logo"
+msgstr "Abbabal logo"
+
+#: src/lib/components/DataSource.svelte
+msgid "Data Source"
+msgstr "Data Source"
+
+#: src/lib/components/DataSource.svelte
+msgid "አማርኛ አባባሎች Telegram channel logo"
+msgstr "አማርኛ አባባሎች Telegram channel logo"
+
+#: src/lib/components/DataSource.svelte
+msgid "አማርኛ አባባሎች"
+msgstr "አማርኛ አባባሎች"
+
+#: src/lib/components/DataSource.svelte
+msgid "9,000+ subscribers"
+msgstr "9,000+ subscribers"
+
+#: src/lib/components/DataSource.svelte
+msgid "<0/> t.me/ababaloch"
+msgstr "<0/> t.me/ababaloch"
+
+#: src/lib/components/DataSource.svelte
+msgid "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በቀን ሰብስቦ ያቀርባል።"
+msgstr "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በቀን ሰብስቦ ያቀርባል።"
+
+#: src/lib/components/DataSource.svelte
+msgid "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
+msgstr "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
+
+#: src/routes/proverb-detail/+page.svelte
+msgid "Share proverb"
+msgstr "Share proverb"
+
+#. 0: proverbs.length; 1: total
+#: src/routes/+page.svelte
+msgid "Loaded {0} of {1} proverbs"
+msgstr "Loaded {0} of {1} proverbs"

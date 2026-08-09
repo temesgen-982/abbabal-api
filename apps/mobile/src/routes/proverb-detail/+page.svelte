@@ -2,7 +2,11 @@
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
   import { Share } from '@capacitor/share';
+  import { Bookmark, Share2 } from '@lucide/svelte';
   import { api, type Proverb } from '$lib/api';
+  import { getSavedState } from '$lib/stores/saved.svelte';
+
+  const saved = getSavedState();
 
   let proverb = $state<Proverb | null>(null);
   let loading = $state(true);
@@ -51,13 +55,27 @@
     </div>
 
   {:else if proverb}
-    <div class="bg-card rounded-3xl p-6 shadow-sm border border-border flex flex-col gap-4">
-      <div class="flex items-center gap-2">
-        <div class="w-2 h-2 rounded-full bg-primary"></div>
-        <span class="text-xs font-semibold text-primary uppercase tracking-widest">Amharic</span>
+      <div class="bg-card rounded-3xl p-6 shadow-sm border border-border flex flex-col gap-4">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-primary"></div>
+          <span class="text-xs font-semibold text-primary uppercase tracking-widest">Amharic</span>
+          <button
+            class="ml-auto flex items-center justify-center p-2 -m-2 text-muted-foreground active:text-primary transition-colors"
+            onclick={shareProverb}
+            aria-label="Share proverb"
+          >
+            <Share2 size={19} />
+          </button>
+          <button
+            class="flex items-center justify-center p-2 -m-2 text-muted-foreground active:text-primary transition-colors"
+            onclick={() => proverb && saved.toggle(proverb)}
+            aria-label={saved.has(proverb.id) ? 'Remove from saved' : 'Save proverb'}
+          >
+            <Bookmark size={20} class={saved.has(proverb.id) ? 'text-primary fill-primary' : ''} />
+          </button>
+        </div>
+        <p class="font-ethiopic text-2xl font-bold leading-relaxed">{proverb.text}</p>
       </div>
-      <p class="text-2xl font-bold leading-relaxed">{proverb.text}</p>
-    </div>
 
     {#each getInterpretations('translation', 'en') as interp}
       <div class="bg-card rounded-2xl p-5 border border-border flex flex-col gap-1">

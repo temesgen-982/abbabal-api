@@ -1,5 +1,6 @@
 <script lang="ts">
   import { BookOpen, Download, Database, Heart, Shield, Code, Leaf, Users, ArrowRight, ExternalLink } from '@lucide/svelte';
+  import DataSource from '$lib/components/DataSource.svelte';
 </script>
 
 <div class="mx-auto max-w-7xl px-6">
@@ -42,7 +43,7 @@
   <div class="mb-12 grid grid-cols-2 gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm md:grid-cols-4">
     {#each [
       { icon: BookOpen, value: '7,000+', label: 'Proverbs and growing' },
-      { icon: Heart, value: 'Open', label: 'for everyone MIT Licensed' },
+      { icon: Heart, value: 'Open', label: 'for everyone CC BY 4.0' },
       { icon: Database, value: '2', label: 'Core Tables Proverbs & Interpretations' },
       { icon: Leaf, value: 'One', label: 'Mission: Preserve wisdom. Share culture.' },
     ] as stat}
@@ -97,13 +98,18 @@
     </a>
   </div>
 
+  <!-- Data Source -->
+  <section class="mb-12 grid gap-8 md:grid-cols-2">
+    <DataSource />
+  </section>
+
   <!-- What Makes Abbabal Special -->
   <section class="mb-12">
     <h3 class="mb-5 text-2xl font-extrabold">What Makes Abbabal Special</h3>
     <div class="grid gap-5 md:grid-cols-4">
       {#each [
         { icon: Shield, title: 'Authentic & Verified', desc: 'Collected from elders, books, archives, and everyday life. Reviewed and cleaned for accuracy and authenticity.' },
-        { icon: Heart, title: 'Open & Free', desc: 'Open data under the MIT License. Use it in your projects, research, apps, and products — freely.' },
+        { icon: Heart, title: 'Open & Free', desc: 'Open data under CC BY 4.0. Use it in your projects, research, apps, and products — freely.' },
         { icon: Code, title: 'Developer Friendly', desc: 'Well-structured data, a simple REST API, and clear docs to help you build something meaningful.' },
         { icon: Leaf, title: 'Built for the Future', desc: 'We\'re building tools and resources that keep Amharic wisdom alive in the digital age.' },
       ] as feature}

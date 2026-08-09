@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbabal — The Pipeline</title>
+<link rel="stylesheet" href="slides.css">
+</head>
+<body>
+<div class="slide light">
+  <div class="kicker">The loop</div>
+  <h1 class="h-en t-en" style="margin-top:8px;">From Telegram to <span class="olive">your pocket.</span></h1>
+  <p class="h-am t-am-sm muted" style="margin-top:20px;">ከቴሌግራም ወደ ኪስዎ</p>
+
+  <p class="t-body" style="margin-top:44px; max-width:880px;">
+    A fully automated pipeline runs every day: new proverbs arrive,
+    get enriched by AI, pass quality gates, and ship to every client —
+    with the git repo as the single source of truth.
+  </p>
+
+  <div class="flow" style="margin-top:70px;">
+    <div class="node"><div class="n-am">መልእክት</div><div class="n-en">Telegram</div><div class="n-sub">community feed</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="n-am">መረጃ</div><div class="n-en">SQLite</div><div class="n-sub">one file</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="n-am">ሞዴል</div><div class="n-en">Gemini</div><div class="n-sub">translate + explain</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="n-am">ማጽዳት</div><div class="n-en">Curated</div><div class="n-sub">confidence · review</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="n-am">ማኅደር</div><div class="n-en">Git</div><div class="n-sub">committed</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="n-am">ማጋራት</div><div class="n-en">Shipped</div><div class="n-sub">API · web · app</div></div>
+  </div>
+
+  <div class="card" style="margin-top:64px;">
+    <p class="t-lg fw-7">The result?</p>
+    <p class="t-sm muted" style="margin-top:10px;">
+      The corpus grows and improves while you sleep — and every app is always
+      one sync away from the freshest version.
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <div class="brand-badge" style="width:32px;height:32px;font-size:18px;border-radius:9px;">አ</div>
+      <span>አባባል · ABBABAL</span>
+    </div>
+    <span class="page">04 / 14</span>
+  </div>
+</div>
+</body>
+</html>

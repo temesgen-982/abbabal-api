@@ -46,7 +46,7 @@
               <span class="flex items-center gap-1.5"><Heart size={12} class="text-primary" /> {data.proverbs ? Number(data.proverbs).toLocaleString() : '7,000+'} proverbs</span>
               <span class="flex items-center gap-1.5"><Database size={12} class="text-primary" /> 2 tables</span>
               <span class="flex items-center gap-1.5"><BookOpen size={12} class="text-primary" /> UTF-8 encoded</span>
-              <span class="flex items-center gap-1.5"><Heart size={12} class="text-primary" /> MIT License</span>
+              <span class="flex items-center gap-1.5"><Heart size={12} class="text-primary" /> CC BY 4.0</span>
             </div>
           </div>
         </div>
@@ -227,7 +227,7 @@
         {#each [
           { icon: BookOpen, value: data.proverbs ? Number(data.proverbs).toLocaleString() : '7,000+', label: 'Proverbs and growing' },
           { icon: Database, value: '2', label: 'Tables Simple & efficient' },
-          { icon: Heart, value: '100%', label: 'Open Data MIT Licensed' },
+          { icon: Heart, value: '100%', label: 'Open Data CC BY 4.0' },
         ] as stat}
           <div class="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm">
             <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-muted text-primary">

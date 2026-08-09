@@ -2,18 +2,26 @@
 	"name": "@abbabal/mobile",
 	"private": true,
 	"version": "0.0.1",
+	"license": "MIT",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"db:bundle": "node scripts/bundle-db.mjs",
+		"build": "node scripts/bundle-db.mjs && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
+		"assets:generate": "capacitor-assets generate --android --assetPath ../../packages/shared/assets --iconBackgroundColor '#ffffff'",
+		"i18n": "wuchale",
+		"android:sync": "cap sync android",
+		"android:run": "pnpm build && cap run android",
+		"android:live": "cap run android --live-reload --port 5173 --forwardPorts 5173:5173",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@capacitor/assets": "^3.0.5",
 		"@capacitor/cli": "^8.3.4",
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
@@ -37,11 +45,14 @@
 		"vite": "^8.0.7"
 	},
 	"dependencies": {
+		"@capacitor-community/sqlite": "^8.1.0",
 		"@capacitor/android": "^8.3.4",
 		"@capacitor/app": "^8.1.0",
 		"@capacitor/core": "^8.3.4",
 		"@capacitor/share": "^8.0.1",
 		"@fontsource-variable/inter": "^5.2.8",
-		"@lucide/svelte": "^1.8.0"
+		"@lucide/svelte": "^1.8.0",
+		"@wuchale/svelte": "^0.20.5",
+		"wuchale": "^0.25.6"
 	}
 }

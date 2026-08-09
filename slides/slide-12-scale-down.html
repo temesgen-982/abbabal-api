@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbabal — The Scale-Down</title>
+<link rel="stylesheet" href="slides.css">
+</head>
+<body>
+<div class="slide light">
+  <div class="kicker">The refactor</div>
+  <h1 class="h-en t-en" style="margin-top:8px;">The best feature was a <span class="olive">deletion.</span></h1>
+  <p class="h-am t-am-sm muted" style="margin-top:20px;">ቀላል ይሻላል</p>
+
+  <p class="t-body" style="margin-top:40px; max-width:880px;">
+    We cut PostgreSQL, an ORM, JWT auth and a whole dashboard. The API now
+    runs on <span class="fw-7">Node's built-in SQLite</span> — one file,
+    zero external services, and perfectly in sync with the mobile app.
+  </p>
+
+  <div class="row center gap-m" style="margin-top:64px;">
+    <div class="card strike" style="padding:26px 36px; text-align:center;">
+      <div class="t-en-sm fw-8">PostgreSQL</div>
+      <div class="t-xs muted" style="margin-top:6px;">hosted database</div>
+    </div>
+    <div class="card strike" style="padding:26px 36px; text-align:center;">
+      <div class="t-en-sm fw-8">Drizzle ORM</div>
+      <div class="t-xs muted" style="margin-top:6px;">migrations</div>
+    </div>
+    <div class="card strike" style="padding:26px 36px; text-align:center;">
+      <div class="t-en-sm fw-8">JWT auth</div>
+      <div class="t-xs muted" style="margin-top:6px;">roles & guards</div>
+    </div>
+    <div class="arrow" style="font-size:52px;">→</div>
+    <div class="card" style="padding:26px 36px; text-align:center; border-color:var(--olive);">
+      <div class="t-en-sm fw-8 olive">node:sqlite</div>
+      <div class="t-xs muted" style="margin-top:6px;">built-in · zero deps</div>
+    </div>
+  </div>
+
+  <div class="row wrap gap-m" style="margin-top:52px;">
+    <span class="chip olive">1 file</span>
+    <span class="chip olive">0 services to host</span>
+    <span class="chip olive">0 auth to maintain</span>
+    <span class="chip olive">100% in sync with the app</span>
+  </div>
+
+  <div class="footer">
+    <div class="brand">
+      <div class="brand-badge" style="width:32px;height:32px;font-size:18px;border-radius:9px;">አ</div>
+      <span>አባባል · ABBABAL</span>
+    </div>
+    <span class="page">12 / 14</span>
+  </div>
+</div>
+</body>
+</html>

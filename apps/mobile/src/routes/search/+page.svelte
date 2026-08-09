@@ -1,10 +1,13 @@
 <script lang="ts">
-  import { Search, X } from '@lucide/svelte';
+  import { Search, X, Bookmark } from '@lucide/svelte';
   import { goto } from '$app/navigation';
   import { api, type Proverb } from '$lib/api';
+  import { accentFor } from '$lib/proverb-accent';
   import { getSearchState } from '$lib/stores/search.svelte';
+  import { getSavedState } from '$lib/stores/saved.svelte';
 
   const store = getSearchState();
+  const saved = getSavedState();
 
   let loading = $state(false);
   let error = $state('');
@@ -56,7 +59,7 @@
       placeholder="Search Amharic or English..."
       bind:value={store.query}
       oninput={onInput}
-      class="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+      class="search-input flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
     />
     {#if store.query}
       <button onclick={clear} class="text-muted-foreground">
@@ -89,25 +92,31 @@
     <div class="flex flex-col gap-3">
       {#each store.results as proverb, i (proverb.id)}
         {@const translation = getTranslation(proverb)}
-        {@const colors = ['bg-primary', 'bg-amber-700', 'bg-emerald-700', 'bg-stone-500']}
-        {@const color = colors[i % colors.length]}
-        <button
-          class="bg-card rounded-2xl p-4 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
+        {@const accent = accentFor(i)}
+        <div
+          role="button"
+          tabindex="0"
+          style="border-left: 4px solid {accent.strong}"
+          class="relative bg-card rounded-r-2xl p-4 pl-5 flex gap-3 shadow-sm border border-border active:scale-[0.99] transition-transform text-left w-full"
           onclick={() => goto(`/proverb-detail?id=${proverb.id}`)}
+          onkeydown={(e) => e.key === /* @wc-ignore */ 'Enter' && goto(`/proverb-detail?id=${proverb.id}`)}
         >
-          <div class="shrink-0 mt-1">
-            <div class="{color} w-6 h-8 rounded-sm flex items-end justify-center pb-1">
-              <div class="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-white/40"></div>
-            </div>
-          </div>
           <div class="flex-1 min-w-0">
             <p class="text-base font-semibold leading-relaxed text-foreground">{proverb.text}</p>
             {#if translation}
               <p class="text-sm text-muted-foreground italic mt-1">{translation}</p>
             {/if}
           </div>
-          <div class="shrink-0 flex items-center text-muted-foreground">›</div>
-        </button>
+          <div class="shrink-0 flex items-center">
+            <button
+              class="flex items-center justify-center p-2 -m-1 text-muted-foreground active:text-primary transition-colors"
+              onclick={(e) => { e.stopPropagation(); saved.toggle(proverb); }}
+              aria-label={saved.has(proverb.id) ? 'Remove from saved' : 'Save proverb'}
+            >
+              <Bookmark size={18} class={saved.has(proverb.id) ? 'text-primary fill-primary' : ''} />
+            </button>
+          </div>
+        </div>
       {/each}
     </div>
 
@@ -120,3 +129,12 @@
   {/if}
 
 </div>
+
+<style>
+  /* Hide the native WebKit clear (x) button — the app renders its own */
+  .search-input::-webkit-search-cancel-button,
+  .search-input::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+</style>
