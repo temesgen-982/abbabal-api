@@ -2,7 +2,7 @@ name: Process Proverbs with AI
 
 on:
   schedule:
-    - cron: "0 0,2,5,7,10,13,16,18,21,23 * * *"
+    - cron: "0 5,13,21 * * *"
   workflow_dispatch:
 
 concurrency:
