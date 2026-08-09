@@ -35,7 +35,6 @@ msgstr "Profile"
 #: src/routes/+layout.svelte
 #: src/routes/profile/+page.svelte
 #: src/routes/profile/+page.svelte
-#: src/routes/profile/+page.svelte
 msgid "አባባል"
 msgstr "አባባል"
 
@@ -45,6 +44,7 @@ msgid "Amharic Proverbs"
 msgstr "Amharic Proverbs"
 
 #: src/routes/+layout.svelte
+#: src/routes/+page.svelte
 #: src/routes/random/+page.svelte
 msgid "Proverb"
 msgstr "Proverb"
@@ -170,6 +170,7 @@ msgstr "Amharic"
 msgid "Translation"
 msgstr "Translation"
 
+#: src/routes/+page.svelte
 #: src/routes/proverb-detail/+page.svelte
 #: src/routes/random/+page.svelte
 msgid "Meaning"
@@ -286,3 +287,45 @@ msgstr "Sync DB"
 #: src/routes/profile/+page.svelte
 msgid "Database updated successfully."
 msgstr "Database updated successfully."
+
+#: src/routes/+layout.svelte
+#: src/routes/profile/+page.svelte
+msgid "Abbabal logo"
+msgstr "Abbabal logo"
+
+#: src/lib/components/DataSource.svelte
+msgid "Data Source"
+msgstr "Data Source"
+
+#: src/lib/components/DataSource.svelte
+msgid "አማርኛ አባባሎች Telegram channel logo"
+msgstr "አማርኛ አባባሎች Telegram channel logo"
+
+#: src/lib/components/DataSource.svelte
+msgid "አማርኛ አባባሎች"
+msgstr "አማርኛ አባባሎች"
+
+#: src/lib/components/DataSource.svelte
+msgid "9,000+ subscribers"
+msgstr "9,000+ subscribers"
+
+#: src/lib/components/DataSource.svelte
+msgid "<0/> t.me/ababaloch"
+msgstr "<0/> t.me/ababaloch"
+
+#: src/lib/components/DataSource.svelte
+msgid "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በቀን ሰብስቦ ያቀርባል።"
+msgstr "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በቀን ሰብስቦ ያቀርባል።"
+
+#: src/lib/components/DataSource.svelte
+msgid "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
+msgstr "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
+
+#: src/routes/proverb-detail/+page.svelte
+msgid "Share proverb"
+msgstr "Share proverb"
+
+#. 0: proverbs.length; 1: total
+#: src/routes/+page.svelte
+msgid "Loaded {0} of {1} proverbs"
+msgstr "Loaded {0} of {1} proverbs"

@@ -128,9 +128,8 @@ msgstr "በየዕለቱ እያደገ"
 msgid "New proverbs added regularly from our community."
 msgstr "ከማህበረሰባችን አዳዲስ ምሳሌዎች በየጊዜው ይጨምራሉ።"
 
-#: src/lib/components/Footer.svelte
-msgid "ሀ ሁ ሂ ሃ ሄ ህ ሆ"
-msgstr "ሀ ሁ ሂ ሃ ሄ ህ ሆ"
+#~ msgid "ሀ ሁ ሂ ሃ ሄ ህ ሆ"
+#~ msgstr "ሀ ሁ ሂ ሃ ሄ ህ ሆ"
 
 #: src/lib/components/Footer.svelte
 #: src/lib/components/Nav.svelte
@@ -1458,3 +1457,37 @@ msgstr "የአማርኛ ምሳሌያዊ አነጋገርና ትርጉሙ ያለ�
 #: src/routes/+page.svelte
 msgid "Today's proverb <0/>"
 msgstr "የዕለቱ ምሳሌያዊ አነጋገር <0/>"
+
+#: src/lib/components/Footer.svelte
+#: src/lib/components/Nav.svelte
+msgid "Abbabal logo"
+msgstr "የአባባል አርማ"
+
+#: src/lib/components/DataSource.svelte
+msgid "Data Source"
+msgstr "የመረጃ ምንጭ"
+
+#: src/lib/components/DataSource.svelte
+msgid "አማርኛ አባባሎች Telegram channel logo"
+msgstr "የአማርኛ አባባሎች የቴሌግራም ቻናል አርማ"
+
+#: src/lib/components/DataSource.svelte
+msgid "አማርኛ አባባሎች"
+msgstr "አማርኛ አባባሎች"
+
+#: src/lib/components/DataSource.svelte
+msgid "9,000+ subscribers"
+msgstr "9,000+ ተመዝጋቢዎች"
+
+#: src/lib/components/DataSource.svelte
+msgid "<0/> t.me/ababaloch"
+msgstr "<0/> t.me/ababaloch"
+
+#: src/lib/components/DataSource.svelte
+msgid "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በቀን ሰብስቦ ያቀርባል።"
+msgstr "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በቀን ሰብስቦ ያቀርባል።"
+
+#: src/lib/components/DataSource.svelte
+msgid "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
+msgstr "አባባል የተሰራው በ<0>አማርኛ አባባሎች</0> የቴሌግራም ቻናል በተሰበሰቡ እና ከተጋሩ አባባሎች በመነሳት ነው። ባህላዊ ጥበባችንን ለመጠበቅ እና ለማካፈል ላደረጉት ጥረት ከልብ እናመሰግናለን። <1/>"
+��መሰግናለን። <1/>"
