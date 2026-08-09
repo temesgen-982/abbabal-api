@@ -31,15 +31,35 @@ async function fetchUpdates() {
   // since a reposted proverb updates its row (id unchanged) rather than inserting.
   db.exec('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT)');
 
+  // Ensure the proverbs table and the unique index that ON CONFLICT(text) relies
+  // on exist. On a fresh DB neither is present yet, and the upsert below would
+  // otherwise fail with "ON CONFLICT clause does not match any PRIMARY KEY or
+  // UNIQUE constraint". Idempotent when they already exist.
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS proverbs (
+      id INTEGER PRIMARY KEY,
+      text TEXT NOT NULL,
+      date TEXT NOT NULL,
+      views INTEGER DEFAULT 0,
+      forwards INTEGER DEFAULT 0,
+      source TEXT DEFAULT 'telegram' NOT NULL,
+      scraped_at TEXT,
+      created_at TEXT,
+      updated_at TEXT
+    );
+
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_proverbs_text ON proverbs(text);
+  `);
+
   const session = new StringSession(SESSION_STRING);
   const client = new TelegramClient(session, API_ID, API_HASH, {
     connectionRetries: 5,
   });
 
   await client.start({
-    phoneNumber: () => process.env.TG_PHONE ?? '',
-    password: () => process.env.TG_PASSWORD ?? '',
-    phoneCode: () => process.env.TG_CODE ?? '',
+    phoneNumber: async () => process.env.TG_PHONE ?? '',
+    password: async () => process.env.TG_PASSWORD ?? '',
+    phoneCode: async () => process.env.TG_CODE ?? '',
     onError: console.error,
   });
 
@@ -66,7 +86,7 @@ async function fetchUpdates() {
 
     batch.push({
       id: message.id,
-      date: message.date instanceof Date ? message.date.toISOString() : String(message.date),
+      date: String(message.date),
       text: cleanMessage(message.message),
       views: message.views ?? 0,
       forwards: message.forwards ?? 0,
