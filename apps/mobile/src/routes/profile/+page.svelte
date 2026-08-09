@@ -60,8 +60,8 @@
 
   <!-- Header card -->
   <div class="bg-card rounded-3xl p-6 shadow-sm border border-border flex flex-col items-center gap-3 text-center">
-    <div class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center">
-      <span class="text-primary-foreground font-bold text-xl">አባባል</span>
+    <div class="w-16 h-16 rounded-2xl overflow-hidden bg-muted">
+      <img src="/logo.png" alt="Abbabal logo" class="w-full h-full object-cover" />
     </div>
     <div>
       <h2 class="text-xl font-bold">አባባል</h2>

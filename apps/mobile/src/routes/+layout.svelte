@@ -1,10 +1,9 @@
 <script lang="ts">
   import './layout.css';
-  import favicon from '$lib/assets/favicon.svg';
   import { page } from '$app/state';
   import { App } from '@capacitor/app';
   import { goto } from '$app/navigation';
-  import { House, Search, Shuffle, Bookmark, User, Menu, X, ArrowLeft, Languages, Sun, Moon, Leaf } from '@lucide/svelte';
+  import { House, Search, Shuffle, Bookmark, User, Menu, X, ArrowLeft, Languages, Sun, Moon } from '@lucide/svelte';
   import { getLocaleState } from '$lib/stores/locale.svelte';
 
   let { children } = $props();
@@ -86,7 +85,8 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href={favicon} />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
 </svelte:head>
 
 <div class="flex min-h-screen flex-col bg-background">
@@ -188,8 +188,8 @@
             {menuVisible ? 'translate-x-0' : '-translate-x-full'}">
     <!-- Drawer header -->
     <div class="flex items-center gap-3 px-5 py-4 border-b border-border">
-      <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-muted text-primary">
-        <Leaf size={20} />
+      <div class="flex h-10 w-10 items-center justify-center rounded-xl overflow-hidden bg-muted">
+        <img src="/logo.png" alt="Abbabal logo" class="h-full w-full object-cover" />
       </div>
       <div class="flex-1">
         <h2 class="text-lg font-bold leading-tight tracking-tight">Abbabal</h2>

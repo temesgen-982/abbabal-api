@@ -11,8 +11,7 @@
   <div class="mx-auto max-w-7xl px-4 md:px-8">
     <div class="flex flex-col items-center justify-between gap-4 border-t border-border py-6 md:flex-row">
       <div class="flex items-center gap-3">
-        <span class="select-none text-2xl text-muted-foreground/20">ሀ ሁ ሂ ሃ ሄ ህ ሆ</span>
-        <span class="text-muted-foreground/40">|</span>
+        <img src="/logo.png" alt="Abbabal logo" class="h-7 w-7 rounded-md object-cover" />
         <span class="text-sm font-semibold text-muted-foreground">Abbabal</span>
       </div>
       <div class="flex items-center gap-6">
