@@ -165,6 +165,7 @@ function updateProverbsAiData(db, results) {
     db.exec('ROLLBACK');
     throw e;
   }
+}
 
 async function main() {
   console.log('Starting AI augmentation processor...');

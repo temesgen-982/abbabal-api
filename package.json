@@ -1,6 +1,7 @@
 {
   "name": "abbabal-workspace",
   "private": true,
+  "version": "0.1.0",
   "packageManager": "pnpm@10.15.0",
   "scripts": {
     "dev:api": "pnpm --filter @abbabal/api start:dev",
@@ -12,6 +13,7 @@
     "lint": "pnpm -r --if-present lint",
     "check": "pnpm -r --if-present check",
     "test": "pnpm --filter @abbabal/api test",
-    "test:e2e": "pnpm --filter @abbabal/api test:e2e"
+    "test:e2e": "pnpm --filter @abbabal/api test:e2e",
+    "version:set": "pnpm -r version"
   }
 }

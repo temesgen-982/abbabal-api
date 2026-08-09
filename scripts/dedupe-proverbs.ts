@@ -77,7 +77,7 @@ for (const row of rows) {
     const moved = db.prepare(
       'UPDATE interpretations SET proverb_id = ? WHERE proverb_id = ?'
     ).run(keep.id, row.id).changes;
-    reParented += moved;
+    reParented += Number(moved);
 
     toDelete.push(row.id);
     removed++;

@@ -20,7 +20,7 @@ if (!row) {
 const dcId = Number(row.dc_id);
 const address = String(row.server_address);
 const port = Number(row.port);
-const key = Buffer.from(row.auth_key);
+const key = Buffer.from(row.auth_key as Uint8Array);
 
 const dcBuf = Buffer.from([dcId]);
 const addrLen = Buffer.alloc(2);
