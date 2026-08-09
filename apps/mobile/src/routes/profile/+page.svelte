@@ -5,6 +5,7 @@
   import { getSavedState } from '$lib/stores/saved.svelte';
   import { BASE_URL } from '$lib/api';
   import { getLastSyncAt, syncDatabase } from '$lib/db';
+  import DataSource from '$lib/components/DataSource.svelte';
 
   const saved = getSavedState();
 
@@ -128,6 +129,8 @@
       </button>
     {/if}
   </div>
+
+  <DataSource />
 
   <!-- Footer note -->
   <div class="text-center text-xs text-muted-foreground">

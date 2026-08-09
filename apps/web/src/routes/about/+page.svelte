@@ -1,5 +1,6 @@
 <script lang="ts">
   import { BookOpen, Download, Database, Heart, Shield, Code, Leaf, Users, ArrowRight, ExternalLink } from '@lucide/svelte';
+  import DataSource from '$lib/components/DataSource.svelte';
 </script>
 
 <div class="mx-auto max-w-7xl px-6">
@@ -96,6 +97,11 @@
       Read the full story <ArrowRight size={12} />
     </a>
   </div>
+
+  <!-- Data Source -->
+  <section class="mb-12 grid gap-8 md:grid-cols-2">
+    <DataSource />
+  </section>
 
   <!-- What Makes Abbabal Special -->
   <section class="mb-12">

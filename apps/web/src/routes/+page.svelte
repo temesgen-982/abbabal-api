@@ -14,6 +14,7 @@
     Smartphone,
   } from '@lucide/svelte';
   import type { PageData } from './$types';
+  import DataSource from '$lib/components/DataSource.svelte';
 
   let { data }: { data: PageData } = $props();
 
@@ -296,6 +297,11 @@
         </a>
       {/each}
     </div>
+  </section>
+
+  <!-- Data Source -->
+  <section class="mb-16 md:max-w-xl">
+    <DataSource />
   </section>
 
   <!-- Developer Band -->
