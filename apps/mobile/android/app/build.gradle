@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+def abbabalPkg = new groovy.json.JsonSlurper().parse(file('../../../../package.json'))
+def abbabalVersion = abbabalPkg.version as String
+def abbabalVersionParts = abbabalVersion.tokenize('.')
+def abbabalVersionCode = (abbabalVersionParts.size() > 0 ? abbabalVersionParts[0].toInteger() : 0) * 10000 +
+    (abbabalVersionParts.size() > 1 ? abbabalVersionParts[1].toInteger() : 0) * 100 +
+    (abbabalVersionParts.size() > 2 ? abbabalVersionParts[2].toInteger() : 0)
+
 android {
     namespace = "abbabal.com.et"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +14,8 @@ android {
         applicationId "abbabal.com.et"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode abbabalVersionCode
+        versionName abbabalVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

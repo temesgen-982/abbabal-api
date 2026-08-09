@@ -99,3 +99,20 @@ This project is dual-licensed:
   The proverb texts were sourced from the "አማርኛ አባባሎች" Telegram channel
   (https://t.me/ababaloch); see [LICENSE-data](LICENSE-data) for full terms and
   attribution.
+
+## Versioning
+
+The whole product shares a single version, declared in the root `package.json`
+and mirrored by every workspace package. The Android app reads that same
+version at build time: `versionName` uses the version string and `versionCode`
+is derived from it as `major * 10000 + minor * 100 + patch` (so it always
+increases as the version does).
+
+To bump the product version everywhere at once:
+
+```bash
+pnpm version:set 0.2.0
+```
+
+The version is also displayed as the Android app version. When shipping a new
+Android build to the Play Store, the version must always increase.
