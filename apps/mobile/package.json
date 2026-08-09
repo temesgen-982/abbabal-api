@@ -9,12 +9,15 @@
 		"build": "node scripts/bundle-db.mjs && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
+		"assets:generate": "capacitor-assets generate --android --assetPath ../../packages/shared/assets --iconBackgroundColor '#ffffff'",
+		"i18n": "wuchale",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@capacitor/assets": "^3.0.5",
 		"@capacitor/cli": "^8.3.4",
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
