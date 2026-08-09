@@ -33,7 +33,7 @@
 
   const stats = $derived([
     { label: 'Proverbs', value: data.proverbCount ? Number(data.proverbCount).toLocaleString() : '—', icon: BookOpen },
-    { label: 'License', value: 'Open', icon: Heart, sub: 'MIT Licensed' },
+    { label: 'License', value: 'Open', icon: Heart, sub: 'CC BY 4.0' },
     { label: 'Tables', value: '2', icon: Database, sub: 'Proverbs & Interpretations' },
     { label: 'Mission', value: 'One', icon: Shuffle, sub: 'Preserve wisdom. Share culture.' },
   ]);

@@ -24,7 +24,6 @@ msgstr "License"
 msgid "Open"
 msgstr "Open"
 
-#: src/routes/+page.svelte
 #: src/routes/documentation/+page.svelte
 msgid "MIT Licensed"
 msgstr "MIT Licensed"
@@ -256,9 +255,8 @@ msgstr "Collected from elders, books, archives, and everyday life. Reviewed and 
 msgid "Open & Free"
 msgstr "Open & Free"
 
-#: src/routes/about/+page.svelte
-msgid "Open data under the MIT License. Use it in your projects, research, apps, and products — freely."
-msgstr "Open data under the MIT License. Use it in your projects, research, apps, and products — freely."
+#~ msgid "Open data under the MIT License. Use it in your projects, research, apps, and products — freely."
+#~ msgstr "Open data under the MIT License. Use it in your projects, research, apps, and products — freely."
 
 #: src/routes/about/+page.svelte
 msgid "Well-structured data, a simple REST API, and clear docs to help you build something meaningful."
@@ -660,9 +658,8 @@ msgstr "<0/> 2 tables"
 msgid "<0/> UTF-8 encoded"
 msgstr "<0/> UTF-8 encoded"
 
-#: src/routes/download/+page.svelte
-msgid "<0/> MIT License"
-msgstr "<0/> MIT License"
+#~ msgid "<0/> MIT License"
+#~ msgstr "<0/> MIT License"
 
 #: src/routes/download/+page.svelte
 msgid "A complete, offline-ready SQLite database containing all proverbs, interpretations, and metadata."
@@ -810,9 +807,8 @@ msgstr "View more <0/>"
 msgid "Tables Simple & efficient"
 msgstr "Tables Simple & efficient"
 
-#: src/routes/download/+page.svelte
-msgid "Open Data MIT Licensed"
-msgstr "Open Data MIT Licensed"
+#~ msgid "Open Data MIT Licensed"
+#~ msgstr "Open Data MIT Licensed"
 
 #: src/routes/download/+page.svelte
 msgid "Using Abbabal data?"
@@ -1490,4 +1486,15 @@ msgstr "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በ�
 #: src/lib/components/DataSource.svelte
 msgid "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
 msgstr "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
-ng our cultural wisdom. <1/>"
+
+#: src/routes/about/+page.svelte
+msgid "Open data under CC BY 4.0. Use it in your projects, research, apps, and products — freely."
+msgstr "Open data under CC BY 4.0. Use it in your projects, research, apps, and products — freely."
+
+#: src/routes/download/+page.svelte
+msgid "<0/> CC BY 4.0"
+msgstr "<0/> CC BY 4.0"
+
+#: src/routes/download/+page.svelte
+msgid "Open Data CC BY 4.0"
+msgstr "Open Data CC BY 4.0"

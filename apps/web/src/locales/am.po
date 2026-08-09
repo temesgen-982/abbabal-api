@@ -24,7 +24,6 @@ msgstr "ፈቃድ"
 msgid "Open"
 msgstr "ክፍት"
 
-#: src/routes/+page.svelte
 #: src/routes/documentation/+page.svelte
 msgid "MIT Licensed"
 msgstr "MIT ፈቃድ"
@@ -256,9 +255,8 @@ msgstr "ከሽማግሌዎች፣ ከመጽሐፎች፣ ከማህደሮች እና
 msgid "Open & Free"
 msgstr "ክፍት እና ነፃ"
 
-#: src/routes/about/+page.svelte
-msgid "Open data under the MIT License. Use it in your projects, research, apps, and products — freely."
-msgstr "በMIT ፈቃድ ክፍት ውሂብ። በፕሮጀክቶችዎ፣ በምርምር፣ በመተግበሪያዎች እና በምርቶችዎ ውስጥ በነፃ ይጠቀሙ።"
+#~ msgid "Open data under the MIT License. Use it in your projects, research, apps, and products — freely."
+#~ msgstr "በMIT ፈቃድ ክፍት ውሂብ። በፕሮጀክቶችዎ፣ በምርምር፣ በመተግበሪያዎች እና በምርቶችዎ ውስጥ በነፃ ይጠቀሙ።"
 
 #: src/routes/about/+page.svelte
 msgid "Well-structured data, a simple REST API, and clear docs to help you build something meaningful."
@@ -527,88 +525,88 @@ msgstr "curl"
 #. 0: baseUrl
 #: src/routes/documentation/+page.svelte
 msgid "\"{0}/proverbs?limit=2\""
-msgstr ""
+msgstr "\"{0}/proverbs?limit=2\""
 
 #: src/routes/documentation/+page.svelte
 msgid "-H <0>\"Accept: application/json\"</0>"
-msgstr ""
+msgstr "-H <0>\"Accept: application/json\"</0>"
 
 #: src/lib/components/playground/ResponsePreview.svelte
 #: src/routes/documentation/+page.svelte
 msgid "JSON"
-msgstr ""
+msgstr "JSON"
 
 #: src/routes/documentation/+page.svelte
 msgid "ወሬ ማዳመጥ ጥበብ አይደለም"
-msgstr ""
+msgstr "ወሬ ማዳመጥ ጥበብ አይደለም"
 
 #: src/routes/documentation/+page.svelte
 msgid "\"page\""
-msgstr ""
+msgstr "\"page\""
 
 #: src/routes/documentation/+page.svelte
 msgid "\"limit\""
-msgstr ""
+msgstr "\"limit\""
 
 #: src/routes/documentation/+page.svelte
 msgid "\"total\""
-msgstr ""
+msgstr "\"total\""
 
 #: src/routes/documentation/+page.svelte
 msgid "\"results\""
-msgstr ""
+msgstr "\"results\""
 
 #: src/routes/documentation/+page.svelte
 msgid "\"ወሬ ማዳመጥ ጥበብ አይደለም\""
-msgstr ""
+msgstr "\"ወሬ ማዳመጥ ጥበብ አይደለም\""
 
 #: src/routes/documentation/+page.svelte
 msgid "\"source\""
-msgstr ""
+msgstr "\"source\""
 
 #: src/routes/documentation/+page.svelte
 msgid "\"telegram\""
-msgstr ""
+msgstr "\"telegram\""
 
 #: src/routes/documentation/+page.svelte
 msgid "Example Request"
-msgstr ""
+msgstr "ምሳሌያዊ ጥያቄ (Request)"
 
 #: src/routes/documentation/+page.svelte
 msgid "Example Response"
-msgstr ""
+msgstr "ምሳሌያዊ ምላሽ (Response)"
 
 #: src/routes/documentation/+page.svelte
 msgid "<0/> Base URL"
-msgstr ""
+msgstr "<0/> የመሠረት ዩአርኤል (Base URL)"
 
 #: src/routes/documentation/+page.svelte
 msgid "<0/> Authentication"
-msgstr ""
+msgstr "<0/> ማረጋገጫ (Authentication)"
 
 #: src/routes/documentation/+page.svelte
 msgid "The API is open and free. No API key or authentication required. Just make your request."
-msgstr ""
+msgstr "ኤፒአይው (API) ክፍት እና ነፃ ነው። ምንም የኤፒአይ ቁልፍ ወይም ማረጋገጫ አያስፈልግም። ጥያቄዎን ማቅረብ ብቻ ነው።"
 
 #: src/routes/documentation/+page.svelte
 msgid "100 requests / minute"
-msgstr ""
+msgstr "100 ጥያቄዎች / በደቂቃ"
 
 #: src/routes/documentation/+page.svelte
 msgid "Free"
-msgstr ""
+msgstr "ነፃ"
 
 #: src/routes/documentation/+page.svelte
 msgid "<0/> Rate Limits"
-msgstr ""
+msgstr "<0/> የጥያቄ ገደቦች (Rate Limits)"
 
 #: src/routes/documentation/+page.svelte
 msgid "Contact us for higher limits."
-msgstr ""
+msgstr "ለከፍተኛ ገደቦች እባክዎን ያነጋግሩን።"
 
 #: src/routes/documentation/+page.svelte
 msgid "Open Data. Built for Everyone."
-msgstr ""
+msgstr "ክፍት ዳታ። ለሁሉም የተገነባ።"
 
 #: src/routes/documentation/+page.svelte
 msgid "Abbabal API is open and free to use under the MIT License."
@@ -660,9 +658,8 @@ msgstr "<0/> 2 ሰንጠረዦች"
 msgid "<0/> UTF-8 encoded"
 msgstr "<0/> UTF-8 ኢንኮድድ"
 
-#: src/routes/download/+page.svelte
-msgid "<0/> MIT License"
-msgstr "<0/> MIT ፈቃድ"
+#~ msgid "<0/> MIT License"
+#~ msgstr "<0/> MIT ፈቃድ"
 
 #: src/routes/download/+page.svelte
 msgid "A complete, offline-ready SQLite database containing all proverbs, interpretations, and metadata."
@@ -810,9 +807,8 @@ msgstr "ተጨማሪ ይመልከቱ <0/>"
 msgid "Tables Simple & efficient"
 msgstr "ሰንጠረዦች ቀላል እና ቀልጣፋ"
 
-#: src/routes/download/+page.svelte
-msgid "Open Data MIT Licensed"
-msgstr "ክፍት ውሂብ MIT ፈቃድ"
+#~ msgid "Open Data MIT Licensed"
+#~ msgstr "ክፍት ውሂብ MIT ፈቃድ"
 
 #: src/routes/download/+page.svelte
 msgid "Using Abbabal data?"
@@ -832,123 +828,123 @@ msgstr "GET /proverbs/random"
 
 #: src/routes/playground/+page.svelte
 msgid "GET /proverbs/search"
-msgstr ""
+msgstr "GET /proverbs/search"
 
 #: src/routes/playground/+page.svelte
 msgid "GET /proverbs"
-msgstr ""
+msgstr "GET /proverbs"
 
 #: src/routes/playground/+page.svelte
 msgid "GET /proverbs/{id}"
-msgstr ""
+msgstr "GET /proverbs/{id}"
 
 #: src/routes/playground/+page.svelte
 msgid "Production"
-msgstr ""
+msgstr "ፕሮዳክሽን (Production)"
 
 #: src/routes/playground/+page.svelte
 msgid "Staging"
-msgstr ""
+msgstr "ስቴጂንግ (Staging)"
 
 #: src/routes/playground/+page.svelte
 msgid "Internal Tools"
-msgstr ""
+msgstr "የውስጥ መሣሪያዎች"
 
 #: src/routes/playground/+page.svelte
 msgid "No response yet."
-msgstr ""
+msgstr "እስካሁን ምንም ምላሽ የለም።"
 
 #: src/routes/playground/+page.svelte
 msgid "Run a request to preview a proverb."
-msgstr ""
+msgstr "የምሳሌውን ቅድመ-ዕይታ ለማየት ጥያቄ ይላኩ።"
 
 #: src/routes/playground/+page.svelte
 msgid "No text available."
-msgstr ""
+msgstr "ምንም ጽሑፍ የለም።"
 
 #: src/routes/playground/+page.svelte
 msgid "Waiting for the API response."
-msgstr ""
+msgstr "የኤፒአይ ምላሽን በመጠባበቅ ላይ።"
 
 #: src/routes/playground/+page.svelte
 msgid "Preview of the latest response data."
-msgstr ""
+msgstr "የቅርብ ጊዜው የምላሽ መረጃ ቅድመ-ዕይታ።"
 
 #: src/routes/playground/+page.svelte
 msgid "Search requires a query."
-msgstr ""
+msgstr "ፍለጋ የፍለጋ ቃል ይፈልጋል።"
 
 #: src/routes/playground/+page.svelte
 msgid "Provide a proverb ID to fetch."
-msgstr ""
+msgstr "ለመውሰድ የምሳሌ መታወቂያ (ID) ያስገቡ።"
 
 #: src/routes/playground/+page.svelte
 msgid "Network request failed."
-msgstr ""
+msgstr "የኔትወርክ ጥያቄ አልተሳካም።"
 
 #: src/routes/playground/+page.svelte
 msgid "Abbabal API Response"
-msgstr ""
+msgstr "የአባባል ኤፒአይ ምላሽ"
 
 #: src/routes/playground/+page.svelte
 msgid "<0/> Run a sample request"
-msgstr ""
+msgstr "<0/> የምሳሌ ጥያቄ ይላኩ"
 
 #: src/lib/components/playground/PlaygroundHero.svelte
 #: src/routes/playground/+page.svelte
 msgid "View docs"
-msgstr ""
+msgstr "ሰነዶችን ይመልከቱ"
 
 #: src/routes/playground/+page.svelte
 msgid "Playground"
-msgstr ""
+msgstr "የሙከራ ቦታ (Playground)"
 
 #: src/routes/playground/+page.svelte
 msgid "Design, send, and preview Abbabal requests."
-msgstr ""
+msgstr "የአባባል ጥያቄዎችን ይንደፉ፣ ይላኩ እና ቅድመ-ዕይታቸውን ይመልከቱ።"
 
 #: src/routes/playground/+page.svelte
 msgid "Tune parameters, inspect responses, and share sample payloads in a focused workspace. Everything here mirrors the production API."
-msgstr ""
+msgstr "በተለየ የሥራ ቦታ ላይ መለኪያዎችን ያስተካክሉ፣ ምላሾችን ይመርምሩ እና ናሙናዎችን ያጋሩ። እዚህ ያለው ነገር ሁሉ ከትክክለኛው ኤፒአይ (production API) ጋር ተመሳሳይ ነው።"
 
 #: src/routes/playground/+page.svelte
 msgid "Response preview"
-msgstr ""
+msgstr "የምላሽ ቅድመ-ዕይታ"
 
 #: src/routes/playground/+page.svelte
 msgid "Inspect the output"
-msgstr ""
+msgstr "ውጤቱን ይመርምሩ"
 
 #: src/routes/playground/+page.svelte
 msgid "Copy response"
-msgstr ""
+msgstr "ምላሹን ኮፒ ያድርጉ"
 
 #: src/routes/playground/+page.svelte
 msgid "Share response"
-msgstr ""
+msgstr "ምላሹን ያጋሩ"
 
 #. 0: lastStatus
 #: src/routes/playground/+page.svelte
 msgid "Status {0}"
-msgstr ""
+msgstr "ሁኔታ {0}"
 
 #: src/routes/playground/+page.svelte
 msgid "Waiting"
-msgstr ""
+msgstr "በመጠባበቅ ላይ"
 
 #: src/routes/playground/+page.svelte
 msgid "Latency pending"
-msgstr ""
+msgstr "የመዘግየት ጊዜ በመጠባበቅ ላይ"
 
 #. 0: selectedEndpoint
 #: src/routes/playground/+page.svelte
 msgid "Endpoint: {0}"
-msgstr ""
+msgstr "የመጨረሻ ነጥብ (Endpoint): {0}"
 
 #. 0: selectedApiKey
 #: src/routes/playground/+page.svelte
 msgid "Environment: {0}"
-msgstr ""
+msgstr "አካባቢ (Environment): {0}"
 
 #: src/routes/proverbs/+page.svelte
 msgid "Explore thousands of Amharic proverbs."
@@ -1087,84 +1083,84 @@ msgstr "ቀጣይ <0/>"
 
 #: src/lib/components/playground/PlaygroundHero.svelte
 msgid "Run a sample request"
-msgstr ""
+msgstr "የሙከራ ጥያቄ ያሂዱ"
 
 #: src/lib/components/playground/PlaygroundHero.svelte
 msgid "Production rhythm"
-msgstr ""
+msgstr "የማምረቻ ምት"
 
 #: src/lib/components/playground/PlaygroundHero.svelte
 msgid "Live snapshot"
-msgstr ""
+msgstr "የቀጥታ ቅጽበታዊ ገጽ እይታ"
 
 #: src/lib/components/playground/PlaygroundHero.svelte
 msgid "Stable"
-msgstr ""
+msgstr "የተረጋጋ"
 
 #: src/lib/components/playground/PlaygroundHero.svelte
 msgid "Latency"
-msgstr ""
+msgstr "መዘግየት (Latency)"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Request builder"
-msgstr ""
+msgstr "የጥያቄ መገንቢያ"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Send a request"
-msgstr ""
+msgstr "ጥያቄ ላክ"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Environment"
-msgstr ""
+msgstr "አካባቢ (Environment)"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Search query <0/>"
-msgstr ""
+msgstr "የፍለጋ ጥያቄ <0/>"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Proverb ID <0/>"
-msgstr ""
+msgstr "የምሳሌያዊ አነጋገር መታወቂያ (Proverb ID) <0/>"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Page <0/>"
-msgstr ""
+msgstr "ገጽ <0/>"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Fetching..."
-msgstr ""
+msgstr "በማምጣት ላይ..."
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Fetch response"
-msgstr ""
+msgstr "ምላሹን አምጣ"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "Estimated latency: <0/>"
-msgstr ""
+msgstr "የተገመተ መዘግየት: <0/>"
 
 #: src/lib/components/playground/PlaygroundRequestPanel.svelte
 msgid "API key <0/>"
-msgstr ""
+msgstr "የኤፒአይ ቁልፍ (API key) <0/>"
 
 #: src/lib/components/playground/RequestControls.svelte
 msgid "Endpoint"
-msgstr ""
+msgstr "የመጨረሻ ነጥብ (Endpoint)"
 
 #: src/lib/components/playground/RequestControls.svelte
 msgid "API key"
-msgstr ""
+msgstr "የኤፒአይ ቁልፍ (API key)"
 
 #: src/lib/components/playground/RequestControls.svelte
 msgid "Limit"
-msgstr ""
+msgstr "ወሰን (Limit)"
 
 #: src/lib/components/playground/ResponsePreview.svelte
 msgid "Visual"
-msgstr ""
+msgstr "የእይታ"
 
 #. 0: name
 #: src/lib/components/table/user-avatar-cell.svelte
 msgid "{0}'s avatar"
-msgstr ""
+msgstr "የ{0} አምሳያ"
 
 #: src/routes/proverbs/[id]/+page.svelte
 msgid "Admin Archive"
@@ -1288,26 +1284,26 @@ msgstr "<0/> ሁሉም ምሳሌዎች"
 #: src/lib/components/ui/dialog/dialog-footer.svelte
 #: src/lib/components/ui/sheet/sheet-content.svelte
 msgid "Close"
-msgstr ""
+msgstr "ዝጋ"
 
 #. 0: SIDEBAR_COOKIE_NAME; 1: open; 2: SIDEBAR_COOKIE_MAX_AGE
 #: src/lib/components/ui/sidebar/sidebar-provider.svelte
 msgid "{0}={1}; path=/; max-age={2}"
-msgstr ""
+msgstr "{0}={1}; path=/; max-age={2}"
 
 #: src/lib/components/ui/sidebar/sidebar-rail.svelte
 #: src/lib/components/ui/sidebar/sidebar-rail.svelte
 #: src/lib/components/ui/sidebar/sidebar-trigger.svelte
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "የጎን አሞሌን ቀያይር"
 
 #: src/lib/components/ui/sidebar/sidebar.svelte
 msgid "Sidebar"
-msgstr ""
+msgstr "የጎን አሞሌ"
 
 #: src/lib/components/ui/sidebar/sidebar.svelte
 msgid "Displays the mobile sidebar."
-msgstr ""
+msgstr "የሞባይል ጎን አሞሌን ያሳያል።"
 
 #: src/lib/components/Nav.svelte
 msgid "Switch language"
@@ -1490,4 +1486,15 @@ msgstr "ጣፋጭ እና አስተማሪ የአማርኛ አባባሎችን በ�
 #: src/lib/components/DataSource.svelte
 msgid "Abbabal is built using proverbs collected and shared by the <0>አማርኛ አባባሎች</0> Telegram channel. We deeply appreciate their effort in preserving and sharing our cultural wisdom. <1/>"
 msgstr "አባባል የተሰራው በ<0>አማርኛ አባባሎች</0> የቴሌግራም ቻናል በተሰበሰቡ እና ከተጋሩ አባባሎች በመነሳት ነው። ባህላዊ ጥበባችንን ለመጠበቅ እና ለማካፈል ላደረጉት ጥረት ከልብ እናመሰግናለን። <1/>"
-��መሰግናለን። <1/>"
+
+#: src/routes/about/+page.svelte
+msgid "Open data under CC BY 4.0. Use it in your projects, research, apps, and products — freely."
+msgstr "ክፍት መረጃ በCC BY 4.0 ሥር። በፕሮጀክቶችዎ፣ በምርምርዎ፣ በባለሙያ መተግበሪያዎችዎ እና በምርቶችዎ ውስጥ በነፃነት ይጠቀሙበት።"
+
+#: src/routes/download/+page.svelte
+msgid "<0/> CC BY 4.0"
+msgstr "<0/> CC BY 4.0"
+
+#: src/routes/download/+page.svelte
+msgid "Open Data CC BY 4.0"
+msgstr "ክፍት ዳታ CC BY 4.0"
