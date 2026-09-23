@@ -67,15 +67,36 @@ async function fetchUpdates() {
   const lastId = getLastFetchedId(db);
   console.log(`Fetching updates since message ID: ${lastId}`);
 
-  const upsert = db.prepare(`
+  // Reposts must merge into the existing row (id unchanged) so dedupe by text
+  // keeps working, but a message id that reappears with a DIFFERENT text (an
+  // edited message being re-fetched) must update in place instead of tripping
+  // the id primary key. Handle both explicitly.
+  const textStmt = db.prepare('SELECT id FROM proverbs WHERE text = ?');
+  const mergeByText = db.prepare(`
+    UPDATE proverbs
+    SET views = ?, forwards = ?, date = ?, updated_at = ?
+    WHERE id = ?
+  `);
+  const upsertById = db.prepare(`
     INSERT INTO proverbs (id, text, date, views, forwards, source, scraped_at, created_at)
     VALUES (?, ?, ?, ?, ?, 'telegram', ?, ?)
-    ON CONFLICT(text) DO UPDATE SET
+    ON CONFLICT(id) DO UPDATE SET
+      text = excluded.text,
       views = excluded.views,
       forwards = excluded.forwards,
       date = excluded.date,
-      updated_at = excluded.created_at
+      scraped_at = excluded.scraped_at,
+      updated_at = excluded.updated_at
   `);
+
+  const writeItem = (e, now) => {
+    const existing = textStmt.get(e.text);
+    if (existing) {
+      mergeByText.run(e.views, e.forwards, e.date, now, existing.id);
+    } else {
+      upsertById.run(e.id, e.text, e.date, e.views, e.forwards, e.date, now);
+    }
+  };
 
   let count = 0;
   let maxMessageId = lastId;
@@ -97,10 +118,16 @@ async function fetchUpdates() {
       const now = new Date().toISOString();
       db.exec('BEGIN');
       for (const e of items) {
-        upsert.run(e.id, e.text, e.date, e.views, e.forwards, e.date, now);
+        writeItem(e, now);
         count++;
       }
       db.exec('COMMIT');
+      // Advance the resume point on every committed batch so a crash mid-run
+      // never forces a full-history rescan from 0.
+      db.prepare('INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)').run(
+        'last_message_id',
+        String(maxMessageId)
+      );
       console.log(`Saved ${count} proverbs...`);
     }
   }
@@ -108,7 +135,7 @@ async function fetchUpdates() {
   if (batch.length > 0) {
     const now = new Date().toISOString();
     for (const e of batch) {
-      upsert.run(e.id, e.text, e.date, e.views, e.forwards, e.date, now);
+      writeItem(e, now);
       count++;
     }
   }
